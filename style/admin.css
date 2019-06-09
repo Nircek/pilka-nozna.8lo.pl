@@ -1,0 +1,52 @@
+﻿#panel{
+	/* potrzebny jest ten div żeby nagłówek H1 był na środku całego kontentu */
+	width: 100%;
+	overflow: hidden;
+}
+/* WSPÓLNE WŁAŚCIWOŚCI WSZYSTKICH 4 SEKCJI PANELU */
+#informacje, #zdjecia, #aktualizacja-sezonu, #tworzenie-sezonu{
+	float: left;
+	width: 50%;
+	padding: 15px 0;
+	padding-bottom: 20000px;
+	margin-bottom: -20000px;
+}
+
+/* -------------------------- SEKCJA - DODAWANIE INFORMACJI --------------------------------- */
+#informacje{
+	background-color: rgba(0, 0, 0, 0.3);
+}
+/* ----------------------------- SEKCJA - DODAWANIE ZDJĘĆ ------------------------------------*/
+#zdjecia{
+	background-color: rgba(0, 0, 0, 0.2);
+}
+/* ------------------------- SEKCJA - AKTUALIZOWANIE SEZONU ----------------------------------*/
+#aktualizacja-sezonu{
+	background-color: rgba(0, 0, 0, 0.2);
+}
+/* --------------------------- SEKCJA - TWORZENIE SEZONU -------------------------------------*/
+#tworzenie-sezonu{
+	background-color: rgba(0, 0, 0, 0.3);
+}
+#dalej-button{
+	background-color: black;
+	font-size: 85px;
+	width: 250px;
+	height: 100px;
+	margin: auto;
+	margin-top: 50px;
+	margin-bottom: 30px;
+}
+#dalej-button a{
+	text-decoration: none;
+	color: #ffffff;
+	display: block;
+	width: 250px;
+	height:  100px;
+	-webkit-transition: background-color 0.15s linear 0s;
+	transition: background-color 0.15s linear 0s;
+}
+#dalej-button a:hover{
+	color: black;
+	background-color: #ffffff;
+}

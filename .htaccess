@@ -1,0 +1,23 @@
+### PROTECT FILES ###
+<FilesMatch "\.(htaccess|htpasswd|ini|fla|psd|log|sh)$">
+Order Allow,Deny
+Deny from all
+</FilesMatch>
+
+RewriteEngine on
+RewriteRule galeria galeria.php
+RewriteRule strona-glowna index.php
+RewriteRule kontakt kontakt.php
+RewriteRule informacje informacje.php
+RewriteRule regulamin regulamin.php
+RewriteRule o-nas o_nas.php
+RewriteRule adminelo admin_log.php
+
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
+
+ErrorDocument 404 http://www.pilka-nozna.8lo.pl/404.php
+
+php_flag display_errors on
