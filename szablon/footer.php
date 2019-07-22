@@ -10,7 +10,6 @@
 		<div id="center-footer">
 			<div id="top-center-footer"></div>
 			<div id="bottom-center-footer">
-				Created by Call3M<br/>
 				&copy <?php $rok = date('Y'); echo $rok;?>
 			</div>
 		</div>
