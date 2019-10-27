@@ -1,0 +1,118 @@
+/* ------------------------------------------------------------------------------- KONTENT -----------------------------------------------------*/
+#content
+{
+	background-color : transparent;
+	padding: 0px;
+	width: 1000px;
+}
+h3{
+	text-transform: uppercase;
+}
+/* WSPÓLNE CECHY 3 KOLUMN */
+#left-content, #center-content, #right-content{
+	padding: 15px 0;
+	height: 840px;	/* TO DEFINIUJE WYSOKOŚĆ CAŁEGO DIVA CONTENT!, 1020 px */
+	float: left;
+}
+#image-button, #info-button, #sezony-button{
+	height: 108px;
+	user-select: none;
+	line-height: 40%;
+	font-size: 60px;
+	margin: auto;
+	margin-top: 40px;
+}
+#image-button a, #info-button a, #sezony-button a{
+	color: rgba(255, 255, 255, 1);
+	display: block;
+	height: 108px;
+	text-decoration: none;
+	-webkit-transition: background-color 0.15s linear 0s;
+	transition: background-color 0.15s linear 0s;
+}
+#image-button a:hover, #info-button a:hover, #sezony-button a:hover{
+	background-color: rgba(190, 190, 190, 1);
+	color: rgba(0, 0, 0, 1);
+}
+/* -------------------------- KOLUMNA LEWA --------------------------------- */
+#left-content {
+	width: 250px; 
+	background-color: rgba(0, 0, 0, 0.5);
+}
+.image {
+	margin-top: 40px;
+	width: 192px; /* HD 1920 (16:9)   12 * 16 */
+	height: 108px; /* 12 * 9 zdjęcie zmniejszone przy zachowaniu stosunku FullHD */
+	margin-left: auto;
+	margin-right: auto;
+	overflow: hidden; /* Jak wystaje to utnij dziada */
+}
+
+/* PRZYCISK NA DOLE KOLUMNY ZDJĘCIA */
+#image-button {
+	width: 196px;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+#image-button a {
+	width: 196px;
+	
+}
+
+/* -------------------------- KOLUMNA ŚRODKOWA --------------------------------- */
+#center-content {
+	width: 350px;
+	background-color: rgba(20, 21, 24, 0.9);
+}
+#informacje-content{
+	width: 310px;
+	margin: auto;
+	margin-top: 40px;
+	font-size: 18px;
+	max-height: 600px;/*790 px**/
+	overflow: hidden;
+}
+
+.info{
+	padding-bottom: 25px;
+	line-height: 110%;
+}
+/* ELEMENTY .INFO */
+#tresc{
+
+	font-weight: normal;
+}
+#data{
+	font-size: 14px;
+	margin-left: 210px;
+}
+#info-button {
+	width: 310px;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* PRZYCISK NA DOLE KOLUMNY INFO */
+#info-button a {
+	width: 310px;
+}
+
+/* -------------------------- KOLUMNA PRAWA --------------------------------- */
+#right-content {
+	width: 400px;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+#tabela {
+	margin: auto;
+	width: 375px;
+	margin-bottom: 30px;
+	border: solid 0.5px rgba(0, 0, 0, 0.9);
+}
+#tabela th {
+	background-color: rgba(255, 255, 255, 0.2);
+	padding: 6px 0;
+	border: solid 0.5px rgba(0, 0, 0, 0.9);
+}
+#tabela td {
+	background-color: rgba(0, 0, 0, 0.3);
+	padding: 5px 2px ;
+	border: solid 0.5px rgba(0, 0, 0, 0.9);
+}
