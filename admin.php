@@ -92,7 +92,7 @@
 							<input type="number" min='2000'
 							<?php
 								 $sezon = explode("/", $obecny_sezon)[0];
-								 echo "max='".($sezon)."' value='".($sezon)."'"; // <lost this version of file; falling back to 2019-12-07+17:06:26>
+								 echo "max='".($sezon)."' value='".($sezon)."'"; //MZ: domyślnie jest zaznaczony obecny sezon, wcześniej był poprzedni
 							?>
 								 id="zdjecia_sezon" name="zdjecie_sezon">
 

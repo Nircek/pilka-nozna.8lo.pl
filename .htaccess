@@ -20,4 +20,7 @@ deny from all
 
 ErrorDocument 404 http://www.pilka-nozna.8lo.pl/404.php
 
-php_flag display_errors on
+php_value memory_limit 300M
+php_value post_max_size 1000M
+php_value upload_max_filesize 300M
+#php_flag display_errors on

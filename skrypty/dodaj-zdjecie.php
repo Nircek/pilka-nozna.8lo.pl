@@ -5,7 +5,7 @@ session_start();
 include('./../funkcje/funkcje_admin.php');
 is_logged();
 
-include("./skrypty/db-connect.php");
+include("./db-connect.php");//MZ: wcześniejsza wersja `include("./skrypty/db-connect.php");`... jesteśmy w folderze skrypty, więc nie ma takiego pliku
 
 $sezon = $_POST['zdjecie_sezon'];
 $data = date('Y-m-d');
@@ -29,7 +29,7 @@ if(!empty($_FILES['files']['name'][0])) {
 			if(move_uploaded_file($tmp_name_array[$i], "../zdjecia/".$name_array[$i])) {
 				$file_destination = "zdjecia/" . $name_array[$i];
 				try {
-					$sql = ;
+					//$sql = ; //MZ: nie ma żadnego odwołania do $sql później... usuwam
 					$stmt = $pdo->prepare("INSERT INTO `zdjecia` (`id`, `sezon`, `sciezka`, `data`) VALUES (NULL, '$sezon', '$file_destination', '$data')");
 					$stmt->execute();
 				} catch(PDOException $e) {
