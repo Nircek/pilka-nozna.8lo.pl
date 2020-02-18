@@ -92,7 +92,7 @@
 		function laduj(numer_zdjecia){
 			// Podmiana zdjęcia w podglądzie
 			var zdjecie = document.getElementById(numer_zdjecia);
-			var sciezka = zdjecie.getAttribute("src");
+			var sciezka = zdjecie.getAttribute("srcfull");
 			var glowne_zdjecie = document.getElementById('glowne_zdjecie');
 			glowne_zdjecie.value = numer_zdjecia;
 			glowne_zdjecie.src = sciezka;
@@ -104,7 +104,7 @@
 			stare_zdjecie = Number(stare_zdjecie);
 			var nowe_zdjecie = stare_zdjecie - 1;
 			var nowa_sciezka = document.getElementById(nowe_zdjecie);
-			nowa_sciezka = nowa_sciezka.src;
+			nowa_sciezka = nowa_sciezka.getAttribute('srcfull');
 			podglad.src = nowa_sciezka;
 			podglad.value = nowe_zdjecie;
 		}
@@ -115,7 +115,7 @@
 			stare_zdjecie = Number(stare_zdjecie);
 			var nowe_zdjecie = stare_zdjecie + 1;
 			var nowa_sciezka = document.getElementById(nowe_zdjecie);
-			nowa_sciezka = nowa_sciezka.src;
+			nowa_sciezka = nowa_sciezka.getAttribute('srcfull');
 			podglad.src = nowa_sciezka;
 			podglad.value = nowe_zdjecie;
 
@@ -130,7 +130,7 @@
 			<div id="content">
 				<?php
 					if(isset($_GET['s']))
-						echo '<div id="powrot"><a href="galeria"> &#8592 POWRÓT </a></div>';
+						echo '<div id="powrot"><a href="galeria"> &#8592; POWRÓT </a></div>';
 				?>
 				<h1> GALERIA </h1>
 				<div style="clear: both;"></div>
@@ -169,9 +169,9 @@
 						//Jeśli są:
 						//Wyświetla na samej górze jedno duże zdjęcie 'podglad'
 						echo "<div id='podglad'>
-									<div id='lewo' onclick='lewo()'><</div>
+									<div id='lewo' onclick='lewo()'></div>
 									<img id='glowne_zdjecie' src='".$zdjecie[0][0]."' value=''/>
-									<div id='prawo' onclick='prawo()'>></div>
+									<div id='prawo' onclick='prawo()'></div>
 									<div style='clear: both'></div>
 								</div>";
 						//Wypisywanie wszystkich zdjęć wraz z odpowiadającymi im ścieżkami
@@ -179,8 +179,9 @@
 						foreach($zdjecie as $zdjecie) {
 							//W 'id' i skrypcie 'laduj()' znajduje się taka sama liczba przez co JS może ją stąd pobrać
 							//Jak pobierze liczbę w ID to od razu zna liczbę sciezki przez co może ją dopasować i podmienić w zdjęciu na 'podgladzie'
+							$pathinf = pathinfo($zdjecie[$i]);
 							echo "<div class='zdjecie' >
-										<img width='172' id='" . $i ."' height='98' src='" . $zdjecie[$i] ."' onclick='laduj($i)'/>
+										<img width='172' id='" . $i ."' height='98' src='" . $pathinf['dirname'].'/thumb.'.$pathinf['basename'] ."' srcfull='" . $zdjecie[$i] ."' onclick='laduj($i)'/>
 									</div>";
 							$i++;
 						}
