@@ -10,7 +10,7 @@
 		<div id="center-footer">
 			<div id="top-center-footer"></div>
 			<div id="bottom-center-footer">
-				&copy <?php $rok = date('Y'); echo $rok;?>
+				&copy <?php date_default_timezone_set("Europe/Warsaw"); $rok = date('Y'); echo $rok;?>
 			</div>
 		</div>
 		<div id="right-footer">

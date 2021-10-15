@@ -34,6 +34,7 @@
 							} catch (PDOException $e) {
 								echo '<div id="error">Błąd bazy danych: '. $e .'</div>';
 							}
+							$zdjecie = array();
 							while ($row = $result->fetch())
 								$zdjecie[] = array('sciezka' => $row['sciezka']);
 
@@ -60,6 +61,7 @@
 									echo '<div id="error">Błąd bazy danych: '. $e .'</div>';
 								}
 
+								$info = array();
 								while ($row = $result->fetch())
 									$info[] = array('id' => $row['id'],
 													'tytul' => $row['tytul'],
@@ -92,23 +94,25 @@
 								$sql = "SELECT * FROM sezony ORDER BY sezon DESC LIMIT 1";
 								$result = $pdo->query($sql);
 								$liczba = $result->rowCount();
+								if ($liczba == 0) echo "<div id='error'>Nie ma żadnego sezonu...</div>";
 							} catch(PDOException $e) {
 								echo "<div id='error'>". $e ."</div>";
 							}
+							$sezon = array();
 							while ($row = $result->fetch())
 								$sezon[] = array('sezon' => $row['sezon']);
 
-							foreach ($sezon as $sezon) {
-								$sezon = $sezon['sezon'];
-								echo "<h2>TABELA ". $sezon ."/". ($sezon+1) ."</h2>";
-								$sezon_tabela = $sezon . "_tabela";
-							}
-						?>
-						<h3> GRUPA PIERWSZA </h3>
-							<?php show_tabela(2, $sezon_tabela, 1);?>
-
-						<h3> GRUPA DRUGA </h3>
-							<?php show_tabela(2, $sezon_tabela, 2); ?>
+							if ($liczba != 0) {
+								foreach ($sezon as $sezon) {
+									$sezon = $sezon['sezon'];
+									echo "<h2>TABELA ". $sezon ."/". ($sezon+1) ."</h2>";
+									$sezon_tabela = $sezon . "_tabela";
+								}
+								echo "<h3> GRUPA PIERWSZA </h3>\n";
+								show_tabela(2, $sezon_tabela, 1);
+								echo "<h3> GRUPA DRUGA </h3>";
+								show_tabela(2, $sezon_tabela, 2); }
+							?>
 					</div>
 					<div style="clear: both;"></div>
 				</div>

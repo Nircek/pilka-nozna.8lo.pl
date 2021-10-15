@@ -48,7 +48,7 @@
 								} catch (PDOException $e) {
 									echo 'Błąd bazy danych: ' . $e;
 								}
-
+								$info = array();
 								while ($row = $result->fetch())
 									$info[] = array('id' => $row['id'],
 													'tytul' => $row['tytul'],

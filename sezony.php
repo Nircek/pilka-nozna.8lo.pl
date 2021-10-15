@@ -1,5 +1,20 @@
 <?php
 	session_start();
+	include("./skrypty/db-connect.php");
+	include("./funkcje/funkcje.php");
+	if(isset($_GET['s'])) {
+		$sezon_pelny = $_GET['s'];
+		//Sezon zapisywany w bazie to tylko jego liczba początkowa
+		//2016/2017 to tylko 2016, dlatego $_GET musi rozdzielić te dwie liczby
+		$sezon = explode("/", $sezon_pelny)[0];
+		$sezon_tabela = $sezon."_tabela";
+		$sezon_terminarz = $sezon . "_terminarz";
+		if(!sprawdzanie_tabela($pdo, $sezon_tabela) || !sprawdzanie_tabela($pdo, $sezon_terminarz)) {
+			header('Location: sezony.php');
+			echo "Podany sezon nie istnieje...";
+			exit();
+		}
+	}
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
@@ -15,8 +30,6 @@
 		<?php include('./szablon/menu.php'); ?>
 		<div id="content-border">
 			<?php
-				include("./skrypty/db-connect.php");
-				include("./funkcje/funkcje.php");
 
 				// ========================================== MENU SEZONÓW =================================
 				if(!isset($_GET['s'])){
@@ -29,6 +42,7 @@
 					} catch(PDOException $e) {
 						echo "<div id='error'>". $e ."</div>";
 					}
+					$sezon = array();
 					while ($row = $result->fetch())
 						$sezon[] = array('sezon' => $row['sezon']);
 
@@ -48,13 +62,6 @@
 					echo "</div>";
 
 				} else {
-					// ========================================== KONKRETNY SEZON =================================
-					$sezon_pelny = $_GET['s'];
-					//Sezon zapisywany w bazie to tylko jego liczba początkowa
-					//2016/2017 to tylko 2016, dlatego $_GET musi rozdzielić te dwie liczby
-					$sezon = explode("/", $sezon_pelny)[0];
-					$sezon_tabela = $sezon."_tabela";
-					$sezon_terminarz = $sezon . "_terminarz";
 				?>
 
 			<div id="content">

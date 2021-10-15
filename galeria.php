@@ -199,6 +199,7 @@
 							echo '<div id="error">Błąd bazy danych: '. $e .'</div>';
 						}
 
+						$sezon = array();
 						while ($row = $result->fetch())
 							$sezon[] = array('sezon' => $row['sezon']);
 
