@@ -6,3 +6,4 @@
 <meta name="keywords" content="piłka, nożna, pik, viii, lo, liga, szkolna, strona, football">
 <meta name="description" content='Oficjalna strona Szkolnej Ligi Piłkarskiej w VIII LO "PIK"'>
 <link rel="stylesheet" type="text/css" href="style/szablon.css">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">

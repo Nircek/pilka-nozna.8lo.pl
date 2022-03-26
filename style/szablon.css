@@ -1,286 +1,298 @@
-/* -------------------------------------------------------------------- RESET I CONTAINER -------------------------------------------------- */
+/* ------------------ RESET I CONTAINER ------------------ */
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,time, mark, audio, video 
-{	margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; }article, aside, details, 
-figcaption, figure,  footer, header, hgroup, menu, nav, section {	display: block; }body {	line-height: 1; } ol, ul { list-style: none; }
-blockquote, q {	quotes: none; } blockquote:before, blockquote:after, q:before, q:after {	content: ''; content: none; }
+fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,time, mark, audio, video {
+    margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline;
+}
+article, aside, details, figcaption, figure,  footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after, q:before, q:after {
+    content: ''; content: none;
+}
 
 html, body {
-	/* cechy wspólne całego dokumentu */
-	background-image: url("../img/background.png");
-	background-color: #242424;
-	font-family: 'Monda', sans-serif;
-	margin:0;
-	padding:0;
-	height:100%;
-	color: #ffffff;
+    /* cechy wspólne całego dokumentu */
+    background-image: url("../img/background.png");
+    background-color: #242424;
+    font-family: 'Monda', sans-serif;
+    margin:0;
+    padding:0;
+    height:100%;
+    color: #ffffff;
 }
 #container {
-	/* ogólny pojemnik, w kórym siedzi wszystko inne */
-	width: 1000px;
-	min-height: 100%;
-	position: relative;
-	margin-left: auto;
-	margin-right: auto;
+    /* ogólny pojemnik, w kórym siedzi wszystko inne */
+    width: 1000px;
+    min-height: 100%;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
 }
-#content{
-	background-color: rgba(20, 21, 24, 0.9);
-	color: #ffffff;
-	text-align: center;
-	font-weight: bold;
-	width: 960px;
-	padding: 20px;
-	margin: auto;
+#content {
+    background-color: rgba(20, 21, 24, 0.9);
+    color: #ffffff;
+    text-align: center;
+    font-weight: bold;
+    width: 960px;
+    padding: 20px;
+    margin: auto;
 }
 /* WŁAŚCIWOŚCI NAGŁÓWKÓW */
-h1{
-	font-weight: bold;
-	text-align: center;
-	margin: auto;
-	margin-bottom: 15px;
-	font-size: 30px;
+h1 {
+    font-weight: bold;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 15px;
+    font-size: 30px;
 }
-h2{
-	text-align: center;
-	margin: auto;
-	margin-bottom: 20px;
-	font-size: 25px;
+h2 {
+    text-align: center;
+    margin: auto;
+    margin-bottom: 20px;
+    font-size: 25px;
 }
-h3{
-	text-align: center;
-	margin: auto;
-	margin-bottom: 5px;
-	font-size: 22px;
+h3 {
+    text-align: center;
+    margin: auto;
+    margin-bottom: 5px;
+    font-size: 22px;
 }
 /* WŁAŚCIWOŚCI KOMUNIKATÓW */
-#error, #sukces{
-	width: 100%;
-	font-size: 25px;
-	padding: 10px 0;
-	text-align: center;
+#error, #sukces {
+    width: 100%;
+    font-size: 25px;
+    padding: 10px 0;
+    text-align: center;
 }
-#error{
-	background-color: #ce2525;
+#error {
+    background-color: #ce2525;
 }
-#sukces{
-	background-color: #22C12D;
+#sukces {
+    background-color: #22C12D;
 }
 /* WŁAŚCIWOŚCI FORMULARZY */
-input, textarea, select{
-	font-weight: bold;
-	border: 5px solid rgba(0, 0, 0, 0.8);
-	padding: 2px 0;
-	resize: none;
-	margin-bottom: 15px;
-	font-size: 20px;
-	text-align: center;
-	resize: none;
+input, textarea, select {
+    font-weight: bold;
+    border: 5px solid rgba(0, 0, 0, 0.8);
+    padding: 2px 0;
+    resize: none;
+    margin-bottom: 15px;
+    font-size: 20px;
+    text-align: center;
+    resize: none;
 }
-input[type=submit]
-{
-	padding: 0 40px;
+input[type=submit] {
+    padding: 0 40px;
 }
-input[type=file]{
-	background-color: #ffffff;
-	color: black;
+input[type=file] {
+    background-color: #ffffff;
+    color: black;
 }
-/* ----------------------------------------------------------------------------- MENU ---------------------------------------------------------- */
+/* ------------------ MENU ------------------ */
 #menu {
-	width: 100%;
-	height: 180px;
-	font-weight: bold;
-	padding-top: 60px;
+    width: 100%;
+    height: 180px;
+    font-weight: bold;
+    padding-top: 60px;
 }
 #logo {
-	width: 250px;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.5);
-	float: left;
-	text-align: center;
+    width: 250px;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    float: left;
+    text-align: center;
 }
 #logo a {
-	display: block;
-	width: 250px;
-	height: 180px;
+    display: block;
+    width: 250px;
+    height: 180px;
 }
 #title {
-	width: 350px;
-	height: 100%;
-	background-color: rgba(20, 21, 24, 0.9);
-	float: left;
-	color: rgba(255, 255, 255, 1);
-	font-size: 40px;
+    width: 350px;
+    height: 100%;
+    background-color: rgba(20, 21, 24, 0.9);
+    float: left;
+    color: rgba(255, 255, 255, 1);
+    font-size: 40px;
 }
 #title-content {
-	/* pojemnik z napisem w sekcji #title w #menu */
-	margin-top: 40px;
-	line-height: 130%;
-	text-align: center;
+    /* pojemnik z napisem w sekcji #title w #menu */
+    margin-top: 40px;
+    line-height: 130%;
+    text-align: center;
 }
 
-/* ---------------------------------- OPCJE MENU ---------------------------- */
+/* ------------------ OPCJE MENU ------------------ */
 
 #options {
-	/* pojemnik ze wszystkimi opcjami:
-		-górne (#top-options)
-		-dolne (#bottom-options)
-	*/
-	width: 400px;
-	height: 100%;
-	float: left;
-	color: rgba(255, 255, 255, 1);
-	text-align: center;
+    /* pojemnik ze wszystkimi opcjami:
+        -górne (#top-options)
+        -dolne (#bottom-options)
+    */
+    width: 400px;
+    height: 100%;
+    float: left;
+    color: rgba(255, 255, 255, 1);
+    text-align: center;
 }
-#options a{
-	/* wspólne cechy wszystkich hiper³¹czy w opcjach menu */
-	-webkit-transition: background-color 0.15s linear 0s;
-	transition: background-color 0.15s linear 0s;
-	display: block;
-	text-decoration: none;
-	color: rgba(255, 255, 255, 1);
+#options a {
+    /* wspólne cechy wszystkich hiper³¹czy w opcjach menu */
+    -webkit-transition: background-color 0.15s linear 0s;
+    transition: background-color 0.15s linear 0s;
+    display: block;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 1);
 }
 
-/* ------------------- GÓRE OPCJE MENU ------------------------ */
+/* ------------------ GÓRE OPCJE MENU ------------------ */
 
 #top-options {
-	/* pojemnik z 3 górnymi opcjami*/
-	width: 100%;
-	height: 50%;
+    /* pojemnik z 3 górnymi opcjami*/
+    width: 100%;
+    height: 50%;
 }
 #top-options a {
-	/* cechy wspólne hiper³¹czy górnych opcji menu */
-	width: 133px;	/* wymiary obszaru display dla górnych hiper³¹czy opcji */
-	height: 90px;
+    /* cechy wspólne hiper³¹czy górnych opcji menu */
+    width: 133px;   /* wymiary obszaru display dla górnych hiper³¹czy opcji */
+    height: 90px;
 }
 #top-options a:hover {
-	/* cechy wspólne hiper³¹czy górnych opcji menu po najechaniu */
-	background-color: rgba(190, 190, 190, 1);
+    /* cechy wspólne hiper³¹czy górnych opcji menu po najechaniu */
+    background-color: rgba(190, 190, 190, 1);
 }
 
-#facebook, #pik, #galeria{
-	/* cechy wspólne wszystkich 3 górnych opcji w menu */
-	width: 33.3%;
-	height: 100%;
-	float: left;
+#facebook, #pik, #galeria {
+    /* cechy wspólne wszystkich 3 górnych opcji w menu */
+    width: 33.3%;
+    height: 100%;
+    float: left;
 }
 #facebook {
-	/* cechy typowe dla opcji facebook */
-	background-color: #3c5a9a;
+    /* cechy typowe dla opcji facebook */
+    background-color: #3c5a9a;
 }
-#facebook a:hover{
-	/* cechy typowe dla opcji facebook po najechaniu*/
-	color: #3c5a9a;
+#facebook a:hover {
+    /* cechy typowe dla opcji facebook po najechaniu*/
+    color: #3c5a9a;
 }
 #pik {
-	/* cechy typowe dla opcji pik */
-	background-color: #0a6642;
+    /* cechy typowe dla opcji pik */
+    background-color: #0a6642;
 }
-#pik a:hover{
-	/* cechy typowe dla opcji pik po najechaniu*/
-	color: #0a6642;
+#pik a:hover {
+    /* cechy typowe dla opcji pik po najechaniu*/
+    color: #0a6642;
 }
 #galeria {
-	/* cechy typowe dla opcji galeria */
-	background-color: #663300;
+    /* cechy typowe dla opcji galeria */
+    background-color: #663300;
 }
 #galeria a:hover {
-	/* cechy typowe dla opcji galeria po najechaniu*/
-	color: #663300;
+    /* cechy typowe dla opcji galeria po najechaniu*/
+    color: #663300;
 }
 
-/* ----------------------- DOLNE OPCJE MENU ------------------ */
+/* ------------------ DOLNE OPCJE MENU ------------------ */
 
 #bottom-options {
-	/* pojemnik z 2 dolnymi opcjami */
-	width: 100%;
-	height: 50%;
+    /* pojemnik z 2 dolnymi opcjami */
+    width: 100%;
+    height: 50%;
 }
 #bottom-options a {
-	/* cechy wspólne hiperłączy dolnych opcji menu */
-	width: 200px;	/* wymiary obszaru display dla dolnych hiperłączy opcji */
-	height: 90px;
+    /* cechy wspólne hiperłączy dolnych opcji menu */
+    width: 200px;   /* wymiary obszaru display dla dolnych hiperłączy opcji */
+    height: 90px;
 }
 #bottom-options a:hover {
-	/* cechy wspólne hiperłączy dolnych opcji menu po najechaniu */
-	background-color: rgba(190, 190, 190, 1);
-	color: rgba(0, 0, 0, 1);
+    /* cechy wspólne hiperłączy dolnych opcji menu po najechaniu */
+    background-color: rgba(190, 190, 190, 1);
+    color: rgba(0, 0, 0, 1);
 }
 #obecny-sezon, #wszystkie-sezony {
-	/* cechy wspólne wszystkich 2 dolnych opcji w menu */
-	font-size: 30px;
-	color: rgba(255, 255, 255, 1);
-	background-color: rgba(0, 0, 0, 0.5);
-	width: 200px;
-	height: 90px;
-	float: left;
-	line-height: 140%;
+    /* cechy wspólne wszystkich 2 dolnych opcji w menu */
+    font-size: 30px;
+    color: rgba(255, 255, 255, 1);
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 200px;
+    height: 90px;
+    float: left;
+    line-height: 140%;
 }
-/* ----------------------------- KONTENT I KONTENT BORDER ABY FOOTER NIE WJEŻDŻAŁ NA CONTENT ----------------------------*/
+/* ------------------ KONTENT I KONTENT BORDER ABY FOOTER NIE WJEŻDŻAŁ NA CONTENT ------------------*/
 #content-border {
-	/* to cholerstwo sprawia, że footer nie wjeżdża w kontent i zostaje w odległości 40px niżej */
-	padding-bottom: 190px;
-	/* jeżli dodamy height w #footer, to tutaj analogicznie trzeba dodać odstępu...
-	Oprócz tego trzeba też uwzględnić w #footer parametr bottom, który dodaje tutaj jeszcze ze 30px*/
+    /* to cholerstwo sprawia, że footer nie wjeżdża w kontent i zostaje w odległości 40px niżej */
+    padding-bottom: 190px;
+    /* jeżli dodamy height w #footer, to tutaj analogicznie trzeba dodać odstępu...
+    Oprócz tego trzeba też uwzględnić w #footer parametr bottom, który dodaje tutaj jeszcze ze 30px*/
 }
-#content{
-	margin-top: 40px;
+#content {
+    margin-top: 40px;
 }
 
-/* ------------------------------------------------------------------------- FOOTER ----------------------------------------------------------- */
+/* ------------------ FOOTER ------------------ */
 #footer {
-	text-align: center;
-	width:100%;
-	height: 120px;
-	position:absolute;
-	bottom:30px;
-	left:0;
-	line-height: 200%;
-	font-size: 16px;
-	color: rgba(255, 255, 255, 1);
-	font-weight: bold;
-	letter-spacing: 1px;
+    text-align: center;
+    width:100%;
+    height: 120px;
+    position:absolute;
+    bottom:30px;
+    left:0;
+    line-height: 200%;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 1);
+    font-weight: bold;
+    letter-spacing: 1px;
 }
 #footer a {
-	/* cechy wspólne wszystkich hiperłączy w #footer */
-	text-decoration: none;
-	color: #ffffff; 
-	display: block;
-	width: 100%;
-	color: rgba(255, 255, 255, 1);
-	-webkit-transition: background-color 0.15s linear 0s;
-	transition: background-color 0.15s linear 0s;
+    /* cechy wspólne wszystkich hiperłączy w #footer */
+    text-decoration: none;
+    color: #ffffff;
+    display: block;
+    width: 100%;
+    color: rgba(255, 255, 255, 1);
+    -webkit-transition: background-color 0.15s linear 0s;
+    transition: background-color 0.15s linear 0s;
 }
 #footer a:hover {
-	/* cechy wspólne wszystkich hiperłączy w #footer po najechaniu */
-	text-decoration: none;
-	background-color: rgba(190, 190, 190, 1);
-	color: rgba(0, 0, 0, 1);
+    /* cechy wspólne wszystkich hiperłączy w #footer po najechaniu */
+    text-decoration: none;
+    background-color: rgba(190, 190, 190, 1);
+    color: rgba(0, 0, 0, 1);
 }
-#left-footer, #center-footer, #right-footer{
-	/* cechy wspólne wszystkich 3 kolumn */
-	padding: 15px 0;
-	float: left;
-	height: 100%;
+#left-footer, #center-footer, #right-footer {
+    /* cechy wspólne wszystkich 3 kolumn */
+    padding: 15px 0;
+    float: left;
+    height: 100%;
 }
 #left-footer {
-	background-color: rgba(0, 0, 0, 0.5);
-	width: 250px;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 250px;
 }
-#left-footer a{
-	height: 30px; /* Definiowanie wysokości obszaru display hiperłącza w lewej kolumnie*/
+#left-footer a {
+    height: 30px; /* Definiowanie wysokości obszaru display hiperłącza w lewej kolumnie*/
 }
 #center-footer {
-	width: 350px;
-	background-color: rgba(20, 21, 24, 0.9);
+    width: 350px;
+    background-color: rgba(20, 21, 24, 0.9);
 }
 #right-footer {
-	width: 400px;
-	background-color: rgba(0, 0, 0, 0.5);
+    width: 400px;
+    background-color: rgba(0, 0, 0, 0.5);
 }
-#right-footer a
-{
-	height: 60px;	/* Definiowanie wysokości obszaru display hiperłącza w prawej*/
-	line-height: 350%;	/* Aby tekst w obszarze display hiperłącza był na œrodku */
+#right-footer a {
+    height: 60px;   /* Definiowanie wysokości obszaru display hiperłącza w prawej*/
+    line-height: 350%;  /* Aby tekst w obszarze display hiperłącza był na œrodku */
 }

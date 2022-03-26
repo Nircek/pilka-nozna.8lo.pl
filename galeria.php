@@ -3,12 +3,10 @@
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
-
 <head>
     <?php include('./szablon/meta.php'); ?>
     <title> PIK Piłka Nożna </title>
-
-    <!----------------- STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY -------------------->
+    <!------------------ STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY ------------------>
     <style>
     #powrot {
         text-align: left;
@@ -134,7 +132,6 @@
     }
     </script>
 </head>
-
 <body onload="laduj(0)">
     <!-- Gdy jeszcze nie ma załadowanego zdjęcia to ładuje pierwsze czyli 0 -->
     <div id="container">
@@ -143,91 +140,90 @@
         <div id="content-border">
             <div id="content">
                 <?php
-                    if(isset($_GET['s']))
-                        echo '<div id="powrot"><a href="galeria"> &#8592; POWRÓT </a></div>';
+                if (isset($_GET['s'])) {
+                    echo '<div id="powrot"><a href="galeria"> &#8592; POWRÓT </a></div>';
+                }
                 ?>
                 <h1> GALERIA </h1>
                 <div style="clear: both;"></div>
                 <?php
+                // sprawdzanie czy użytkownik wybrał, któryś sezon
+                if (isset($_GET['s'])) {
+                    $sezon = $_GET['s'];
+                    // Sezon zapisywany w bazie to tylko jego liczba początkowa
+                    // 2016/2017 to tylko 2016, dlatego $_GET musi rozdzielić te dwie liczby
+                    $sezon_arr = explode("/", $sezon);
+                    $sezon = $sezon_arr[0];
 
-                    //sprawdzanie czy użytkownik wybrał, któryś sezon
-                    if(isset($_GET['s'])){
-                        $sezon = $_GET['s'];
-                        //Sezon zapisywany w bazie to tylko jego liczba początkowa
-                        //2016/2017 to tylko 2016, dlatego $_GET musi rozdzielić te dwie liczby
-                        $sezon_arr = explode("/", $sezon);
-                        $sezon = $sezon_arr[0];
+                    // Nawiązywanie połączenia z bazą
+                    include("./skrypty/db-connect.php");
 
-                        //Nawiązywanie połączenia z bazą
-                        include("./skrypty/db-connect.php");
+                    // Pobieranie z bazy sciezke zdjęć z danego sezonu
+                    try {
+                        // Wysyłanie zapytania
+                        // $sql = "SELECT * FROM zdjecia WHERE sezon = '$sezon' ORDER BY data ";
+                        // $result = $pdo->query($sql);
 
-                        //Pobieranie z bazy sciezke zdjęć z danego sezonu
-                        try {
-                            //Wysyłanie zapytania
-                            //$sql = "SELECT * FROM zdjecia WHERE sezon = '$sezon' ORDER BY data ";
-                            //$result = $pdo->query($sql);
+                        $sql = $pdo->prepare("SELECT * FROM zdjecia WHERE sezon=? ORDER BY data");
+                        $sql->bindValue(1, $sezon);
 
-              $sql=$pdo->prepare("SELECT * FROM zdjecia WHERE sezon=? ORDER BY data");
-              $sql->bindValue(1, $sezon);
-
-
-              $sql->execute();
-                            $liczba_zdjec = $sql->rowCount();
-                        } catch (PDOException $e) {
-                            echo 'Błąd bazy danych: '. $e .'</div>';
-                        }
-                        //Przypisanie każdej sciezce klucza $i++ gdzie $i to kolejna liczba całkowita
-                        for($i=0; $row = $sql->fetch(PDO::FETCH_ASSOC); $i++)
-                            $zdjecie[] = array("$i" => $row['sciezka']);
-
-                        //Jeśli są:
-                        //Wyświetla na samej górze jedno duże zdjęcie 'podglad'
-                        echo "<div id='podglad'>
-                                    <div id='lewo' onclick='lewo()'></div>
-                                    <img id='glowne_zdjecie' src='".$zdjecie[0][0]."' value=''/>
-                                    <div id='prawo' onclick='prawo()'></div>
-                                    <div style='clear: both'></div>
-                                </div>";
-                        //Wypisywanie wszystkich zdjęć wraz z odpowiadającymi im ścieżkami
-                        $i=0;
-                        foreach($zdjecie as $zdjecie) {
-                            //W 'id' i skrypcie 'laduj()' znajduje się taka sama liczba przez co JS może ją stąd pobrać
-                            //Jak pobierze liczbę w ID to od razu zna liczbę sciezki przez co może ją dopasować i podmienić w zdjęciu na 'podgladzie'
-                            $pathinf = pathinfo($zdjecie[$i]);
-                            echo "<div class='zdjecie' >
-                                        <img width='172' id='" . $i ."' height='98' src='" . $pathinf['dirname'].'/thumb.'.$pathinf['basename'] ."' srcfull='" . $zdjecie[$i] ."' onclick='laduj($i)'/>
-                                    </div>";
-                            $i++;
-                        }
-                        echo "<div style='clear: both;'></div>";
-
-                    }    else {
-                        //Jeśli nie wybrano jeszcze sezonu to wyświetla się menu, z pobranymi z bazy danych wszystkimi sezonami
-
-                        include("./skrypty/db-connect.php");
-                        //Pobieranie z bazy wszystkich sezonów (2014/2015 itp...)
-                        try {
-                            $sql = "SELECT DISTINCT    sezon FROM zdjecia ORDER BY sezon DESC";
-                            $result = $pdo->query($sql);
-                        }    catch (PDOException $e) {
-                            echo '<div id="error">Błąd bazy danych: '. $e .'</div>';
-                        }
-
-                        $sezon = array();
-                        while ($row = $result->fetch())
-                            $sezon[] = array('sezon' => $row['sezon']);
-
-                        //Składanie "kafelka" z odnośnikiem do galerii danego sezonu
-                        foreach($sezon as $sezon) {
-                            echo "<div class='sezon'>
-                                        <a href='?s=".$sezon['sezon']."/".($sezon['sezon'] +1)."'>".
-                                         $sezon['sezon']."/".($sezon['sezon'] +1)
-                                      . "</a>
-                                    </div>";
-                        }
-                        echo '<div style="clear: both;"></div>';
+                        $sql->execute();
+                        $liczba_zdjec = $sql->rowCount();
+                    } catch (PDOException $e) {
+                        echo 'Błąd bazy danych: ' . $e . '</div>';
+                    }
+                    // Przypisanie każdej sciezce klucza $i++ gdzie $i to kolejna liczba całkowita
+                    for ($i = 0; $row = $sql->fetch(PDO::FETCH_ASSOC); $i++) {
+                        $zdjecie[] = array("$i" => $row['sciezka']);
                     }
 
+                    // Jeśli są:
+                    // Wyświetla na samej górze jedno duże zdjęcie 'podglad'
+                    echo "<div id='podglad'>
+                            <div id='lewo' onclick='lewo()'></div>
+                            <img id='glowne_zdjecie' src='" . $zdjecie[0][0] . "' value=''/>
+                            <div id='prawo' onclick='prawo()'></div>
+                            <div style='clear: both'></div>
+                        </div>";
+                    // Wypisywanie wszystkich zdjęć wraz z odpowiadającymi im ścieżkami
+                    $i = 0;
+                    foreach ($zdjecie as $zdjecie) {
+                        // W 'id' i skrypcie 'laduj()' znajduje się taka sama liczba przez co JS może ją stąd pobrać
+                        // Jak pobierze liczbę w ID to od razu zna liczbę sciezki przez co może ją dopasować i podmienić w zdjęciu na 'podgladzie'
+                        $pathinf = pathinfo($zdjecie[$i]);
+                        echo "<div class='zdjecie' >
+                                <img width='172' id='" . $i . "' height='98' src='" . $pathinf['dirname'] . '/thumb.' . $pathinf['basename'] . "' srcfull='" . $zdjecie[$i] . "' onclick='laduj($i)'/>
+                            </div>";
+                        $i++;
+                    }
+                    echo "<div style='clear: both;'></div>";
+                } else {
+                    // Jeśli nie wybrano jeszcze sezonu to wyświetla się menu, z pobranymi z bazy danych wszystkimi sezonami
+
+                    include("./skrypty/db-connect.php");
+                    // Pobieranie z bazy wszystkich sezonów (2014/2015 itp...)
+                    try {
+                        $sql = "SELECT DISTINCT    sezon FROM zdjecia ORDER BY sezon DESC";
+                        $result = $pdo->query($sql);
+                    } catch (PDOException $e) {
+                        echo '<div id="error">Błąd bazy danych: ' . $e . '</div>';
+                    }
+
+                    $sezon = array();
+                    while ($row = $result->fetch()) {
+                        $sezon[] = array('sezon' => $row['sezon']);
+                    }
+
+                    // Składanie "kafelka" z odnośnikiem do galerii danego sezonu
+                    foreach ($sezon as $sezon) {
+                        echo "<div class='sezon'>
+                                <a href='?s=" . $sezon['sezon'] . "/" . ($sezon['sezon'] + 1) . "'>" .
+                                    $sezon['sezon'] . "/" . ($sezon['sezon'] + 1)
+                                . "</a>
+                            </div>";
+                    }
+                    echo '<div style="clear: both;"></div>';
+                }
                 ?>
             </div>
         </div>
@@ -236,5 +232,4 @@
 
     </div>
 </body>
-
 </html>

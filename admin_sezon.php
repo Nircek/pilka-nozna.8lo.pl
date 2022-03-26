@@ -1,34 +1,32 @@
 <?php
-    session_start();
-    include('./funkcje/funkcje_admin.php');
-    is_logged();
+session_start();
+include('./funkcje/funkcje_admin.php');
+is_logged();
 
-    // Check if step exists
-    if(!isset($_SESSION['krok'])) {
-        $_SESSION['krok'] = 1;
-        $krok = $_SESSION['krok'];
-    } elseif($_SESSION['krok'] == 1 OR $_SESSION['krok'] == 2 OR $_SESSION['krok'] == 3){
-        $krok = $_SESSION['krok'];
-    } else{
-        header('Location: admin.php');
-        exit();
-    }
-
+// Check if step exists
+if (!isset($_SESSION['krok'])) {
+    $_SESSION['krok'] = 1;
+    $krok = $_SESSION['krok'];
+} elseif ($_SESSION['krok'] == 1 or $_SESSION['krok'] == 2 or $_SESSION['krok'] == 3) {
+    $krok = $_SESSION['krok'];
+} else {
+    header('Location: admin.php');
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
-
 <head>
 
     <meta charset="utf-8">
-    <title>PIK Piłka Nożna</title>
     <link rel="stylesheet" type="text/css" href="style/szablon.css">
     <link rel="stylesheet" type="text/css" href="fontello/css/peak.css">
     <link href="https://fonts.googleapis.com/css?family=Monda:400,700&amp;subset=latin-ext" rel="stylesheet">
     <link rel="icon" type="image/png" href="img/logo.png">
     <meta name="robots" content="noindex" />
 
-    <!----------------- STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY -------------------->
+    <title> PIK Piłka Nożna </title>
+    <!------------------ STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY ------------------>
     <link rel="stylesheet" type="text/css" href="style/admin.css">
     <style>
     #grupa-pierwsza,
@@ -66,7 +64,6 @@
     }
     </style>
 </head>
-
 <body>
 
     <div id="container">
@@ -74,12 +71,12 @@
 
         <div id="content-border">
             <div id="content">
-                <h1> TWORZENIE SEZONU - KROK <?php echo $krok; ?></h1>
+                <h1> TWORZENIE SEZONU - KROK <?php echo $krok; ?> </h1>
 
                 <div id="panel">
                     <?php
                     // Loading same script as step of creating next season
-                    include('./skrypty/sezon_krok'.$krok.'.php');
+                    include('./skrypty/sezon_krok' . $krok . '.php');
                     ?>
                 </div>
             </div>
@@ -89,5 +86,4 @@
 
     </div>
 </body>
-
 </html>

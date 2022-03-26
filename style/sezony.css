@@ -1,108 +1,107 @@
-#powrot{
-	text-align: left;
-	font-size: 18px;
-	margin-left: 10px;
+#powrot {
+    text-align: left;
+    font-size: 18px;
+    margin-left: 10px;
 }
-#powrot a{
-	color: #ffffff;
-	text-decoration: none;
-	-webkit-transition: color 0.07s linear 0s;
-	transition: color 0.07s linear 0s;
+#powrot a {
+    color: #ffffff;
+    text-decoration: none;
+    -webkit-transition: color 0.07s linear 0s;
+    transition: color 0.07s linear 0s;
 }
-#powrot a:hover{
-	color: rgba(0, 0, 0, 0.6)
+#powrot a:hover {
+    color: rgba(0, 0, 0, 0.6)
 }
-.sezon{
-	float: left;
-	height: 90px;
-	line-height: 300%;
-	width: 300px;
-	background-color: rgba(0, 0, 0, 0.3);
-	font-size: 30px;
-	font-weight: bold;
-	text-align: center;
-	margin: 0 10px;
-	
+.sezon {
+    float: left;
+    height: 90px;
+    line-height: 300%;
+    width: 300px;
+    background-color: rgba(0, 0, 0, 0.3);
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0 10px;
+
 }
-.sezon a{
-	color: rgba(255, 255, 255, 1);
-	display: block;
-	text-decoration: none;
-	width: 300px;
-	height: 90px;
-	-webkit-transition: background-color 0.15s linear 0s;
-	transition: background-color 0.15s linear 0s;
+.sezon a {
+    color: rgba(255, 255, 255, 1);
+    display: block;
+    text-decoration: none;
+    width: 300px;
+    height: 90px;
+    -webkit-transition: background-color 0.15s linear 0s;
+    transition: background-color 0.15s linear 0s;
 }
-.sezon a:hover
-{
-	background-color: rgba(190, 190, 190, 1);
-	color: rgba(0, 0, 0, 1);
+.sezon a:hover {
+    background-color: rgba(190, 190, 190, 1);
+    color: rgba(0, 0, 0, 1);
 }
-/* -------------------------------------- KONTENT -------------------------------- */
-#content{
-	background-color : transparent;
-	padding: 0px;
-	width: 1000px;
-	overflow: hidden;
+/* ------------------ KONTENT ------------------ */
+#content {
+    background-color : transparent;
+    padding: 0px;
+    width: 1000px;
+    overflow: hidden;
 }
-#head, #runda-finalowa{
-	background-color: rgba(0, 0, 0, 0.5);
-	padding: 5px 15px;
-	padding-top: 15px;
+#head, #runda-finalowa {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 5px 15px;
+    padding-top: 15px;
 
 }
 /* WSPÓLNE CECHY 3 KOLUMN */
-#grupa-pierwsza, #grupa-druga{
-	float: left;
-	padding-bottom: 20000px;
-	margin-bottom: -20000px;
-	padding-top: 10px;
-	width: 500px;
-	background-color: rgba(0, 0, 0, 0.5);
+#grupa-pierwsza, #grupa-druga {
+    float: left;
+    padding-bottom: 20000px;
+    margin-bottom: -20000px;
+    padding-top: 10px;
+    width: 500px;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
-/* ------------------------------------------ TABELA LIGOWA ------------------------------------*/
+/* ------------------ TABELA LIGOWA ------------------*/
 #tabela {
-	margin: auto;
-	width: 375px;
-	margin-bottom: 30px;
-	border: solid 0.5px rgba(0, 0, 0, 0.9);
+    margin: auto;
+    width: 375px;
+    margin-bottom: 30px;
+    border: solid 0.5px rgba(0, 0, 0, 0.9);
 }
 #tabela th {
-	background-color: rgba(255, 255, 255, 0.2);
-	padding: 6px 0;
-	border: solid 0.5px rgba(0, 0, 0, 0.9);c
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 6px 0;
+    border: solid 0.5px rgba(0, 0, 0, 0.9);c
 }
 #tabela td {
-	background-color: rgba(0, 0, 0, 0.3);
-	padding: 5px 2px ;
-	border: solid 0.5px rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 5px 2px ;
+    border: solid 0.5px rgba(0, 0, 0, 0.9);
 }
 
-/* ------------------------------ TABELA HARMONOGRAM I WYNIKI ---------------------------------*/
+/* ------------------ TABELA HARMONOGRAM I WYNIKI ------------------*/
 #terminarz {
-	width: 320px;
-	margin: auto;
-	margin-bottom: 15px;
-	border: solid 0.5px rgba(0, 0, 0, 0.9);
+    width: 320px;
+    margin: auto;
+    margin-bottom: 15px;
+    border: solid 0.5px rgba(0, 0, 0, 0.9);
 }
 
-#terminarz td{
-	padding: 4px 0;
-	border: solid 0.5px rgba(0, 0, 0, 0.9);
+#terminarz td {
+    padding: 4px 0;
+    border: solid 0.5px rgba(0, 0, 0, 0.9);
 }
-#tr_termin{
-	background-color: rgba(255, 255, 255, 0.2);
-	text-align: : center;
+#tr_termin {
+    background-color: rgba(255, 255, 255, 0.2);
+    text-align: : center;
 }
-#tr_wynik{
-	background-color: rgba(0, 0, 0, 0.3);
+#tr_wynik {
+    background-color: rgba(0, 0, 0, 0.3);
 }
-#terminarz td{
-	width: 33%;
+#terminarz td {
+    width: 33%;
 }
-#td_wynik{
-	background-color: rgba(255, 255, 255, 0.8);
-	color: black;
-	letter-spacing: 2px;
+#td_wynik {
+    background-color: rgba(255, 255, 255, 0.8);
+    color: black;
+    letter-spacing: 2px;
 }

@@ -1,14 +1,12 @@
 <?php
-    session_start();
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
-
 <head>
     <?php include('./szablon/meta.php'); ?>
-    <title>PIK Piłka Nożna</title>
-
-    <!----------------- STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY -------------------->
+    <title> PIK Piłka Nożna </title>
+    <!------------------ STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY ------------------>
     <style>
     #kontakt {
         margin-top: 15px;
@@ -44,7 +42,6 @@
     }
     </style>
 </head>
-
 <body>
     <div id="container">
         <?php include('./szablon/menu.php'); ?>
@@ -71,5 +68,4 @@
 
     </div>
 </body>
-
 </html>

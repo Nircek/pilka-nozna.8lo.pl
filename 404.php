@@ -1,12 +1,12 @@
 <?php
-    session_start();
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
 <head>
     <?php include('./szablon/meta.php'); ?>
-    <title>PIK Piłka Nożna</title>
-    <!----------------- STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY -------------------->
+    <title> PIK Piłka Nożna </title>
+    <!------------------ STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY ------------------>
     <style>
     #content {
         padding: 0px;

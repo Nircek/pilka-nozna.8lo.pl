@@ -1,27 +1,25 @@
 <?php
-    //Nawiązywanie połączenia z bazą
-    include("skrypty/db-connect.php");
-    try{
-        $sql = "SELECT * FROM sezony ORDER BY sezon DESC LIMIT 1";
-        $result = $pdo->query($sql);
-        $liczba = $result->rowCount();
-    }catch(PDOException $e){
-        echo "<div id='error'>". $e ."</div>";
+// Nawiązywanie połączenia z bazą
+include("skrypty/db-connect.php");
+try {
+    $sql = "SELECT * FROM sezony ORDER BY sezon DESC LIMIT 1";
+    $result = $pdo->query($sql);
+    $liczba = $result->rowCount();
+} catch (PDOException $e) {
+    echo "<div id='error'> " . $e . " </div>";
+}
+if ($liczba === 1) {
+    while ($row = $result->fetch()) {
+        $obecny_sezon[] = array('sezon' => $row['sezon']);
     }
-    if($liczba === 1)
-    {
-        while ($row = $result->fetch()){
-            $obecny_sezon[] = array('sezon' => $row['sezon']);
-        }
-        foreach ($obecny_sezon as $obecny_sezon) {
-            $obecny_sezon = $obecny_sezon['sezon'];
-            $obecny_sezon = $obecny_sezon ."/".($obecny_sezon+1);
-        }
+    foreach ($obecny_sezon as $obecny_sezon) {
+        $obecny_sezon = $obecny_sezon['sezon'];
+        $obecny_sezon = $obecny_sezon . "/" . ($obecny_sezon + 1);
     }
+}
 ?>
-<?php if(isset($_SESSION['zalogowany'])): ?>
-<div id='zalogowany'
-    style='font-weight: bold; padding: 5px 0; margin: auto; text-align: center; background-color: #22c12d; width: 1000px; font-size: 25px;'>
+<?php if (isset($_SESSION['zalogowany'])) : ?>
+<div id='zalogowany' style='font-weight: bold; padding: 5px 0; margin: auto; text-align: center; background-color: #22c12d; width: 1000px; font-size: 25px;'>
     ADMIN ZALOGOWANY | <a href=skrypty/logout.php> WYLOGUJ </a> | <a href='admin.php'> PANEL ADMINA </a>
 </div>
 <?php endif; ?>
@@ -56,7 +54,11 @@
         </div>
         <div id="bottom-options">
             <div id="obecny-sezon">
-                <a <?php if($liczba === 1): ?> href="sezony.php?s=<?= $obecny_sezon ?>" <?php endif; ?>>
+                <a
+                    <?php if ($liczba === 1): ?>
+                    href="sezony.php?s=<?= $obecny_sezon ?>"
+                    <?php endif; ?>
+                >
                     OBECNY SEZON
                 </a>
             </div>
