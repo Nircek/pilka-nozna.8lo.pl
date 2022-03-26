@@ -26,6 +26,7 @@ if (isset($_POST['login'])) {
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
+
 <head>
 
     <meta charset="utf-8">
@@ -39,13 +40,15 @@ if (isset($_POST['login'])) {
     <!------------------ STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY ------------------>
     <link rel="stylesheet" type="text/css" href="style/admin.css">
     <style>
-    #formularz {
-        margin: auto;
-        width: 300px;
-        font-size: 25px;
-    }
+        #formularz {
+            margin: auto;
+            width: 300px;
+            font-size: 25px;
+        }
+
     </style>
 </head>
+
 <body>
 
     <div id="container">
@@ -82,4 +85,5 @@ if (isset($_POST['login'])) {
 
     </div>
 </body>
+
 </html>

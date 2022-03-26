@@ -18,6 +18,7 @@ if (isset($_GET['s'])) {
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
+
 <head>
 
     <?php include('./szablon/meta.php'); ?>
@@ -25,6 +26,7 @@ if (isset($_GET['s'])) {
     <!------------------ STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY ------------------>
     <link rel="stylesheet" type="text/css" href="style/sezony.css">
 </head>
+
 <body>
     <div id="container">
         <?php include('./szablon/menu.php'); ?>
@@ -70,92 +72,94 @@ if (isset($_GET['s'])) {
                         <a href="sezony.php"> &#8592 POWRÓT </a>
                     </div>
 
-                    <span><h1> SEZON <?= $sezon_pelny ?> </h1></span>
+                    <span>
+                        <h1> SEZON <?= $sezon_pelny ?> </h1>
+                    </span>
                 </div>
                 <div id="runda-finalowa">
-                <?php
-                $sezon_final = $sezon . "_final";
-                if (sprawdzanie_tabela($pdo, $sezon_final)) {
-                    $check_final = true;
-                    try {
-                        $sql = "SELECT * FROM $sezon_final ORDER BY id DESC";
-                        $result = $pdo->query($sql);
-                    } catch (PDOException $e) {
-                        echo "<div id='error'> $e </div>";
-                    }
+                    <?php
+                        $sezon_final = $sezon . "_final";
+                        if (sprawdzanie_tabela($pdo, $sezon_final)) {
+                            $check_final = true;
+                            try {
+                                $sql = "SELECT * FROM $sezon_final ORDER BY id DESC";
+                                $result = $pdo->query($sql);
+                            } catch (PDOException $e) {
+                                echo "<div id='error'> $e </div>";
+                            }
 
-                    while ($row = $result->fetch()) {
-                        $runda_finalowa[] = array('d1' => $row['druzyna_1'],
-                                                'd2' => $row['druzyna_2'],
-                                                'wynik_1' => $row['wynik_1'],
-                                                'wynik_2' => $row['wynik_2'],
-                                                'termin' => $row['termin'],
-                                                'etap' => $row['poziom']);
-                    }
+                            while ($row = $result->fetch()) {
+                                $runda_finalowa[] = array('d1' => $row['druzyna_1'],
+                                                        'd2' => $row['druzyna_2'],
+                                                        'wynik_1' => $row['wynik_1'],
+                                                        'wynik_2' => $row['wynik_2'],
+                                                        'termin' => $row['termin'],
+                                                        'etap' => $row['poziom']);
+                            }
 
-                    $i = 0;
-                    foreach ($runda_finalowa as $runda_finalowa) {
-                        $final[$i][0] = $runda_finalowa['d1'];
-                        $final[$i][1] = $runda_finalowa['d2'];
-                        $final[$i][2] = $runda_finalowa['wynik_1'];
-                        $final[$i][3] = $runda_finalowa['wynik_2'];
-                        $final[$i][4] = $runda_finalowa['termin'];
-                        $final[$i][5] = $runda_finalowa['etap'];
+                            $i = 0;
+                            foreach ($runda_finalowa as $runda_finalowa) {
+                                $final[$i][0] = $runda_finalowa['d1'];
+                                $final[$i][1] = $runda_finalowa['d2'];
+                                $final[$i][2] = $runda_finalowa['wynik_1'];
+                                $final[$i][3] = $runda_finalowa['wynik_2'];
+                                $final[$i][4] = $runda_finalowa['termin'];
+                                $final[$i][5] = $runda_finalowa['etap'];
 
-                        // Konfigurowanie wyjątkowych sytuacji np puste stringi itp...
-                        if ($final[$i][5] == 3) {
-                            $final[$i][5] = "3 MIEJSCE";
-                        } elseif ($final[$i][5] == 2) {
-                            $final[$i][5] = "PÓŁFINAŁ";
-                        } elseif ($final[$i][5] == 1) {
-                            $final[$i][5] = "FINAŁ";
+                                // Konfigurowanie wyjątkowych sytuacji np puste stringi itp...
+                                if ($final[$i][5] == 3) {
+                                    $final[$i][5] = "3 MIEJSCE";
+                                } elseif ($final[$i][5] == 2) {
+                                    $final[$i][5] = "PÓŁFINAŁ";
+                                } elseif ($final[$i][5] == 1) {
+                                    $final[$i][5] = "FINAŁ";
+                                }
+
+                                if (empty($final[$i][0])) {
+                                    $final[$i][0] = "?";
+                                }
+                                if (empty($final[$i][1])) {
+                                    $final[$i][1] = "?";
+                                }
+
+                                if ($final[$i][4] == "0000-00-00") {
+                                    $final[$i][4] = "nie ustalono";
+                                }
+
+                                if ($final[$i][5] == "FINAŁ" or $final[$i][5] == "3 MIEJSCE") {
+                                    echo "<h2>" . $final[$i][5] . "</h2>
+                                        <table id='tabela' cellspacing='0'>
+                                            <tr>
+                                                <th colspan='3'>" . $final[$i][4] . "</th>
+                                            </tr>
+                                                <td style='width: 33%;'>" . $final[$i][0] . "</td>
+                                                <td style='width: 33%;'>" . $final[$i][2] . " : " . $final[$i][3] . "</td>
+                                                <td style='width: 33%;'>" . $final[$i][1] . "</td>
+                                            <tr>
+                                        </table>";
+                                }
+                                $i++;
+                            }
                         }
-
-                        if (empty($final[$i][0])) {
-                            $final[$i][0] = "?";
-                        }
-                        if (empty($final[$i][1])) {
-                            $final[$i][1] = "?";
-                        }
-
-                        if ($final[$i][4] == "0000-00-00") {
-                            $final[$i][4] = "nie ustalono";
-                        }
-
-                        if ($final[$i][5] == "FINAŁ" or $final[$i][5] == "3 MIEJSCE") {
-                            echo "<h2>" . $final[$i][5] . "</h2>
-                                <table id='tabela' cellspacing='0'>
-                                    <tr>
-                                        <th colspan='3'>" . $final[$i][4] . "</th>
-                                    </tr>
-                                        <td style='width: 33%;'>" . $final[$i][0] . "</td>
-                                        <td style='width: 33%;'>" . $final[$i][2] . " : " . $final[$i][3] . "</td>
-                                        <td style='width: 33%;'>" . $final[$i][1] . "</td>
-                                    <tr>
-                                </table>";
-                        }
-                        $i++;
-                    }
-                }
-                ?>
+                        ?>
                 </div>
 
                 <!------------------ GRUPA PIERWSZA ------------------>
                 <div id="grupa-pierwsza">
                     <?php
-                    if (isset($check_final)) {
-                        echo "<h2>" . $final[3][5] . "</h2>";
-                        echo "<table id='tabela' cellspacing='0'>
-                                <tr>
-                                    <th colspan='3'>" . $final[3][4] . "</th>
-                                </tr>
-                                    <td style='width: 33%;'>" . $final[3][0] . "</td>
-                                    <td style='width: 33%;'>" . $final[3][2] . " : " . $final[3][3] . "</td>
-                                    <td style='width: 33%;'>" . $final[3][1] . "</td>
-                                <tr>
-                            </table>";
-                    }
-                    ?>
+                        if (isset($check_final)) {
+                            echo "<h2>" . $final[3][5] . "</h2>";
+                            echo "<table id='tabela' cellspacing='0'>
+                                    <tr>
+                                        <th colspan='3'>" . $final[3][4] . "</th>
+                                    </tr>
+                                        <td style='width: 33%;'>" . $final[3][0] . "</td>
+                                        <td style='width: 33%;'>" . $final[3][2] . " : " . $final[3][3] . "</td>
+                                        <td style='width: 33%;'>" . $final[3][1] . "</td>
+                                    <tr>
+                                </table>";
+                        }
+                        ?>
                     <h2> GRUPA PIERWSZA </h2>
                     <!------------------ TEBELA ------------------>
                     <h3> TABELA </h3>
@@ -168,19 +172,19 @@ if (isset($_GET['s'])) {
                 <!------------------ GRUPA DRUGA ------------------>
                 <div id="grupa-druga">
                     <?php
-                    if (isset($check_final)) {
-                        echo "<h2>" . $final[2][5] . "</h2>";
-                        echo "<table id='tabela' cellspacing='0'>
-                                        <tr>
-                                            <th colspan='3'>" . $final[2][4] . "</th>
-                                        </tr>
-                                            <td style='width: 33%;'>" . $final[2][0] . "</td>
-                                            <td style='width: 33%;'>" . $final[2][2] . " : " . $final[2][3] . "</td>
-                                            <td style='width: 33%;'>" . $final[2][1] . "</td>
-                                        <tr>
-                                    </table>";
-                    }
-                    ?>
+                        if (isset($check_final)) {
+                            echo "<h2>" . $final[2][5] . "</h2>";
+                            echo "<table id='tabela' cellspacing='0'>
+                                            <tr>
+                                                <th colspan='3'>" . $final[2][4] . "</th>
+                                            </tr>
+                                                <td style='width: 33%;'>" . $final[2][0] . "</td>
+                                                <td style='width: 33%;'>" . $final[2][2] . " : " . $final[2][3] . "</td>
+                                                <td style='width: 33%;'>" . $final[2][1] . "</td>
+                                            <tr>
+                                        </table>";
+                        }
+                        ?>
                     <h2> GRUPA DRUGA </h2>
                     <!------------------ TEBELA ------------------>
                     <h3> TABELA </h3>
@@ -192,7 +196,8 @@ if (isset($_GET['s'])) {
                 </div>
             </div>
             <?php endif; ?>
-        <?php include('./szablon/footer.php'); ?>
-    </div>
+            <?php include('./szablon/footer.php'); ?>
+        </div>
 </body>
+
 </html>

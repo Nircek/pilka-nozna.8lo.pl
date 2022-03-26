@@ -5,6 +5,7 @@ is_logged();
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
+
 <head>
 
     <meta charset="utf-8">
@@ -18,6 +19,7 @@ is_logged();
     <!------------------ STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY ------------------>
     <link rel="stylesheet" type="text/css" href="style/admin.css">
 </head>
+
 <body>
 
     <div id="container">
@@ -47,7 +49,8 @@ is_logged();
 
                         <form method="post" action="skrypty/dodaj-post.php" id="informacje-form">
                             <h3> TYTUŁ </h3>
-                            <textarea cols="30" rows="2" id="info_tytul" maxlength="50"    name="info_tytul"></textarea><br />
+                            <textarea cols="30" rows="2" id="info_tytul" maxlength="50"
+                                name="info_tytul"></textarea><br />
                             <h3> TREŚĆ </h3>
                             <textarea cols="40" rows="10" id="info_tresc" name="info_tresc"></textarea><br />
                             <input type="submit" value="PUBLIKUJ">
@@ -119,7 +122,8 @@ is_logged();
                             ?>
 
                             <h3> WYBIERZ ZDJĘCIA (.jpg) </h3>
-                            <input type="file" name="files[]" id="zdjecia_wybor" accept=".jpg,.jpeg,.png"    multiple><br />
+                            <input type="file" name="files[]" id="zdjecia_wybor" accept=".jpg,.jpeg,.png"
+                                multiple><br />
                             <input type="submit" value="DODAJ">
                         </form>
                     </div>
@@ -167,4 +171,5 @@ is_logged();
 
     </div>
 </body>
+
 </html>

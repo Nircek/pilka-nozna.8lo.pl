@@ -17,7 +17,7 @@ if (isset($_POST['final'])) {
                         SET `druzyna_1` = NULL,
                             `druzyna_2` = NULL,
                             `wynik_1` = NULL,
-                            `wynik_2` = NULL
+                          `wynik_2` = NULL
                         WHERE `poziom` = '3' OR `poziom` = '1'";
         $pdo->exec($sql);
     } catch (PDOException $e) {

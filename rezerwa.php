@@ -3,12 +3,14 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
+
 <head>
     <?php include('./szablon/meta.php'); ?>
     <title> PIK Piłka Nożna </title>
     <!------------------ STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY ------------------>
     <link rel="stylesheet" type="text/css" href="style/sezony.css">
 </head>
+
 <body>
     <div id="container">
         <?php include('szablon/menu.php'); ?>
@@ -50,7 +52,7 @@ session_start();
                 echo "</div>";
             else:
             ?>
-                <?php
+            <?php
                 $sezon_pelny = $_GET['s'];
                 // Sezon zapisywany w bazie to tylko jego liczba początkowa
                 // 2016/2017 to tylko 2016, dlatego $_GET musi rozdzielić te dwie liczby
@@ -61,17 +63,17 @@ session_start();
 
                 echo "<div id='content'>";
                 ?>
-                <!------------------ LEWA KOLUMNA ------------------>
-                <div id="left-content">
-                    <div id="powrot"><a href="sezony.php"> &#8592 POWRÓT </a></div>
-                </div>
+            <!------------------ LEWA KOLUMNA ------------------>
+            <div id="left-content">
+                <div id="powrot"><a href="sezony.php"> &#8592 POWRÓT </a></div>
+            </div>
 
-                <!------------------ ŚRODKOWA KOLUMNA ------------------>
-                <div id="center-content">
-                    <h1> SEZON <?= $sezon_pelny ?> </h1>
-                    <h3> GRUPA PIERWSZA </h3>
+            <!------------------ ŚRODKOWA KOLUMNA ------------------>
+            <div id="center-content">
+                <h1> SEZON <?= $sezon_pelny ?> </h1>
+                <h3> GRUPA PIERWSZA </h3>
 
-                    <?php
+                <?php
                     // ------------------ POBIERANIE TERMINARZU I WYNIKÓW GRUPY PIERWSZEJ------------------
                     try {
                         $sql = "SELECT * FROM $sezon_terminarz WHERE grupa=1 ORDER BY termin ASC";
@@ -151,25 +153,25 @@ session_start();
                             </table>";
                     }
                     ?>
-                </div>
+            </div>
 
-                <!------------------ PRAWA KOLUMNA ------------------>
-                <div id="right-content">
-                    <h1> TABELA </h1>
-                    <h3> GRUPA PIERWSZA </h3>
-                    <table id="tabela" cellspacing="0">
-                        <tr>
-                            <th> LP </th>
-                            <th> ZESPÓŁ </th>
-                            <th> PKT </th>
-                            <th> Z </th>
-                            <th> R </th>
-                            <th> P </th>
-                            <th> Strzel. </th>
-                            <th> Strac. </th>
-                            <th> +/- </th>
-                        </tr>
-                        <?php
+            <!------------------ PRAWA KOLUMNA ------------------>
+            <div id="right-content">
+                <h1> TABELA </h1>
+                <h3> GRUPA PIERWSZA </h3>
+                <table id="tabela" cellspacing="0">
+                    <tr>
+                        <th> LP </th>
+                        <th> ZESPÓŁ </th>
+                        <th> PKT </th>
+                        <th> Z </th>
+                        <th> R </th>
+                        <th> P </th>
+                        <th> Strzel. </th>
+                        <th> Strac. </th>
+                        <th> +/- </th>
+                    </tr>
+                    <?php
                         // ------------------ POBIERANIE TABELI SEZONU GRUPY PIERWSZEJ ------------------
                         try {
                             $sql = "SELECT * FROM $sezon_tabela WHERE grupa=1 ORDER BY pkt DESC";
@@ -206,21 +208,21 @@ session_start();
                             $i++;
                         }
                         ?>
-                    </table>
-                    <h3> GRUPA DRUGA </h3>
-                    <table id="tabela" cellspacing="0">
-                        <tr>
-                            <th> LP </th>
-                            <th> ZESPÓŁ </th>
-                            <th> PKT </th>
-                            <th> Z </th>
-                            <th> R </th>
-                            <th> P </th>
-                            <th> Strzel. </th>
-                            <th> Strac. </th>
-                            <th> +/- </th>
-                        </tr>
-                        <?php
+                </table>
+                <h3> GRUPA DRUGA </h3>
+                <table id="tabela" cellspacing="0">
+                    <tr>
+                        <th> LP </th>
+                        <th> ZESPÓŁ </th>
+                        <th> PKT </th>
+                        <th> Z </th>
+                        <th> R </th>
+                        <th> P </th>
+                        <th> Strzel. </th>
+                        <th> Strac. </th>
+                        <th> +/- </th>
+                    </tr>
+                    <?php
                         // ------------------ POBIERANIE TABELI SEZONU GRUPY DRUGIEJ ------------------
                         try {
                             $sql = "SELECT * FROM $sezon_tabela WHERE grupa=2 ORDER BY pkt DESC";
@@ -257,11 +259,11 @@ session_start();
                             $i++;
                         }
                         ?>
-                    </table>
-                </div>
-                <div style="clear: both;"></div>
+                </table>
             </div>
-                    <?php
+            <div style="clear: both;"></div>
+        </div>
+        <?php
                     // ------------------ POBIERANIE TABELI SEZONU GRUPY PIERWSZEJ ------------------
                     try {
                         $sql = "SELECT * FROM $sezon_tabela WHERE grupa=1 ORDER BY pkt DESC";
@@ -278,9 +280,10 @@ session_start();
                         echo "<div id='error'> " . $e . " </div>";
                     }
                     ?>
-            <?php endif; ?>
-        </div>
-        <?php include('szablon/footer.php'); ?>
+        <?php endif; ?>
+    </div>
+    <?php include('szablon/footer.php'); ?>
     </div>
 </body>
+
 </html>

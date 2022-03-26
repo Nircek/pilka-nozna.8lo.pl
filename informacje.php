@@ -3,38 +3,41 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
+
 <head>
     <?php include('./szablon/meta.php'); ?>
     <title> PIK Piłka Nożna </title>
     <!------------------ STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY ------------------>
     <style>
-    .info {
-        width: 900px;
-        margin: auto;
-        margin-top: 30px;
-        text-align: center;
-        line-height: 150%;
-    }
+        .info {
+            width: 900px;
+            margin: auto;
+            margin-top: 30px;
+            text-align: center;
+            line-height: 150%;
+        }
 
-    #tytul {
-        text-transform: uppercase;
-        font-size: 25px;
-        margin: auto;
-        font-weight: bold;
-        text-transform: uppercase;
-    }
+        #tytul {
+            text-transform: uppercase;
+            font-size: 25px;
+            margin: auto;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
 
-    #tresc {
-        font-size: 18px;
-        font-weight: normal;
-    }
+        #tresc {
+            font-size: 18px;
+            font-weight: normal;
+        }
 
-    #data {
-        font-size: 15px;
-        text-align: right;
-    }
+        #data {
+            font-size: 15px;
+            text-align: right;
+        }
+
     </style>
 </head>
+
 <body>
     <div id="container">
         <?php include('./szablon/menu.php'); ?>
@@ -81,4 +84,5 @@ session_start();
 
     </div>
 </body>
+
 </html>

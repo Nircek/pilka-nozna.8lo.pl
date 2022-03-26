@@ -5,6 +5,7 @@ is_logged();
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
+
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="style/szablon.css">
@@ -17,13 +18,15 @@ is_logged();
     <!------------------ STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY ------------------>
     <link rel="stylesheet" type="text/css" href="style/admin.css">
     <style>
-    .termin {
-        margin-top: -10px;
-        border-width: 1.5px;
-        font-size: 18px;
-    }
+        .termin {
+            margin-top: -10px;
+            border-width: 1.5px;
+            font-size: 18px;
+        }
+
     </style>
 </head>
+
 <body>
     <div id="container">
         <?php include('./szablon/menu.php'); ?>
@@ -122,4 +125,5 @@ is_logged();
         </div>
     </div>
 </body>
+
 </html>

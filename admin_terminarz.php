@@ -5,6 +5,7 @@ is_logged();
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
+
 <head>
 
     <meta charset="utf-8">
@@ -18,48 +19,50 @@ is_logged();
     <!------------------ STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY ------------------>
     <link rel="stylesheet" type="text/css" href="style/admin.css">
     <style>
-    #grupa-pierwsza,
-    #grupa-druga {
-        margin-top: 10px;
-    }
+        #grupa-pierwsza,
+        #grupa-druga {
+            margin-top: 10px;
+        }
 
-    #grupa-pierwsza {
-        float: left;
-        width: 50%;
-    }
+        #grupa-pierwsza {
+            float: left;
+            width: 50%;
+        }
 
-    #grupa-druga {
-        float: left;
-        width: 50%;
-        background-color: red;
-        height: 300px;
-    }
+        #grupa-druga {
+            float: left;
+            width: 50%;
+            background-color: red;
+            height: 300px;
+        }
 
-    table {
-        margin: auto;
-        border-spacing: 0;
-        border-collapse: collapse;
-        width: 400px;
-        text-align: center;
-        background-color: rgba(0, 0, 0, 0.4);
-    }
+        table {
+            margin: auto;
+            border-spacing: 0;
+            border-collapse: collapse;
+            width: 400px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
 
-    th {
-        background-color: #ffffff;
-        color: #000000;
-        font-weight: bold;
-    }
+        th {
+            background-color: #ffffff;
+            color: #000000;
+            font-weight: bold;
+        }
 
-    th,
-    td {
-        border: black solid 2px;
-    }
+        th,
+        td {
+            border: black solid 2px;
+        }
 
-    #termin {
-        width: 150px;
-    }
+        #termin {
+            width: 150px;
+        }
+
     </style>
 </head>
+
 <body>
 
     <div id="container">
@@ -197,4 +200,5 @@ is_logged();
 
     </div>
 </body>
+
 </html>

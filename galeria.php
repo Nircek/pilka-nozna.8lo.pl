@@ -3,135 +3,139 @@
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
+
 <head>
     <?php include('./szablon/meta.php'); ?>
     <title> PIK Piłka Nożna </title>
     <!------------------ STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY ------------------>
     <style>
-    #powrot {
-        text-align: left;
-        font-size: 18px;
-        margin-left: 10px;
-    }
+        #powrot {
+            text-align: left;
+            font-size: 18px;
+            margin-left: 10px;
+        }
 
-    #powrot a {
-        color: #ffffff;
-        text-decoration: none;
-        -webkit-transition: color 0.07s linear 0s;
-        transition: color 0.07s linear 0s;
-    }
+        #powrot a {
+            color: #ffffff;
+            text-decoration: none;
+            -webkit-transition: color 0.07s linear 0s;
+            transition: color 0.07s linear 0s;
+        }
 
-    #powrot a:hover {
-        color: rgba(0, 0, 0, 0.6)
-    }
+        #powrot a:hover {
+            color: rgba(0, 0, 0, 0.6)
+        }
 
-    .sezon {
-        float: left;
-        height: 90px;
-        line-height: 300%;
-        width: 300px;
-        background-color: rgba(0, 0, 0, 0.3);
-        font-size: 30px;
-        font-weight: bold;
-        text-align: center;
-        margin: 0 10px;
-        margin-top: 25px;
-    }
+        .sezon {
+            float: left;
+            height: 90px;
+            line-height: 300%;
+            width: 300px;
+            background-color: rgba(0, 0, 0, 0.3);
+            font-size: 30px;
+            font-weight: bold;
+            text-align: center;
+            margin: 0 10px;
+            margin-top: 25px;
+        }
 
-    .sezon a {
-        color: rgba(255, 255, 255, 1);
-        display: block;
-        text-decoration: none;
-        width: 300px;
-        height: 90px;
-        -webkit-transition: background-color 0.15s linear 0s;
-        transition: background-color 0.15s linear 0s;
-    }
+        .sezon a {
+            color: rgba(255, 255, 255, 1);
+            display: block;
+            text-decoration: none;
+            width: 300px;
+            height: 90px;
+            -webkit-transition: background-color 0.15s linear 0s;
+            transition: background-color 0.15s linear 0s;
+        }
 
-    .sezon a:hover {
-        background-color: rgba(190, 190, 190, 1);
-        color: rgba(0, 0, 0, 1);
-    }
+        .sezon a:hover {
+            background-color: rgba(190, 190, 190, 1);
+            color: rgba(0, 0, 0, 1);
+        }
 
-    .zdjecie {
-        float: left;
-        margin: 10px;
-        cursor: pointer;
-    }
+        .zdjecie {
+            float: left;
+            margin: 10px;
+            cursor: pointer;
+        }
 
-    #podglad {
-        width: 940px;
-        margin: auto;
-        margin-top: 30px;
-    }
+        #podglad {
+            width: 940px;
+            margin: auto;
+            margin-top: 30px;
+        }
 
-    #glowne_zdjecie {
-        float: left;
-        position: relative;
-        max-width: 940px;
-        min-width: 300px;
-        margin: auto;
-    }
+        #glowne_zdjecie {
+            float: left;
+            position: relative;
+            max-width: 940px;
+            min-width: 300px;
+            margin: auto;
+        }
 
-    #lewo,
-    #prawo {
-        user-select: none;
-        cursor: pointer;
-        position: relative;
-        float: left;
-        text-align: center;
-        height: 130px;
-        width: 50px;
-        font-size: 50px;
-        line-height: 230%;
-        background-color: rgba(0, 0, 0, 0.9);
-        float: left;
-        margin-top: 170px;
-        z-index: 5;
-    }
+        #lewo,
+        #prawo {
+            user-select: none;
+            cursor: pointer;
+            position: relative;
+            float: left;
+            text-align: center;
+            height: 130px;
+            width: 50px;
+            font-size: 50px;
+            line-height: 230%;
+            background-color: rgba(0, 0, 0, 0.9);
+            float: left;
+            margin-top: 170px;
+            z-index: 5;
+        }
 
-    #lewo {
-        margin-right: -50px;
-    }
+        #lewo {
+            margin-right: -50px;
+        }
 
-    #prawo {
-        margin-left: -50px;
-    }
+        #prawo {
+            margin-left: -50px;
+        }
+
     </style>
     <script type="text/javascript">
-    function laduj(numer_zdjecia) {
-        // Podmiana zdjęcia w podglądzie
-        var zdjecie = document.getElementById(numer_zdjecia);
-        var sciezka = zdjecie.getAttribute("srcfull");
-        var glowne_zdjecie = document.getElementById('glowne_zdjecie');
-        glowne_zdjecie.value = numer_zdjecia;
-        glowne_zdjecie.src = sciezka;
-    }
+        function laduj(numer_zdjecia) {
+            // Podmiana zdjęcia w podglądzie
+            var zdjecie = document.getElementById(numer_zdjecia);
+            var sciezka = zdjecie.getAttribute("srcfull");
+            var glowne_zdjecie = document.getElementById('glowne_zdjecie');
+            glowne_zdjecie.value = numer_zdjecia;
+            glowne_zdjecie.src = sciezka;
+        }
 
-    function lewo() {
-        var podglad = document.getElementById('glowne_zdjecie');
-        var stare_zdjecie = podglad.value;
-        stare_zdjecie = Number(stare_zdjecie);
-        var nowe_zdjecie = stare_zdjecie - 1;
-        var nowa_sciezka = document.getElementById(nowe_zdjecie);
-        nowa_sciezka = nowa_sciezka.getAttribute('srcfull');
-        podglad.src = nowa_sciezka;
-        podglad.value = nowe_zdjecie;
-    }
+        function lewo() {
+            var podglad = document.getElementById('glowne_zdjecie');
+            var stare_zdjecie = podglad.value;
+            stare_zdjecie = Number(stare_zdjecie);
+            var nowe_zdjecie = stare_zdjecie - 1;
+            var nowa_sciezka = document.getElementById(nowe_zdjecie);
+            nowa_sciezka = nowa_sciezka.getAttribute('srcfull');
+            podglad.src = nowa_sciezka;
+            podglad.value = nowe_zdjecie;
+        }
 
-    function prawo(liczba_zdjec) {
-        var podglad = document.getElementById('glowne_zdjecie');
-        var stare_zdjecie = podglad.value;
-        stare_zdjecie = Number(stare_zdjecie);
-        var nowe_zdjecie = stare_zdjecie + 1;
-        var nowa_sciezka = document.getElementById(nowe_zdjecie);
-        nowa_sciezka = nowa_sciezka.getAttribute('srcfull');
-        podglad.src = nowa_sciezka;
-        podglad.value = nowe_zdjecie;
+        function prawo(liczba_zdjec) {
+            var podglad = document.getElementById('glowne_zdjecie');
+            var stare_zdjecie = podglad.value;
+            stare_zdjecie = Number(stare_zdjecie);
+            var nowe_zdjecie = stare_zdjecie + 1;
+            var nowa_sciezka = document.getElementById(nowe_zdjecie);
+            nowa_sciezka = nowa_sciezka.getAttribute('srcfull');
+            podglad.src = nowa_sciezka;
+            podglad.value = nowe_zdjecie;
 
-    }
+        }
+
     </script>
 </head>
+
 <body onload="laduj(0)">
     <!-- Gdy jeszcze nie ma załadowanego zdjęcia to ładuje pierwsze czyli 0 -->
     <div id="container">
@@ -232,4 +236,5 @@
 
     </div>
 </body>
+
 </html>

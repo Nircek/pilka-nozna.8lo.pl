@@ -3,12 +3,14 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
+
 <head>
     <?php include('./szablon/meta.php'); ?>
     <title> PIK Piłka Nożna </title>
     <!------------------ STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY ------------------>
     <link rel="stylesheet" type="text/css" href="style/index.css">
 </head>
+
 <body>
 
     <div id="container">
@@ -124,4 +126,5 @@ session_start();
 
     </div>
 </body>
+
 </html>

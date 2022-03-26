@@ -5,6 +5,7 @@ is_logged();
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
+
 <head>
 
     <meta charset="utf-8">
@@ -18,17 +19,19 @@ is_logged();
     <!------------------ STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY ------------------>
     <link rel="stylesheet" type="text/css" href="style/admin.css">
     <style>
-    .wynik {
-        border-width: 1.5px;
-        width: 100px;
-    }
+        .wynik {
+            border-width: 1.5px;
+            width: 100px;
+        }
 
-    #grupy {
-        float: left;
-        width: 50%;
-    }
+        #grupy {
+            float: left;
+            width: 50%;
+        }
+
     </style>
 </head>
+
 <body>
     <div id="container">
         <?php include_once('./szablon/menu.php'); ?>
@@ -216,4 +219,5 @@ is_logged();
         </div>
     </div>
 </body>
+
 </html>

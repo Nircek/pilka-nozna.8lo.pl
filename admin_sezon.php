@@ -16,6 +16,7 @@ if (!isset($_SESSION['krok'])) {
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
+
 <head>
 
     <meta charset="utf-8">
@@ -29,41 +30,43 @@ if (!isset($_SESSION['krok'])) {
     <!------------------ STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY ------------------>
     <link rel="stylesheet" type="text/css" href="style/admin.css">
     <style>
-    #grupa-pierwsza,
-    #grupa-druga {
-        width: 50%;
-        float: left;
-        padding-bottom: 20000px;
-        margin-bottom: -20000px;
-    }
+        #grupa-pierwsza,
+        #grupa-druga {
+            width: 50%;
+            float: left;
+            padding-bottom: 20000px;
+            margin-bottom: -20000px;
+        }
 
-    table {
-        margin: auto;
-        border: solid 2px rgba(0, 0, 0, 0.9);
-    }
+        table {
+            margin: auto;
+            border: solid 2px rgba(0, 0, 0, 0.9);
+        }
 
-    td,
-    th {
-        border: solid 2px rgba(0, 0, 0, 0.9);
-        margin-bottom: 0;
-        font-size: 15px;
-        padding: 0 5px;
-    }
+        td,
+        th {
+            border: solid 2px rgba(0, 0, 0, 0.9);
+            margin-bottom: 0;
+            font-size: 15px;
+            padding: 0 5px;
+        }
 
-    th {
-        padding: 5px 0;
-    }
+        th {
+            padding: 5px 0;
+        }
 
-    #termin {
-        margin-bottom: 0px;
-    }
+        #termin {
+            margin-bottom: 0px;
+        }
 
-    #akceptuje-sezon {
-        margin-top: 30px;
-        padding: 10px 30px;
-    }
+        #akceptuje-sezon {
+            margin-top: 30px;
+            padding: 10px 30px;
+        }
+
     </style>
 </head>
+
 <body>
 
     <div id="container">
@@ -86,4 +89,5 @@ if (!isset($_SESSION['krok'])) {
 
     </div>
 </body>
+
 </html>

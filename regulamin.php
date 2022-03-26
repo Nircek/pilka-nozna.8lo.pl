@@ -3,29 +3,32 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
+
 <head>
     <?php include('./szablon/meta.php'); ?>
     <title> PIK Piłka Nożna </title>
     <!------------------ STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY ------------------>
     <style>
-    .punkt {
-        font-size: 20px;
-        margin-bottom: 15px;
-        font-weight: normal;
-        line-height: 110%;
-    }
+        .punkt {
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: normal;
+            line-height: 110%;
+        }
 
-    #regulamin-content {
-        text-align: left;
-    }
+        #regulamin-content {
+            text-align: left;
+        }
 
-    .podpunkt {
-        margin-left: 40px;
-        font-size: 18px;
-        margin-top: 5px;
-    }
+        .podpunkt {
+            margin-left: 40px;
+            font-size: 18px;
+            margin-top: 5px;
+        }
+
     </style>
 </head>
+
 <body>
     <div id="container">
         <?php include('./szablon/menu.php'); ?>
@@ -96,4 +99,5 @@ session_start();
 
     </div>
 </body>
+
 </html>

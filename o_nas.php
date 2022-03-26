@@ -3,18 +3,21 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
+
 <head>
     <?php include('./szablon/meta.php'); ?>
     <title> PIK Piłka Nożna </title>
     <!------------------ STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY ------------------>
     <style>
-    h3 {
-        font-weight: normal;
-        letter-spacing: 0.3px;
-        line-height: 120%;
-    }
+        h3 {
+            font-weight: normal;
+            letter-spacing: 0.3px;
+            line-height: 120%;
+        }
+
     </style>
 </head>
+
 <body>
     <div id="container">
         <?php include('./szablon/menu.php'); ?>
@@ -36,4 +39,5 @@ session_start();
         <?php include('./szablon/footer.php'); ?>
     </div>
 </body>
+
 </html>
