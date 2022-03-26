@@ -6,7 +6,7 @@ try {
     $result = $pdo->query($sql);
     $liczba = $result->rowCount();
 } catch (PDOException $e) {
-    echo "<div id='error'> " . $e . " </div>";
+    echo "<div id='error'> $e </div>";
 }
 if ($liczba === 1) {
     // TODO: refeactor
@@ -20,10 +20,9 @@ if ($liczba === 1) {
 }
 ?>
 <?php if (isset($_SESSION['zalogowany'])) : ?>
-<div id='zalogowany'
-    style='font-weight: bold; padding: 5px 0; margin: auto; text-align: center; background-color: #22c12d; width: 1000px; font-size: 25px;'>
-    ADMIN ZALOGOWANY | <a href=skrypty/logout.php> WYLOGUJ </a> | <a href='admin.php'> PANEL ADMINA </a>
-</div>
+    <div id='zalogowany' style='font-weight: bold; padding: 5px 0; margin: auto; text-align: center; background-color: #22c12d; width: 1000px; font-size: 25px;'>
+        ADMIN ZALOGOWANY | <a href=skrypty/logout.php> WYLOGUJ </a> | <a href='admin.php'> PANEL ADMINA </a>
+    </div>
 <?php endif; ?>
 <div id="menu">
     <div id="logo">
@@ -56,7 +55,7 @@ if ($liczba === 1) {
         </div>
         <div id="bottom-options">
             <div id="obecny-sezon">
-                <a <?php if ($liczba === 1): ?> href="sezony.php?s=<?= $obecny_sezon ?>" <?php endif; ?>>
+                <a <?php if ($liczba === 1) : ?> href="sezony.php?s=<?= $obecny_sezon ?>" <?php endif; ?>>
                     OBECNY SEZON
                 </a>
             </div>

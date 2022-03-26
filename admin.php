@@ -49,8 +49,7 @@ is_logged();
 
                         <form method="post" action="skrypty/dodaj-post.php" id="informacje-form">
                             <h3> TYTUŁ </h3>
-                            <textarea cols="30" rows="2" id="info_tytul" maxlength="50"
-                                name="info_tytul"></textarea><br />
+                            <textarea cols="30" rows="2" id="info_tytul" maxlength="50" name="info_tytul"></textarea><br />
                             <h3> TREŚĆ </h3>
                             <textarea cols="40" rows="10" id="info_tresc" name="info_tresc"></textarea><br />
                             <input type="submit" value="PUBLIKUJ">
@@ -91,10 +90,8 @@ is_logged();
                         <h2> DODAJ ZDJĘCIA </h2>
                         <form method="post" enctype="multipart/form-data" action="skrypty/dodaj-zdjecie.php">
                             <h3> WYBIERZ SEZON: </h3>
-                            <input type="number" min='2000' <?php
-                                $sezon = explode("/", $obecny_sezon)[0];
-                                echo "max='" . ($sezon) . "' value='" . ($sezon) . "'";
-                            ?> id="zdjecia_sezon" name="zdjecie_sezon">
+                            <?php $sezon = explode("/", $obecny_sezon)[0]; ?>
+                            <input type="number" min='2000' id="zdjecia_sezon" name="zdjecie_sezon" max='<?= $sezon ?>' value='<?= $sezon ?>'>
 
                             <?php
                             // Sprawdzenie czy skrypt dodaj-zdjecie.php wskazał jakieś błędy
@@ -122,8 +119,7 @@ is_logged();
                             ?>
 
                             <h3> WYBIERZ ZDJĘCIA (.jpg) </h3>
-                            <input type="file" name="files[]" id="zdjecia_wybor" accept=".jpg,.jpeg,.png"
-                                multiple><br />
+                            <input type="file" name="files[]" id="zdjecia_wybor" accept=".jpg,.jpeg,.png" multiple><br />
                             <input type="submit" value="DODAJ">
                         </form>
                     </div>

@@ -97,10 +97,10 @@ if (isset($_POST['final'])) {
     // =================== PĘTLA GRUPY 1 ===================
     for ($i = 1; $i <= $ilosc_1; $i++) {
         $dane[$i][0] = $i;
-        $dane[$i][1] = $_POST[$i . "_1"];
-        $dane[$i][2] = $_POST[$i . "_2"];
-        $dane[$i][3] = $_POST["d1_" . $i];
-        $dane[$i][4] = $_POST["d2_" . $i];
+        $dane[$i][1] = $_POST["${i}_1"];
+        $dane[$i][2] = $_POST["${i}_2"];
+        $dane[$i][3] = $_POST["d1_$i"];
+        $dane[$i][4] = $_POST["d2_$i"];
         $wynik_1 = $dane[$i][1];
         $wynik_2 = $dane[$i][2];
         $id = $i;

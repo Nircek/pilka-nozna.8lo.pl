@@ -36,13 +36,13 @@ session_start();
                             $zdjecie[] = array('sciezka' => $row['sciezka']);
                         }
 
-                        foreach ($zdjecie as $zdjecie) {
-                            echo "<div class='image'>
-                                    <img src='" . $zdjecie['sciezka'] . "' width='192'/>" // wysokość auto. Nadwyżka zostanie ucięta
-                                . "</div>";
-                        }
-
+                        foreach ($zdjecie as $zdjecie) :
                         ?>
+                            <div class='image'>
+                                <img src='<?= $zdjecie['sciezka'] ?>' width='192' />"
+                                <!--wysokość auto. Nadwyżka zostanie ucięta-->
+                            </div>
+                        <?php endforeach; ?>
                         <div id="image-button">
                             <a href="galeria"><br /> ... </a>
                         </div>
@@ -61,25 +61,28 @@ session_start();
 
                             $info = array();
                             while ($row = $result->fetch()) {
-                                $info[] = array('id' => $row['id'],
-                                                'tytul' => $row['tytul'],
-                                                'tresc' => $row['tresc'],
-                                                'data' => $row['data']);
+                                $info[] = array(
+                                    'id' => $row['id'],
+                                    'tytul' => $row['tytul'],
+                                    'tresc' => $row['tresc'],
+                                    'data' => $row['data']
+                                );
                             }
 
-                            foreach ($info as $info) {
-                                echo "<div class='info'>
-                                        <h3>" . $info['tytul'] . "</h3>
-                                        <span id='tresc'>" .
-                                            $info['tresc'] . "
-                                        </span>
-                                        <br/>
-                                        <div id='data'>" .
-                                            $info['data'] . "
-                                        </div>
-                                    </div>";
-                            }
+                            foreach ($info as $info) :
                             ?>
+                                <div class='info'>
+                                    <h3> <?= $info['tytul'] ?> </h3>
+                                    <span id='tresc'>
+                                        <?= $info['tresc'] ?>
+                                    </span>
+                                    <br />
+                                    <div id='data'>
+                                        <?= $info['data'] ?>
+                                    </div>
+                                </div>
+                                }
+                            <?php endforeach; ?>
                         </div>
                         <div id="info-button">
                             <a href="informacje"><br />...</a>
@@ -97,25 +100,27 @@ session_start();
                                 echo "<div id='error'> Nie ma żadnego sezonu... </div>";
                             }
                         } catch (PDOException $e) {
-                            echo "<div id='error'> " . $e . " </div>";
+                            echo "<div id='error'> $e </div>";
                         }
-                            $sezon = array();
+                        $sezon = array();
                         while ($row = $result->fetch()) {
                             $sezon[] = array('sezon' => $row['sezon']);
                         }
 
-                        if ($liczba != 0) {
-                            foreach ($sezon as $sezon) {
+                        if ($liczba != 0) :
+                            foreach ($sezon as $sezon) :
                                 $sezon = $sezon['sezon'];
-                                echo "<h2> TABELA " . $sezon . "/" . ($sezon + 1) . " </h2>";
-                                $sezon_tabela = $sezon . "_tabela";
-                            }
-                            echo "<h3> GRUPA PIERWSZA </h3>\n";
-                            show_tabela(2, $sezon_tabela, 1);
-                            echo "<h3> GRUPA DRUGA </h3>";
-                            show_tabela(2, $sezon_tabela, 2);
-                        }
                         ?>
+                                <h2> TABELA <?= $sezon ?>/<?= $sezon + 1 ?> </h2>
+                            <?php
+                                $sezon_tabela = "${sezon}_tabela";
+                            endforeach;
+                            ?>
+                            <h3> GRUPA PIERWSZA </h3>
+                            <?php show_tabela(2, $sezon_tabela, 1); ?>
+                            <h3> GRUPA DRUGA </h3>
+                            <?php show_tabela(2, $sezon_tabela, 2); ?>
+                        <?php endif; ?>
                     </div>
                     <div style="clear: both;"></div>
                 </div>

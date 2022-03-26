@@ -45,7 +45,6 @@ if (isset($_POST['login'])) {
             width: 300px;
             font-size: 25px;
         }
-
     </style>
 </head>
 

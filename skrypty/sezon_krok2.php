@@ -125,11 +125,11 @@ if (isset($_POST['grupa-pierwsza'])) {
     $sezon = $_SESSION['sezon'];
     $liczba_druzyn = $_SESSION['liczba_druzyn'];
 }
-    $_SESSION['krok'] = 2;
+$_SESSION['krok'] = 2;
 
 ?>
 <!------------------ TWORZENIE SEZONU KROK 2 ------------------>
-<h2><?= "Sezon: " . $sezon . "/" . ($sezon + 1); ?></h2>
+<h2> Sezon: <?= $sezon ?>/<?= $sezon + 1 ?> </h2>
 <form method="post" action="#">
     <?php
     // Validation errors
@@ -159,27 +159,22 @@ if (isset($_POST['grupa-pierwsza'])) {
     <div id="grupa-pierwsza">
         <h2> GRUPA PIERWSZA </h2>
 
-        <?php
-        // Wyświetlanie tyle pól dla grupy drugiej ile jest w niej drużyn
-        for ($i = 1; $i <= $liczba_druzyn_g1; $i++) {
-            echo "#" . $i . " <input maxlength='10' type='text' class='druzyny' name='g1-$i'><br/> <br/>";
-        }
-        // W polu hidden przesyłam liczbę drużyn grupy drugiej
-        echo "<input type='hidden' name='grupa-pierwsza' value='" . $liczba_druzyn_g1 . "'>";
+        <?php for ($i = 1; $i <= $liczba_druzyn_g1; $i++) : // Wyświetlanie tyle pól dla grupy drugiej ile jest w niej drużyn 
         ?>
-
+            #<?= $i ?> <input maxlength='10' type='text' class='druzyny' name='g1-<?= $i ?>'><br /> <br />
+        <?php endfor; ?>
+        <!-- W polu hidden przesyłam liczbę drużyn grupy drugiej -->
+        <input type='hidden' name='grupa-pierwsza' value='<?= $liczba_druzyn_g1 ?>'>";
     </div>
     <div id="grupa-druga">
         <h2> GRUPA DRUGA</h2>
 
-        <?php
-        // Wyświetlanie tyle pól dla grupy drugiej ile jest w niej drużyn
-        for ($i = 1; $i <= $liczba_druzyn_g2; $i++) {
-            echo "#" . $i . " <input maxlength='10' type='text' class='druzyny' name='g2-$i'><br/> <br/>";
-        }
-        // W polu hidden przesyłam liczbę drużyn grupy drugiej
-        echo "<input type='hidden' name='grupa-druga' value='" . $liczba_druzyn_g2 . "'>";
+        <?php for ($i = 1; $i <= $liczba_druzyn_g2; $i++) : // Wyświetlanie tyle pól dla grupy drugiej ile jest w niej drużyn 
         ?>
+            #<?= $i ?> <input maxlength='10' type='text' class='druzyny' name='g2-<?= $i ?>'><br /> <br />
+        <?php endfor; ?>
+        <!-- W polu hidden przesyłam liczbę drużyn grupy drugiej -->
+        <input type='hidden' name='grupa-druga' value='<?= $liczba_druzyn_g2 ?>'>
     </div>
     <div style="clear: both"></div>
     <input type="submit" id="submit" value="STWÓRZ!">

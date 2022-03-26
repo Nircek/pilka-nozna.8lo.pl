@@ -1,5 +1,5 @@
 <?php
-    session_start();
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
@@ -98,7 +98,6 @@
         #prawo {
             margin-left: -50px;
         }
-
     </style>
     <script type="text/javascript">
         function laduj(numer_zdjecia) {
@@ -132,7 +131,6 @@
             podglad.value = nowe_zdjecie;
 
         }
-
     </script>
 </head>
 
@@ -143,11 +141,9 @@
 
         <div id="content-border">
             <div id="content">
-                <?php
-                if (isset($_GET['s'])) {
-                    echo '<div id="powrot"><a href="galeria"> &#8592; POWRÓT </a></div>';
-                }
-                ?>
+                <?php if (isset($_GET['s'])) : ?>
+                    <div id="powrot"><a href="galeria"> &#8592; POWRÓT </a></div>';
+                <?php endif; ?>
                 <h1> GALERIA </h1>
                 <div style="clear: both;"></div>
                 <?php
@@ -174,7 +170,7 @@
                         $sql->execute();
                         $liczba_zdjec = $sql->rowCount();
                     } catch (PDOException $e) {
-                        echo 'Błąd bazy danych: ' . $e . '</div>';
+                        echo "Błąd bazy danych: $e </div>";
                     }
                     // Przypisanie każdej sciezce klucza $i++ gdzie $i to kolejna liczba całkowita
                     for ($i = 0; $row = $sql->fetch(PDO::FETCH_ASSOC); $i++) {
@@ -183,24 +179,29 @@
 
                     // Jeśli są:
                     // Wyświetla na samej górze jedno duże zdjęcie 'podglad'
-                    echo "<div id='podglad'>
-                            <div id='lewo' onclick='lewo()'></div>
-                            <img id='glowne_zdjecie' src='" . $zdjecie[0][0] . "' value=''/>
-                            <div id='prawo' onclick='prawo()'></div>
-                            <div style='clear: both'></div>
-                        </div>";
+                ?>
+                    <div id='podglad'>
+                        <div id='lewo' onclick='lewo()'></div>
+                        <img id='glowne_zdjecie' src='<?= $zdjecie[0][0] ?>' value='' />
+                        <div id='prawo' onclick='prawo()'></div>
+                        <div style='clear: both'></div>
+                    </div>
+                    <?php
                     // Wypisywanie wszystkich zdjęć wraz z odpowiadającymi im ścieżkami
                     $i = 0;
                     foreach ($zdjecie as $zdjecie) {
                         // W 'id' i skrypcie 'laduj()' znajduje się taka sama liczba przez co JS może ją stąd pobrać
                         // Jak pobierze liczbę w ID to od razu zna liczbę sciezki przez co może ją dopasować i podmienić w zdjęciu na 'podgladzie'
                         $pathinf = pathinfo($zdjecie[$i]);
-                        echo "<div class='zdjecie' >
-                                <img width='172' id='" . $i . "' height='98' src='" . $pathinf['dirname'] . '/thumb.' . $pathinf['basename'] . "' srcfull='" . $zdjecie[$i] . "' onclick='laduj($i)'/>
-                            </div>";
+                    ?><div class='zdjecie'>
+                            <img width='172' id='<?= $i ?>' height='98' src='<?= $pathinf['dirname'] ?>/thumb<?= $pathinf['basename'] ?>' srcfull='<?= $zdjecie[$i] ?>' onclick='laduj($i)' />
+                        </div>
+                    <?php
                         $i++;
                     }
-                    echo "<div style='clear: both;'></div>";
+                    ?>
+                    <div style='clear: both;'></div>
+                    <?php
                 } else {
                     // Jeśli nie wybrano jeszcze sezonu to wyświetla się menu, z pobranymi z bazy danych wszystkimi sezonami
 
@@ -219,14 +220,16 @@
                     }
 
                     // Składanie "kafelka" z odnośnikiem do galerii danego sezonu
-                    foreach ($sezon as $sezon) {
-                        echo "<div class='sezon'>
-                                <a href='?s=" . $sezon['sezon'] . "/" . ($sezon['sezon'] + 1) . "'>" .
-                                    $sezon['sezon'] . "/" . ($sezon['sezon'] + 1)
-                                . "</a>
-                            </div>";
-                    }
-                    echo '<div style="clear: both;"></div>';
+                    foreach ($sezon as $sezon) :
+                    ?>
+                        <div class='sezon'>
+                            <a href='?s=<?= $sezon['sezon'] ?>/<?= $sezon['sezon'] + 1 ?>'>
+                                <?= $sezon['sezon'] ?>/<?= $sezon['sezon'] + 1 ?>
+                            </a>
+                        </div>
+                    <?php endforeach; ?>
+                    <div style="clear: both;"></div>
+                <?php
                 }
                 ?>
             </div>

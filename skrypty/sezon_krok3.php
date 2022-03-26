@@ -5,8 +5,8 @@ include("./skrypty/db-connect.php");
 
 $_SESSION['krok'] = 3;
 $sezon = $_SESSION['sezon'];
-$sezon_tabela = $sezon . "_tabela";
-$sezon_terminarz = $sezon . "_terminarz";
+$sezon_tabela = "${sezon}_tabela";
+$sezon_terminarz = "${sezon}_terminarz";
 
 if (isset($_POST['czy_wyslano'])) {
     // ------------------ PRZYPORZĄDKOWANIE GRUPY PIERWSZEJ ------------------
@@ -73,11 +73,11 @@ if (isset($_POST['czy_wyslano'])) {
     }
     $_SESSION['przeladowanie'] = 1;
 }
-    $_SESSION['krok'] = 3;
+$_SESSION['krok'] = 3;
 ?>
 <!------------------ TWORZENIE SEZONU KROK 3 ------------------>
-<h2><?= "Sezon: " . $sezon . "/" . ($sezon + 1); ?></h2>
-<h3>WYZNACZ TERMINY (Jeśli nieokreślony to nie zaznaczaj nic)</h3>
+<h2> Sezon: <?= $sezon ?>/<?= $sezon + 1 ?> </h2>
+<h3> WYZNACZ TERMINY (Jeśli nieokreślony to nie zaznaczaj nic) </h3>
 <?php
 // Sprawdzenie wkładanie terminu do bazy waliło jakieś błędy
 if (isset($_SESSION['e_terminarz_baza']) == true) {
@@ -101,22 +101,22 @@ if (isset($_SESSION['e_terminarz_baza']) == true) {
             // ------------------ TWORZENIE TABELI TERMINARZU ------------------
             try {
                 // Wszystkiego jest po dwie (1_... ; 2_...), bo to mecze, więc muszą być dwie drużyny.
-                $sql = "CREATE TABLE `$sezon_terminarz` (
-                            `id` int NOT NULL AUTO_INCREMENT,
-                            `1_num` int," . // Numer "wygenerowany" przez skrypt sortujący dla pierwszej drużyny z pary
-                            "`2_num` int," . // Numer drugiej drużyny
-                            "`1_text` text," . // Nazwa słowna pierwszej drużyny, która na podstawie numeru pobierana jest z tabeli $sezon_tabela
-                            "`2_text` text," . // Nazwa drugiej drużyny
-                            "`1_wynik` int null," . // Wynik (liczba bramek) pierwszej drużyny z pary
-                            "`2_wynik` int null," . // Wynik drugiej drużyny
-                            "`termin` date null," . // Ustalony termin meczu
-                            "`grupa` int," . // Numer grupy drużyny
-                            "PRIMARY KEY(id)
+                $sql = "CREATE TABLE `$sezon_terminarz` (" .
+                    "`id` int NOT NULL AUTO_INCREMENT," .
+                    "`1_num` int," . // Numer "wygenerowany" przez skrypt sortujący dla pierwszej drużyny z pary
+                    "`2_num` int," . // Numer drugiej drużyny
+                    "`1_text` text," . // Nazwa słowna pierwszej drużyny, która na podstawie numeru pobierana jest z tabeli $sezon_tabela
+                    "`2_text` text," . // Nazwa drugiej drużyny
+                    "`1_wynik` int null," . // Wynik (liczba bramek) pierwszej drużyny z pary
+                    "`2_wynik` int null," . // Wynik drugiej drużyny
+                    "`termin` date null," . // Ustalony termin meczu
+                    "`grupa` int," . // Numer grupy drużyny
+                    "PRIMARY KEY(id)
                         )";
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute();
             } catch (PDOException $e) {
-                echo "<div id='error'> Błąd bazy danych:" . $e . "</div>";
+                echo "<div id='error'> Błąd bazy danych: $e </div>";
             }
 
             // ------------------ LOSOWANIE GRUPY PIERWSZEJ ------------------
@@ -140,7 +140,7 @@ if (isset($_SESSION['e_terminarz_baza']) == true) {
                         $stmt = $pdo->prepare($sql);
                         $stmt->execute();
                     } catch (PDOException $e) {
-                        echo "<div id='error'> Błąd bazy danych:" . $e . "</div>";
+                        echo "<div id='error'> Błąd bazy danych: $e </div>";
                     }
                     // dodaje 1 do liczby drużyn i ponawia pentlę
                     $i_tym++;
@@ -163,7 +163,7 @@ if (isset($_SESSION['e_terminarz_baza']) == true) {
                         $stmt = $pdo->prepare($sql);
                         $stmt->execute();
                     } catch (PDOException $e) {
-                        echo "<div id='error'> Błąd bazy danych:" . $e . "</div>";
+                        echo "<div id='error'> Błąd bazy danych: $e </div>";
                     }
 
                     $i_tym++;
@@ -191,7 +191,7 @@ if (isset($_SESSION['e_terminarz_baza']) == true) {
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute();
             } catch (PDOException $e) {
-                echo "<div id='error'> Błąd bazy danych:" . $e . "</div>";
+                echo "<div id='error'> Błąd bazy danych: $e </div>";
             }
             // ------------------ PRZYPORZĄDKOWANIE NAZW DO NUMERÓW GRUPY DRUGIEJ ------------------
             try {
@@ -211,7 +211,7 @@ if (isset($_SESSION['e_terminarz_baza']) == true) {
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute();
             } catch (PDOException $e) {
-                echo "<div id='error'> Błąd bazy danych:" . $e . "</div>";
+                echo "<div id='error'> Błąd bazy danych: $e </div>";
             }
             // ------------------ WYPISYWANIE TERMINARZU GRUPY PIERWSZEJ ------------------
             // Gdy już mamy wszystko co potrzebne następuje ostateczne wybieranie wszystkiego z tabeli $sezon_terminarz
@@ -219,22 +219,24 @@ if (isset($_SESSION['e_terminarz_baza']) == true) {
                 $sql = "SELECT * FROM `$sezon_terminarz` WHERE grupa=1";
                 $result = $pdo->query($sql);
             } catch (PDOException $e) {
-                echo "<div id='error'> Błąd bazy danych:" . $e . "</div>";
+                echo "<div id='error'> Błąd bazy danych: $e </div>";
             }
             while ($row = $result->fetch()) {
                 $druzyny_g1[] = array('pierwsza' => $row['1_text'], 'druga' => $row['2_text']);
             }
 
             $numer_g1 = 1;
-            foreach ($druzyny_g1 as $druzyny_g1) {
-                echo "<tr>
-                        <td>" . $druzyny_g1['pierwsza'] . " vs " . $druzyny_g1['druga'] . "</td>
-                        <td> <input type='date' name='termin_g1_$numer_g1' id='termin'> </td>
-                    </tr> ";
-                $numer_g1++;
-            }
-            echo "<input type='hidden' name='numer_g1' value='$numer_g1'>";
+            foreach ($druzyny_g1 as $druzyny_g1) :
             ?>
+                <tr>
+                    <td> <?= $druzyny_g1['pierwsza'] ?> vs <?= $druzyny_g1['druga'] ?> </td>
+                    <td> <input type='date' name='termin_g1_<?= $numer_g1 ?>' id='termin'> </td>
+                </tr>
+            <?php
+                $numer_g1++;
+            endforeach;
+            ?>
+            <input type='hidden' name='numer_g1' value='<?= $numer_g1 ?>'>
         </table>
     </div>
     <div id="grupa-druga">
@@ -250,22 +252,24 @@ if (isset($_SESSION['e_terminarz_baza']) == true) {
                 $sql = "SELECT * FROM $sezon_terminarz WHERE grupa=2";
                 $result = $pdo->query($sql);
             } catch (PDOException $e) {
-                echo "<div id='error'> Błąd bazy danych:" . $e . "</div>";
+                echo "<div id='error'> Błąd bazy danych: $e </div>";
             }
             while ($row = $result->fetch()) {
                 $druzyny_g2[] = array('pierwsza' => $row['1_text'], 'druga' => $row['2_text']);
             }
 
             $numer_g2 = $numer_g1;
-            foreach ($druzyny_g2 as $druzyny_g2) {
-                echo "<tr>
-                        <td>" . $druzyny_g2['pierwsza'] . " vs " . $druzyny_g2['druga'] . " </td>
-                        <td> <input type='date' name='termin_g2_$numer_g2' id='termin'> </td>
-                    </tr>";
-                $numer_g2++;
-            }
-            echo "<input type='hidden' name='numer_g2' value='$numer_g2'>";
+            foreach ($druzyny_g2 as $druzyny_g2) :
             ?>
+                <tr>
+                    <td> <?= $druzyny_g2['pierwsza'] ?> vs <?= $druzyny_g2['druga'] ?> </td>
+                    <td> <input type='date' name='termin_g2_<?= $numer_g2 ?>' id='termin'> </td>
+                </tr>
+            <?php
+                $numer_g2++;
+            endforeach;
+            ?>
+            <input type='hidden' name='numer_g2' value='<?= $numer_g2 ?>'>
         </table>
     </div>
     <div style="clear: both;"></div>

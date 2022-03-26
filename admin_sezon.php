@@ -63,7 +63,6 @@ if (!isset($_SESSION['krok'])) {
             margin-top: 30px;
             padding: 10px 30px;
         }
-
     </style>
 </head>
 
@@ -74,7 +73,7 @@ if (!isset($_SESSION['krok'])) {
 
         <div id="content-border">
             <div id="content">
-                <h1> TWORZENIE SEZONU - KROK <?php echo $krok; ?> </h1>
+                <h1> TWORZENIE SEZONU - KROK <?= $krok; ?> </h1>
 
                 <div id="panel">
                     <?php

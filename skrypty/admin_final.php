@@ -8,8 +8,8 @@ include('./../funkcje/funkcje.php');
 
 // Pobieranie obecnego sezonu
 $sezon = obecny_sezon($pdo);
-$sezon_tabela = $sezon . "_tabela";
-$sezon_final = $sezon . "_final";
+$sezon_tabela = "${sezon}_tabela";
+$sezon_final = "${sezon}_final";
 
 // Sprawdzanie czy już przypadkiem nie istnieje...
 if (sprawdzanie_tabela($pdo, $sezon_final)) {

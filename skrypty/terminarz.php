@@ -7,8 +7,8 @@ is_logged();
 include('./db-connect.php');
 
 $sezon = $_POST['sezon'];
-$sezon_final = $sezon . "_final";
-$sezon_terminarz = $sezon . "_terminarz";
+$sezon_final = "${sezon}_final";
+$sezon_terminarz = "${sezon}_terminarz";
 
 if (isset($_POST['final_ilosc'])) {
     for ($y = 1; $y <= 4; $y++) {

@@ -14,7 +14,6 @@ session_start();
             letter-spacing: 0.3px;
             line-height: 120%;
         }
-
     </style>
 </head>
 

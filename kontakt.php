@@ -41,7 +41,6 @@ session_start();
             background-color: #3c5a9a;
             color: #ffffff;
         }
-
     </style>
 </head>
 
@@ -58,8 +57,7 @@ session_start();
                 <div id="fanpage-content">
                     Można skontaktować się z nami również poprzez nasz oficjalny fanpage na facebook'u:<br />
                     <div id="facebook-link">
-                        <a target="_blank"
-                            href="https://www.facebook.com/Pi%C5%82ka-no%C5%BCna-VIII-LO-w-Katowicach-182879961837032/">
+                        <a target="_blank" href="https://www.facebook.com/Pi%C5%82ka-no%C5%BCna-VIII-LO-w-Katowicach-182879961837032/">
                             facebook.com/PILKA-NOZNA-8-LO
                         </a>
                     </div>

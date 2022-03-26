@@ -25,7 +25,6 @@ session_start();
             font-size: 18px;
             margin-top: 5px;
         }
-
     </style>
 </head>
 

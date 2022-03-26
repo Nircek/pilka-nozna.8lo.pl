@@ -23,7 +23,6 @@ is_logged();
             border-width: 1.5px;
             font-size: 18px;
         }
-
     </style>
 </head>
 
@@ -43,8 +42,8 @@ is_logged();
                 include('./funkcje/funkcje.php');
 
                 $sezon = obecny_sezon($pdo);
-                $sezon_terminarz = $sezon . "_terminarz";
-                $sezon_final = $sezon . "_final";
+                $sezon_terminarz = "${sezon}_terminarz";
+                $sezon_final = "${sezon}_final";
 
                 // =================== FAZA FINAŁOWA ===================
                 if (sprawdzanie_tabela($pdo, $sezon_final) == true) {
@@ -59,33 +58,39 @@ is_logged();
                         exit();
                     }
                     while ($row = $result->fetch()) {
-                        $runda_finalowa[] = array('id' => $row['id'],
-                                                'druzyna_1' => $row['druzyna_1'],
-                                                'druzyna_2' => $row['druzyna_2'],
-                                                'termin' => $row['termin'],
-                                                'etap' => $row['poziom']);
+                        $runda_finalowa[] = array(
+                            'id' => $row['id'],
+                            'druzyna_1' => $row['druzyna_1'],
+                            'druzyna_2' => $row['druzyna_2'],
+                            'termin' => $row['termin'],
+                            'etap' => $row['poziom']
+                        );
                     }
 
                     // =================== FORMULARZ ===================
-
-                    echo "<form method='post' action='skrypty/terminarz.php'>";
-                    $id_final = 4;
-                    foreach ($runda_finalowa as $final) {
-                        if ($final['etap'] == 1) {
-                            $final['etap'] = "FINAŁ";
-                        } elseif ($final['etap'] == 2) {
-                            $final['etap'] = "PÓŁFINAŁ";
-                        } elseif ($final['etap'] == 3) {
-                            $final['etap'] = "3 MIEJSCE";
+                ?>
+                    <form method='post' action='skrypty/terminarz.php'>
+                        <?php
+                        $id_final = 4;
+                        foreach ($runda_finalowa as $final) {
+                            if ($final['etap'] == 1) {
+                                $final['etap'] = "FINAŁ";
+                            } elseif ($final['etap'] == 2) {
+                                $final['etap'] = "PÓŁFINAŁ";
+                            } elseif ($final['etap'] == 3) {
+                                $final['etap'] = "3 MIEJSCE";
+                            }
+                        ?>
+                            <input class='termin' type='date' name='f_<?= $id_final ?>' value='<?= $final['termin'] ?>'> <?= $final['druzyna_1'] ?> vs <?= $final['druzyna_2'] ?> (<?= $final['etap'] ?>) <br />";
+                        <?php
+                            $id_final--;
                         }
-
-                        echo "<input class='termin' type='date' name='f_$id_final' value='" . $final['termin'] . "'>  " . $final['druzyna_1'] . " vs " . $final['druzyna_2'] . "  (" . $final['etap'] . ") <br/>";
-                        $id_final--;
-                    }
-                    echo "<input type='hidden' value='$id_final' name='final_ilosc'>";
-                    echo "<input type='hidden' value='$sezon' name='sezon'>";
-                    echo "<input type='submit' value='AKTUALIZUJ!'>";
-                    echo "</form>";
+                        ?>
+                        <input type='hidden' value='$id_final' name='final_ilosc'>
+                        <input type='hidden' value='$sezon' name='sezon'>
+                        <input type='submit' value='AKTUALIZUJ!'>
+                    </form>
+                <?php
                 }
 
                 // =================== FAZA GRUPOWA ===================
@@ -100,26 +105,31 @@ is_logged();
                     exit();
                 }
                 while ($row = $result->fetch()) {
-                    $grupa[] = array('id' => $row['id'],
-                                    'druzyna_1' => $row['1_text'],
-                                    'druzyna_2' => $row['2_text'],
-                                    'termin' => $row['termin']);
+                    $grupa[] = array(
+                        'id' => $row['id'],
+                        'druzyna_1' => $row['1_text'],
+                        'druzyna_2' => $row['2_text'],
+                        'termin' => $row['termin']
+                    );
                 }
-
-                // =================== FORMULARZ ===================
-                echo "<form method='post' action='skrypty/terminarz.php'>";
-                $id_grupa = 1;
-                foreach ($grupa as $grupa) {
-                    echo "<input class='termin' type='date' name='$id_grupa' value='" . $grupa['termin'] . "'>  " . $grupa['druzyna_1'] . " vs " . $grupa['druzyna_2'] . "<br/>";
-                    if ($id_grupa % 2 == 0) {
-                    }
-                    $id_grupa++;
-                }
-                echo "<input type='hidden' value='$id_grupa' name='grupa_ilosc'>";
-                echo "<input type='hidden' value='$sezon' name='sezon'>";
-                echo "<input type='submit' value='AKTUALIZUJ!'>";
-                echo "</form>";
                 ?>
+                <form method='post' action='skrypty/terminarz.php'>";
+                    <?php
+                    // =================== FORMULARZ ===================
+                    $id_grupa = 1;
+                    foreach ($grupa as $grupa) {
+                    ?>
+                        <input class='termin' type='date' name='<?= $id_grupa ?>' value='<?= $grupa['termin'] ?>'> <?= $grupa['druzyna_1'] ?> vs <?= $grupa['druzyna_2'] ?><br />
+                    <?php
+                        if ($id_grupa % 2 == 0) {
+                        }
+                        $id_grupa++;
+                    }
+                    ?>
+                    <input type='hidden' value='$id_grupa' name='grupa_ilosc'>
+                    <input type='hidden' value='$sezon' name='sezon'>
+                    <input type='submit' value='AKTUALIZUJ!'>
+                </form>
             </div>
             <?php include('./szablon/footer.php'); ?>
         </div>

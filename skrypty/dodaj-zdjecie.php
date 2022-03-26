@@ -54,7 +54,7 @@ if (!empty($_FILES['files']['name'][0])) {
             // Tworzymy unikatową nazwę dla pliku
             do {
                 $random = uuid();
-                $name_array[$i] = $random . ".jpg";
+                $name_array[$i] = "${random}.jpg";
             } while (file_exists("../zdjecia/" . $name_array[$i]));
 
             if (move_uploaded_file($tmp_name_array[$i], "../zdjecia/" . $name_array[$i])) {

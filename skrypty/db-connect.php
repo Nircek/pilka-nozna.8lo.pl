@@ -17,7 +17,7 @@ try {
 $arr = array("CREATE TABLE IF NOT EXISTS `sezony` (
                 `id` int(11) NOT NULL,
                 `sezon` int(11) NOT NULL
-            )","CREATE TABLE IF NOT EXISTS `zdjecia` (
+            )", "CREATE TABLE IF NOT EXISTS `zdjecia` (
                 `id` int(11) NOT NULL,
                 `sezon` int(11) NOT NULL,
                 `sciezka` text COLLATE utf8_polish_ci NOT NULL,

@@ -19,7 +19,7 @@ function dodawanie_wyniku($sezon_terminarz, $id, $wynik_1, $wynik_2)
         $wynik_2 = null;
         $sql = "UPDATE $sezon_terminarz SET 1_wynik =NULL, 2_wynik=NULL WHERE id='$id' ";
     } else {
-        $sql = "UPDATE $sezon_terminarz SET 1_wynik ='" . $wynik_1 . "', 2_wynik='" . $wynik_2 . "' WHERE id='$id' ";
+        $sql = "UPDATE $sezon_terminarz SET 1_wynik ='$wynik_1', 2_wynik='$wynik_2' WHERE id='$id' ";
     }
 
     // Wkładanie wszystkich wyników do bazy danych

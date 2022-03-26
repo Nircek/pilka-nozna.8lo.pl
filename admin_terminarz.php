@@ -59,7 +59,6 @@ is_logged();
         #termin {
             width: 150px;
         }
-
     </style>
 </head>
 
@@ -86,9 +85,9 @@ is_logged();
                         // Sezon podany przez admina.
                         $sezon = $_SESSION['sezon'];
                         // Tworzenie nazwy tabeli z punktacją i statami.
-                        $sezon_tabela = $sezon . "_tabela";
+                        $sezon_tabela = "${sezon}_tabela";
                         // Tworzenie nazwy tabeli z meczami, wynikami i terminarzem.
-                        $sezon_terminarz = $sezon . "_terminarz";
+                        $sezon_terminarz = "${sezon}_terminarz";
 
                         // Nawiązywanie połączenia z bazą
                         include("./skrypty/db-connect.php");
@@ -96,20 +95,20 @@ is_logged();
                         // Tworzenie tabeli gdzie trzymane będą wyniki poszczególnych meczów.
                         try {
                             // Wszystkiego jest po dwie (1_... ; 2_...), bo to mecze, więc muszą być dwie drużyny.
-                            $sql = "CREATE TABLE `$sezon_terminarz` (
-                                        `id` int NOT NULL AUTO_INCREMENT,
-                                        `1_num` int," . // Numer "wygenerowany" przez skrypt sortujący dla pierwszej drużyny z pary
-                                        "`2_num` int," . // Numer drugiej drużyny
-                                        "`1_text` text," . // Nazwa słowna pierwszej drużyny, która na podstawie numeru pobierana jest z tabeli $sezon_tabela
-                                        "`2_text` text," . // Nazwa drugiej drużyny
-                                        "`1_wynik` int," . // Wynik (liczba bramek) pierwszej drużyny z pary
-                                        "`2_wynik` int," . // Wynik drugiej drużyny
-                                        "PRIMARY KEY(id)
-                                    )";
+                            $sql = "CREATE TABLE `$sezon_terminarz` (" .
+                                "`id` int NOT NULL AUTO_INCREMENT," .
+                                "`1_num` int," . // Numer "wygenerowany" przez skrypt sortujący dla pierwszej drużyny z pary
+                                "`2_num` int," . // Numer drugiej drużyny
+                                "`1_text` text," . // Nazwa słowna pierwszej drużyny, która na podstawie numeru pobierana jest z tabeli $sezon_tabela
+                                "`2_text` text," . // Nazwa drugiej drużyny
+                                "`1_wynik` int," . // Wynik (liczba bramek) pierwszej drużyny z pary
+                                "`2_wynik` int," . // Wynik drugiej drużyny
+                                "PRIMARY KEY(id)" .
+                                ")";
                             $stmt = $pdo->prepare($sql);
                             $stmt->execute();
                         } catch (PDOException $e) {
-                            echo "<div id='error'> Błąd bazy danych:" . $e . "</div>";
+                            echo "<div id='error'> Błąd bazy danych: $e </div>";
                         }
 
                         // liczba drużyn w rozgrywkach
@@ -133,9 +132,9 @@ is_logged();
                                     $stmt = $pdo->prepare($sql);
                                     $stmt->execute();
                                 } catch (PDOException $e) {
-                                    echo "<div id='error'> Błąd bazy danych:" . $e . "</div>";
+                                    echo "<div id='error'> Błąd bazy danych: $e </div>";
                                 }
-                                echo " " . $a . " vs " . $i_tym . "";
+                                echo " $a vs $i_tym";
                                 // dodaje 1 do liczby drużyn i ponawia pentlę
                                 $i_tym++;
                             }
@@ -165,7 +164,7 @@ is_logged();
                             $stmt = $pdo->prepare($sql);
                             $stmt->execute();
                         } catch (PDOException $e) {
-                            echo "<div id='error'> Błąd bazy danych:" . $e . "</div>";
+                            echo "<div id='error'> Błąd bazy danych: $e </div>";
                         }
 
                         // Gdy już mamy wszystko co potrzebne następuje stateczne wybieranie wszystkiego z tabeli $sezon_terminarz
@@ -173,7 +172,7 @@ is_logged();
                             $sql = "SELECT * FROM $sezon_terminarz";
                             $result = $pdo->query($sql);
                         } catch (PDOException $e) {
-                            echo "<div id='error'> Błąd bazy danych:" . $e . "</div>";
+                            echo "<div id='error'> Błąd bazy danych: $e </div>";
                         }
 
                         while ($row = $result->fetch()) {
@@ -183,7 +182,12 @@ is_logged();
                         // Wszystko w porządku od góry tabeli do dołu.
                         $i = 1;
                         foreach ($druzyny_g1 as $druzyny_g1) {
-                            echo "<tr><td>" . $druzyny_g1['pierwsza'] . " vs " . $g1_druzyny['druga'] . "</td><td> <input type='datetime' name='mecz_" . $i . "' id='termin'> </td></tr> ";
+                        ?>
+                            <tr>
+                                <td> <?= $druzyny_g1['pierwsza'] ?> vs <?= $g1_druzyny['druga'] ?> </td>
+                                <td> <input type='datetime' name='mecz_<?= $i ?>' id='termin'> </td>
+                            </tr> ";
+                        <?php
                             $i++;
                         }
                         ?>
