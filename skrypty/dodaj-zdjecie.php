@@ -3,12 +3,12 @@
 session_start();
 include('./../funkcje/funkcje_admin.php');
 is_logged();
-include("./db-connect.php"); // MZ: wcześniejsza wersja `include("./skrypty/db-connect.php");`... jesteśmy w folderze skrypty, więc nie ma takiego pliku
+include("./db-connect.php");
 
 $sezon = $_POST['zdjecie_sezon'];
 $data = date('Y-m-d');
 function uuid()
-{ // MZ: dodałem tą funkcję do tworzenia losowych nazw zdjęć
+{
     // SRC: https://solvit.io/50064cf
     return sprintf(
         '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
@@ -53,15 +53,14 @@ if (!empty($_FILES['files']['name'][0])) {
         if ($ext == "jpg" or $ext == "JPG") {
             // Tworzymy unikatową nazwę dla pliku
             do {
-                $random = uuid(); // MZ: wcześniej `uniqid() . rand(100, 9999)`, które było bezsensowne
+                $random = uuid();
                 $name_array[$i] = $random . ".jpg";
-            } while (file_exists("../zdjecia/" . $name_array[$i])); // MZ: brak powtarzania UUID
+            } while (file_exists("../zdjecia/" . $name_array[$i]));
 
             if (move_uploaded_file($tmp_name_array[$i], "../zdjecia/" . $name_array[$i])) {
                 $file_destination = "zdjecia/" . $name_array[$i];
                 make_thumb("../" . $file_destination, "../zdjecia/thumb." . $name_array[$i], 200);
                 try {
-                    // $sql = ; // MZ: nie ma żadnego odwołania do $sql później... usuwam
                     $stmt = $pdo->prepare("INSERT INTO `zdjecia` (`id`, `sezon`, `sciezka`, `data`) VALUES (NULL, '$sezon', '$file_destination', '$data')");
                     $stmt->execute();
                 } catch (PDOException $e) {

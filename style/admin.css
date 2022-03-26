@@ -42,7 +42,7 @@
     color: #ffffff;
     display: block;
     width: 250px;
-    height:  100px;
+    height: 100px;
     -webkit-transition: background-color 0.15s linear 0s;
     transition: background-color 0.15s linear 0s;
 }

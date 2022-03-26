@@ -90,7 +90,7 @@ is_logged();
                             <h3> WYBIERZ SEZON: </h3>
                             <input type="number" min='2000' <?php
                                 $sezon = explode("/", $obecny_sezon)[0];
-                                echo "max='" . ($sezon) . "' value='" . ($sezon) . "'"; // MZ: domyślnie jest zaznaczony obecny sezon, wcześniej był poprzedni
+                                echo "max='" . ($sezon) . "' value='" . ($sezon) . "'";
                             ?> id="zdjecia_sezon" name="zdjecie_sezon">
 
                             <?php

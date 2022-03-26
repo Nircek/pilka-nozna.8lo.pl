@@ -119,7 +119,7 @@ if (isset($_GET['s'])) {
                         }
 
                         if ($final[$i][4] == "0000-00-00") {
-                            $final[$i][4]  = "nie ustalono";
+                            $final[$i][4] = "nie ustalono";
                         }
 
                         if ($final[$i][5] == "FINAŁ" or $final[$i][5] == "3 MIEJSCE") {

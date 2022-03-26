@@ -161,7 +161,7 @@ is_logged();
                                         WHERE t2.grupa = 1";
                             $stmt = $pdo->prepare($sql);
                             $stmt->execute();
-                        } catch (PDOExcpetion $e) {
+                        } catch (PDOException $e) {
                             echo "<div id='error'> Błąd bazy danych:" . $e . "</div>";
                         }
 

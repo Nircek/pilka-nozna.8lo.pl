@@ -190,7 +190,7 @@ if (isset($_SESSION['e_terminarz_baza']) == true) {
                             WHERE t2.grupa = 1 AND t1.grupa=1";
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute();
-            } catch (PDOExcpetion $e) {
+            } catch (PDOException $e) {
                 echo "<div id='error'> Błąd bazy danych:" . $e . "</div>";
             }
             // ------------------ PRZYPORZĄDKOWANIE NAZW DO NUMERÓW GRUPY DRUGIEJ ------------------
@@ -210,7 +210,7 @@ if (isset($_SESSION['e_terminarz_baza']) == true) {
                             WHERE t2.grupa = 2 AND t1.grupa=2";
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute();
-            } catch (PDOExcpetion $e) {
+            } catch (PDOException $e) {
                 echo "<div id='error'> Błąd bazy danych:" . $e . "</div>";
             }
             // ------------------ WYPISYWANIE TERMINARZU GRUPY PIERWSZEJ ------------------

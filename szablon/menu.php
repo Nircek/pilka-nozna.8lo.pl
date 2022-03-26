@@ -9,6 +9,7 @@ try {
     echo "<div id='error'> " . $e . " </div>";
 }
 if ($liczba === 1) {
+    // TODO: refeactor
     while ($row = $result->fetch()) {
         $obecny_sezon[] = array('sezon' => $row['sezon']);
     }
