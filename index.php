@@ -1,12 +1,13 @@
 <?php
 session_start();
+require_once("utils.php");
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
 
 <head>
     <?php include('./szablon/meta.php'); ?>
-    <title> PIK Piłka Nożna </title>
+    <title> <?= get_page_title(__FILE__) ?> </title>
     <!------------------ STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY ------------------>
     <link rel="stylesheet" type="text/css" href="style/index.css">
 </head>

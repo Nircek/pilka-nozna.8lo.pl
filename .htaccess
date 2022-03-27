@@ -7,10 +7,11 @@ Deny from all
 RewriteEngine on
 RewriteRule galeria galeria.php
 RewriteRule strona-glowna index.php
-RewriteRule kontakt kontakt.php
 RewriteRule informacje informacje.php
-RewriteRule regulamin regulamin.php
+RewriteRule kontakt kontakt.php
 RewriteRule o-nas o_nas.php
+RewriteRule regulamin regulamin.php
+RewriteRule sezony sezony.php
 RewriteRule adminelo admin_log.php
 
 <Files .htaccess>
