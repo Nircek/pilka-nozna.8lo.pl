@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 include('./../funkcje/funkcje_admin.php');
 is_logged();
@@ -8,7 +7,6 @@ is_logged();
 if (isset($_POST['info_tytul'])) {
     $tytul = $_POST['info_tytul'];
     $tresc = $_POST['info_tresc'];
-    $data = date('Y-m-d');
 
     if ((empty($tytul)) or (empty($tresc))) {
         $_SESSION['e_info_pola'] = "Oba pola muszą być wypełnione";
@@ -17,7 +15,7 @@ if (isset($_POST['info_tytul'])) {
     } else {
         include("./db-connect.php");
         try {
-            $sql = "INSERT INTO `informacje` (`id`, `tytul`, `tresc`, `data`) VALUES (NULL, '$tytul', '$tresc', '$data')";
+            $sql = "INSERT INTO `informacje` (`id`, `tytul`, `tresc`, `data`) VALUES (NULL, '$tytul', '$tresc', CURDATE())";
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
         } catch (PDOException $e) {

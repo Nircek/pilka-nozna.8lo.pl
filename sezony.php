@@ -63,7 +63,7 @@ if (isset($_GET['s'])) {
                             ARCHIWUM
                         </a>
                     </div>
-                    <div style='clear: both;'></div>";
+                    <div style='clear: both;'></div>
                 </div>
             <?php else : ?>
                 <div id="content">

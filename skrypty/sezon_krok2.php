@@ -159,17 +159,17 @@ $_SESSION['krok'] = 2;
     <div id="grupa-pierwsza">
         <h2> GRUPA PIERWSZA </h2>
 
-        <?php for ($i = 1; $i <= $liczba_druzyn_g1; $i++) : // Wyświetlanie tyle pól dla grupy drugiej ile jest w niej drużyn 
+        <?php for ($i = 1; $i <= $liczba_druzyn_g1; $i++) : // Wyświetlanie tyle pól dla grupy drugiej ile jest w niej drużyn
         ?>
             #<?= $i ?> <input maxlength='10' type='text' class='druzyny' name='g1-<?= $i ?>'><br /> <br />
         <?php endfor; ?>
         <!-- W polu hidden przesyłam liczbę drużyn grupy drugiej -->
-        <input type='hidden' name='grupa-pierwsza' value='<?= $liczba_druzyn_g1 ?>'>";
+        <input type='hidden' name='grupa-pierwsza' value='<?= $liczba_druzyn_g1 ?>'>
     </div>
     <div id="grupa-druga">
         <h2> GRUPA DRUGA</h2>
 
-        <?php for ($i = 1; $i <= $liczba_druzyn_g2; $i++) : // Wyświetlanie tyle pól dla grupy drugiej ile jest w niej drużyn 
+        <?php for ($i = 1; $i <= $liczba_druzyn_g2; $i++) : // Wyświetlanie tyle pól dla grupy drugiej ile jest w niej drużyn
         ?>
             #<?= $i ?> <input maxlength='10' type='text' class='druzyny' name='g2-<?= $i ?>'><br /> <br />
         <?php endfor; ?>

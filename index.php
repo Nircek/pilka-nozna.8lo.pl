@@ -81,7 +81,6 @@ session_start();
                                         <?= $info['data'] ?>
                                     </div>
                                 </div>
-                                }
                             <?php endforeach; ?>
                         </div>
                         <div id="info-button">
