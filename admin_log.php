@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once("utils.php");
 
 $ADMIN_PASS = '<credentials censored>';
 $ADMIN_LOGIN = '<credentials censored>';
@@ -24,65 +25,30 @@ if (isset($_POST['login'])) {
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="pl-PL">
-
-<head>
-
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="style/szablon.css">
-    <link rel="stylesheet" type="text/css" href="fontello/css/peak.css">
-    <link href="https://fonts.googleapis.com/css?family=Monda:400,700&amp;subset=latin-ext" rel="stylesheet">
-    <link rel="icon" type="image/png" href="img/logo.png">
-    <meta name="robots" content="noindex" />
-
-    <title> PIK Piłka Nożna </title>
-    <!------------------ STYLE CSS DOTYCZĄCE TYLKO TEJ PODSTRONY STRONY ------------------>
-    <link rel="stylesheet" type="text/css" href="style/admin.css">
-    <style>
-        #formularz {
-            margin: auto;
-            width: 300px;
-            font-size: 25px;
-        }
-    </style>
-</head>
-
-<body>
-
-    <div id="container">
-        <?php include('./szablon/menu.php'); ?>
-
-        <div id="content-border">
-            <div id="content">
-                <h1> LOGOWANIE ADMINISTRATORA </h1>
-                <?php
-                if (isset($_SESSION['e_log_pola'])) {
-                    echo "<div id='error'> " . $_SESSION['e_log_pola'] . " </div>";
-                    unset($_SESSION['e_log_pola']);
-                } elseif (isset($_SESSION['e_log_baza'])) {
-                    echo "<div id='error'> " . $_SESSION['e_log_baza'] . " </div>";
-                    unset($_SESSION['e_log_baza']);
-                } elseif (isset($_SESSION['e_log_dane'])) {
-                    echo "<div id='error'> " . $_SESSION['e_log_dane'] . " </div>";
-                    unset($_SESSION['e_log_dane']);
-                }
-                ?>
-                <div id="formularz">
-                    <form method="post" action="#">
-                        <h3> Login: </h3>
-                        <input type="text" id="login" name="login"><br />
-                        <h3> Hasło: </h3>
-                        <input type="password" id="password" name="password"><br />
-                        <input type="submit" value="ZALOGUJ">
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <?php include('./szablon/footer.php'); ?>
-
+<?php generate_header("admin,admin_log"); ?>
+<div id="content">
+    <h1> LOGOWANIE ADMINISTRATORA </h1>
+    <?php
+    if (isset($_SESSION['e_log_pola'])) {
+        echo "<div id='error'> " . $_SESSION['e_log_pola'] . " </div>";
+        unset($_SESSION['e_log_pola']);
+    } elseif (isset($_SESSION['e_log_baza'])) {
+        echo "<div id='error'> " . $_SESSION['e_log_baza'] . " </div>";
+        unset($_SESSION['e_log_baza']);
+    } elseif (isset($_SESSION['e_log_dane'])) {
+        echo "<div id='error'> " . $_SESSION['e_log_dane'] . " </div>";
+        unset($_SESSION['e_log_dane']);
+    }
+    ?>
+    <div id="formularz">
+        <form method="post" action="#">
+            <h3> Login: </h3>
+            <input type="text" id="login" name="login"><br />
+            <h3> Hasło: </h3>
+            <input type="password" id="password" name="password"><br />
+            <input type="submit" value="ZALOGUJ">
+        </form>
     </div>
-</body>
+</div>
 
-</html>
+<?php generate_footer(); ?>

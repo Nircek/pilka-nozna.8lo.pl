@@ -1,0 +1,16 @@
+.punkt {
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: normal;
+    line-height: 110%;
+}
+
+#regulamin-content {
+    text-align: left;
+}
+
+.podpunkt {
+    margin-left: 40px;
+    font-size: 18px;
+    margin-top: 5px;
+}

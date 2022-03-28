@@ -30,6 +30,6 @@ if (isset($_POST['info_tytul'])) {
         exit();
     }
 } else {
-    header('Location: ../strona-glowna');
+    header('Location: ../');
     exit();
 }

@@ -1,0 +1,33 @@
+#grupa-pierwsza,
+#grupa-druga {
+    width: 50%;
+    float: left;
+    padding-bottom: 20000px;
+    margin-bottom: -20000px;
+}
+
+table {
+    margin: auto;
+    border: solid 2px rgba(0, 0, 0, 0.9);
+}
+
+td,
+th {
+    border: solid 2px rgba(0, 0, 0, 0.9);
+    margin-bottom: 0;
+    font-size: 15px;
+    padding: 0 5px;
+}
+
+th {
+    padding: 5px 0;
+}
+
+#termin {
+    margin-bottom: 0px;
+}
+
+#akceptuje-sezon {
+    margin-top: 30px;
+    padding: 10px 30px;
+}

@@ -5,21 +5,20 @@ Deny from all
 </FilesMatch>
 
 RewriteEngine on
-RewriteRule galeria galeria.php
-RewriteRule strona-glowna index.php
-RewriteRule informacje informacje.php
-RewriteRule kontakt kontakt.php
-RewriteRule o-nas o_nas.php
-RewriteRule regulamin regulamin.php
-RewriteRule sezony sezony.php
-RewriteRule adminelo admin_log.php
+RewriteRule ^galeria$ galeria.php
+RewriteRule ^informacje$ informacje.php
+RewriteRule ^kontakt$ kontakt.php
+RewriteRule ^o-nas$ o_nas.php
+RewriteRule ^regulamin$ regulamin.php
+RewriteRule ^sezony$ sezony.php
+RewriteRule ^adminelo$ admin_log.php
 
 <Files .htaccess>
 order allow,deny
 deny from all
 </Files>
 
-ErrorDocument 404 http://www.pilka-nozna.8lo.pl/404.php
+ErrorDocument 404 /404.php
 
 php_value memory_limit 300M
 php_value post_max_size 1000M

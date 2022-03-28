@@ -1,12 +1,18 @@
 <?php
-define("ROOT_PATH", __DIR__);
-require_once("config.php");
+define('ROOT_PATH', __DIR__);
+define("PREFIX", (ROOT_PATH === $_SERVER['DOCUMENT_ROOT'] ? '' : '/') . relative_path(ROOT_PATH, $_SERVER['DOCUMENT_ROOT']));
+require_once('config.php');
 
 function trace_assert($bool, $desc = NULL)
 {
     if ($bool) return;
     echo str_replace("\n", "<br/>\n", (new Exception)->getTraceAsString());
     assert($bool, $desc);
+}
+
+function arrayify($x)
+{
+    return is_array($x) ? $x : explode(',', $x);
 }
 
 function tuple_export($i, $arr)
@@ -32,18 +38,4 @@ function relative_path($path, $root = NULL)
     return $relative;
 }
 
-function get_page_title($file, $add = NULL)
-{
-
-    $file = relative_path($file);
-    global $PRETTY_PAGE_TITLES;
-    $title = "";
-    $sep1 = TITLE_LIGHT_SEPARATOR;
-    $sep2 = TITLE_HEAVY_SEPARATOR;
-    $pretty_title = $PRETTY_PAGE_TITLES[$file];
-    if ($add and $pretty_title) $title = "$add $sep1 $pretty_title";
-    else $title = $add ? $add : $pretty_title;
-    if ($title) $title .= " $sep2 ";
-    $title .= GLOBAL_TITLE;
-    return $title;
-}
+require_once('template/template.php');

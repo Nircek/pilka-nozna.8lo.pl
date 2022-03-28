@@ -1,0 +1,89 @@
+#powrot {
+    text-align: left;
+    font-size: 18px;
+    margin-left: 10px;
+}
+
+#powrot a {
+    color: #ffffff;
+    text-decoration: none;
+    -webkit-transition: color 0.07s linear 0s;
+    transition: color 0.07s linear 0s;
+}
+
+#powrot a:hover {
+    color: rgba(0, 0, 0, 0.6)
+}
+
+.sezon {
+    float: left;
+    height: 90px;
+    line-height: 300%;
+    width: 300px;
+    background-color: rgba(0, 0, 0, 0.3);
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0 10px;
+    margin-top: 25px;
+}
+
+.sezon a {
+    color: rgba(255, 255, 255, 1);
+    display: block;
+    text-decoration: none;
+    width: 300px;
+    height: 90px;
+    -webkit-transition: background-color 0.15s linear 0s;
+    transition: background-color 0.15s linear 0s;
+}
+
+.sezon a:hover {
+    background-color: rgba(190, 190, 190, 1);
+    color: rgba(0, 0, 0, 1);
+}
+
+.zdjecie {
+    float: left;
+    margin: 10px;
+    cursor: pointer;
+}
+
+#podglad {
+    width: 940px;
+    margin: auto;
+    margin-top: 30px;
+}
+
+#glowne_zdjecie {
+    float: left;
+    position: relative;
+    max-width: 940px;
+    min-width: 300px;
+    margin: auto;
+}
+
+#lewo,
+#prawo {
+    user-select: none;
+    cursor: pointer;
+    position: relative;
+    float: left;
+    text-align: center;
+    height: 130px;
+    width: 50px;
+    font-size: 50px;
+    line-height: 230%;
+    background-color: rgba(0, 0, 0, 0.9);
+    float: left;
+    margin-top: 170px;
+    z-index: 5;
+}
+
+#lewo {
+    margin-right: -50px;
+}
+
+#prawo {
+    margin-left: -50px;
+}

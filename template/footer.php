@@ -20,7 +20,7 @@ $rok = date('Y');
     <div id="right-footer">
         <ol>
             <li>
-                <a href="sezony.php?s=<?= /* tą zmienną deklaruje menu.php */ $obecny_sezon ?>">
+                <a href="sezony.php?s=<?= /* provided by menu.php */ $obecny_sezon ?>">
                     OBECNY SEZON
                 </a>
             </li>

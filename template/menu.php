@@ -26,7 +26,7 @@ if ($liczba === 1) {
 <?php endif; ?>
 <div id="menu">
     <div id="logo">
-        <a href="strona-glowna"><img src="img/logo.png" height="170" style="margin-top: 5px;"></a>
+        <a href="/"><img src="img/logo.png" height="170" style="margin-top: 5px;"></a>
     </div>
     <div id="title">
         <div id="title-content">
