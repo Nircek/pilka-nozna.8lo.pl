@@ -41,7 +41,7 @@ if (isset($_POST['grupa-pierwsza'])) {
     }
 
     // ------------------ TWORZENIE BAZY NA TE WSZYSTKIE DRUŻYNY ------------------
-    include('./skrypty/db-connect.php');
+    include(ROOT_PATH . "/funkcje/db-connect.php");
 
     // Tworzenie tabeli sezonu
     $sezon_tabela = $_SESSION['sezon'] . "_tabela";

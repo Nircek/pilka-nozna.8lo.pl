@@ -1,7 +1,5 @@
 <?php
-session_start();
-require_once("utils.php");
-include('./funkcje/funkcje_admin.php');
+include(ROOT_PATH . "/funkcje/funkcje_admin.php");
 is_logged();
 ?>
 <?php generate_header("admin,admin_harmonogram"); ?>
@@ -14,8 +12,8 @@ is_logged();
         unset($_SESSION['e_harmonogram_baza']);
     }
 
-    include('./skrypty/db-connect.php');
-    include('./funkcje/funkcje.php');
+    include(ROOT_PATH . "/funkcje/db-connect.php");
+    include(ROOT_PATH . "/funkcje/funkcje.php");
 
     $sezon = obecny_sezon($pdo);
     $sezon_terminarz = "${sezon}_terminarz";
@@ -45,7 +43,7 @@ is_logged();
 
         // =================== FORMULARZ ===================
     ?>
-        <form method='post' action='skrypty/terminarz.php'>
+        <form method='post' action='<?= PREFIX ?>/skrypty/terminarz'>
             <?php
             $id_final = 4;
             foreach ($runda_finalowa as $final) {
@@ -89,7 +87,7 @@ is_logged();
         );
     }
     ?>
-    <form method='post' action='skrypty/terminarz.php'>";
+    <form method='post' action='<?= PREFIX ?>/skrypty/terminarz'>";
         <?php
         // =================== FORMULARZ ===================
         $id_grupa = 1;

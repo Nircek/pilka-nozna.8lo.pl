@@ -1,9 +1,6 @@
 <?php
-session_start();
-require_once("utils.php");
-
-include("./skrypty/db-connect.php");
-include("./funkcje/funkcje.php");
+include(ROOT_PATH . "/funkcje/db-connect.php");
+include(ROOT_PATH . "/funkcje/funkcje.php");
 if (isset($_GET['s'])) {
     $sezon_pelny = $_GET['s'];
     // Sezon zapisywany w bazie to tylko jego liczba początkowa
@@ -41,7 +38,7 @@ if (!isset($_GET['s'])) :
         foreach ($sezon as $sezon) :
         ?>
             <div class='sezon'>
-                <a href='?s=<?= $sezon['sezon'] ?>/<?= $sezon['sezon'] + 1 ?>'> .
+                <a href='?s=<?= $sezon['sezon'] ?>/<?= $sezon['sezon'] + 1 ?>'>
                     <?= $sezon['sezon'] ?>/<?= $sezon['sezon'] + 1 ?>
                 </a>
             </div>
@@ -58,7 +55,7 @@ if (!isset($_GET['s'])) :
     <div id="content">
         <div id="head">
             <div id="powrot">
-                <a href="sezony.php"> &#8592 POWRÓT </a>
+                <a href="<?= PREFIX ?>/sezony"> &#8592 POWRÓT </a>
             </div>
 
             <span>

@@ -1,9 +1,8 @@
 <?php
 
-session_start();
-include('./../funkcje/funkcje_admin.php');
+include(ROOT_PATH . "/funkcje/funkcje_admin.php");
 is_logged();
-include("./db-connect.php");
+include(ROOT_PATH . "/funkcje/db-connect.php");
 
 $sezon = $_POST['zdjecie_sezon'];
 $data = date('Y-m-d');

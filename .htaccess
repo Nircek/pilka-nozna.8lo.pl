@@ -4,21 +4,24 @@ Order Allow,Deny
 Deny from all
 </FilesMatch>
 
-RewriteEngine on
-RewriteRule ^galeria$ galeria.php
-RewriteRule ^informacje$ informacje.php
-RewriteRule ^kontakt$ kontakt.php
-RewriteRule ^o-nas$ o_nas.php
-RewriteRule ^regulamin$ regulamin.php
-RewriteRule ^sezony$ sezony.php
-RewriteRule ^adminelo$ admin_log.php
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+    # make some dirs public
+    RewriteRule "^(upload|css|img|pic|fontello|js)/.*$" "public/$0" [S=1]
+    # and all other pass through single PHP entry point
+    RewriteRule "^" "main.php" [END]
+    # or if public file doesn't exist...
+    RewriteCond "%{REQUEST_FILENAME}" "!-f"
+    RewriteCond "%{REQUEST_FILENAME}" "!-d"
+    # (♡)
+    RewriteRule "^" "main.php" [E=HTTPCODE:404]
+    # if it exists, just forget about everything
+    RewriteRule "^" "-" [END]
+</IfModule>
 
-<Files .htaccess>
-order allow,deny
-deny from all
-</Files>
-
-ErrorDocument 404 /404.php
+AddDefaultCharset utf-8
+AddCharset UTF-8 .html .css .js
+# ErrorDocument 404 main.php -- not working (relative directory) -> see (♡)
 
 php_value memory_limit 300M
 php_value post_max_size 1000M

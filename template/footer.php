@@ -5,10 +5,10 @@ $rok = date('Y');
 <div id="footer">
     <div id="left-footer">
         <ol>
-            <li><a href="informacje"> INFORMACJE </a></li>
-            <li><a href="o-nas"> O NAS </a></li>
-            <li><a href="kontakt"> KONTAKT </a></li>
-            <li><a href="regulamin"> REGULAMIN </a></li>
+            <li><a href="<?= PREFIX ?>/informacje"> INFORMACJE </a></li>
+            <li><a href="<?= PREFIX ?>/o-nas"> O NAS </a></li>
+            <li><a href="<?= PREFIX ?>/kontakt"> KONTAKT </a></li>
+            <li><a href="<?= PREFIX ?>/regulamin"> REGULAMIN </a></li>
         </ol>
     </div>
     <div id="center-footer">
@@ -20,12 +20,12 @@ $rok = date('Y');
     <div id="right-footer">
         <ol>
             <li>
-                <a href="sezony.php?s=<?= /* provided by menu.php */ $obecny_sezon ?>">
+                <a href="<?= PREFIX ?>/sezony?s=<?= /* provided by menu.php */ $obecny_sezon ?>">
                     OBECNY SEZON
                 </a>
             </li>
             <li>
-                <a href="sezony.php">
+                <a href="<?= PREFIX ?>/sezony">
                     WSZYSTKIE SEZONY
                 </a>
             </li>

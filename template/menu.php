@@ -1,6 +1,6 @@
 <?php
 // Nawiązywanie połączenia z bazą
-include("skrypty/db-connect.php");
+include(ROOT_PATH . "/funkcje/db-connect.php");
 try {
     $sql = "SELECT * FROM sezony ORDER BY sezon DESC LIMIT 1";
     $result = $pdo->query($sql);
@@ -21,12 +21,12 @@ if ($liczba === 1) {
 ?>
 <?php if (isset($_SESSION['zalogowany'])) : ?>
     <div id='zalogowany' style='font-weight: bold; padding: 5px 0; margin: auto; text-align: center; background-color: #22c12d; width: 1000px; font-size: 25px;'>
-        ADMIN ZALOGOWANY | <a href=skrypty/logout.php> WYLOGUJ </a> | <a href='admin.php'> PANEL ADMINA </a>
+        ADMIN ZALOGOWANY | <a href='<?= PREFIX ?>/skrypty/logout'> WYLOGUJ </a> | <a href='<?= PREFIX ?>/admin'> PANEL ADMINA </a>
     </div>
 <?php endif; ?>
 <div id="menu">
     <div id="logo">
-        <a href="/"><img src="img/logo.png" height="170" style="margin-top: 5px;"></a>
+        <a href="<?= PREFIX ?>/"><img src="<?= PREFIX ?>/img/logo.png" height="170" style="margin-top: 5px;"></a>
     </div>
     <div id="title">
         <div id="title-content">
@@ -47,7 +47,7 @@ if ($liczba === 1) {
                 </a>
             </div>
             <div id="galeria">
-                <a href="galeria">
+                <a href="<?= PREFIX ?>/galeria">
                     <i class="icon-camera"></i>
                 </a>
             </div>
@@ -55,12 +55,12 @@ if ($liczba === 1) {
         </div>
         <div id="bottom-options">
             <div id="obecny-sezon">
-                <a <?php if ($liczba === 1) : ?> href="sezony.php?s=<?= $obecny_sezon ?>" <?php endif; ?>>
+                <a <?php if ($liczba === 1) : ?> href="<?= PREFIX ?>/sezony?s=<?= $obecny_sezon ?>" <?php endif; ?>>
                     OBECNY SEZON
                 </a>
             </div>
             <div id="wszystkie-sezony">
-                <a href="sezony.php">
+                <a href="<?= PREFIX ?>/sezony">
                     WSZYSTKIE SEZONY
                 </a>
             </div>

@@ -1,7 +1,5 @@
 <?php
-session_start();
-require_once("utils.php");
-include_once('./funkcje/funkcje_admin.php');
+include_once(ROOT_PATH . "/funkcje/funkcje_admin.php");
 is_logged();
 ?>
 <?php generate_header("admin"); ?>
@@ -27,7 +25,7 @@ is_logged();
             }
             ?>
 
-            <form method="post" action="skrypty/dodaj-post.php" id="informacje-form">
+            <form method="post" action="<?= PREFIX ?>/skrypty/dodaj-post" id="informacje-form">
                 <h3> TYTUŁ </h3>
                 <textarea cols="30" rows="2" id="info_tytul" maxlength="50" name="info_tytul"></textarea><br />
                 <h3> TREŚĆ </h3>
@@ -50,7 +48,7 @@ is_logged();
             }
             ?>
             <div id="dalej-button">
-                <a href="admin_wyniki.php">+</a>
+                <a href="<?= PREFIX ?>/admin/wyniki">+</a>
             </div>
             <h3> AKTUALIZUJ HARMONOGRAM </h3>
             <?php
@@ -60,7 +58,7 @@ is_logged();
             }
             ?>
             <div id="dalej-button">
-                <a href="admin_harmonogram.php">+</a>
+                <a href="<?= PREFIX ?>/admin/harmonogram">+</a>
             </div>
         </div>
         <div style="clear: both;"></div>
@@ -68,7 +66,7 @@ is_logged();
         <!------------------ DODAWANIE ZDJĘĆ ------------------>
         <div id="zdjecia">
             <h2> DODAJ ZDJĘCIA </h2>
-            <form method="post" enctype="multipart/form-data" action="skrypty/dodaj-zdjecie.php">
+            <form method="post" enctype="multipart/form-data" action="skrypty/dodaj-zdjecie">
                 <h3> WYBIERZ SEZON: </h3>
                 <?php $sezon = explode("/", $obecny_sezon)[0]; ?>
                 <input type="number" min='2000' id="zdjecia_sezon" name="zdjecie_sezon" max='<?= $sezon ?>' value='<?= $sezon ?>'>
@@ -116,7 +114,7 @@ is_logged();
             ?>
 
             <div id="dalej-button">
-                <a href="admin_sezon.php">+</a>
+                <a href="<?= PREFIX ?>/admin/sezon">+</a>
             </div>
             <br />
             <h2> STWÓRZ RUNDĘ FINAŁOWĄ </h2>
@@ -134,7 +132,7 @@ is_logged();
             }
             ?>
             <div id="dalej-button">
-                <a href="skrypty/admin_final.php">+</a>
+                <a href="<?= PREFIX ?>/skrypty/admin_final">+</a>
             </div>
         </div>
 

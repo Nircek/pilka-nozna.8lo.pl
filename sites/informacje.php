@@ -1,13 +1,9 @@
-<?php
-session_start();
-require_once("utils.php");
-?>
-<?php generate_header("o_nas"); ?>
+<?php generate_header("informacje"); ?>
 
 <div id="content">
     <h1> INFORMACJE </h1>
     <?php
-    include("./skrypty/db-connect.php");
+    include(ROOT_PATH . "/funkcje/db-connect.php");
 
     try {
         $result = $pdo->query("SELECT * FROM informacje ORDER BY id DESC");

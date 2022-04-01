@@ -1,7 +1,5 @@
 <?php
-session_start();
-require_once("utils.php");
-include_once('./funkcje/funkcje_admin.php');
+include_once(ROOT_PATH . "/funkcje/funkcje_admin.php");
 is_logged();
 ?>
 <?php generate_header("admin,admin_terminarz"); ?>
@@ -26,7 +24,7 @@ is_logged();
             $sezon_terminarz = "${sezon}_terminarz";
 
             // Nawiązywanie połączenia z bazą
-            include("./skrypty/db-connect.php");
+            include(ROOT_PATH . "/funkcje/db-connect.php");
 
             // Tworzenie tabeli gdzie trzymane będą wyniki poszczególnych meczów.
             try {

@@ -7,7 +7,7 @@ $PRETTY_PAGE_TITLES = array( // TODO: make it const with bump to PHP7
     "index.php" => "Strona główna",
     "informacje.php" => "Informacje",
     "kontakt.php" => "Kontakt",
-    "o_nas.php" => "O nas",
+    "o-nas.php" => "O nas",
     "regulamin.php" => "Regulamin",
     "sezony.php" => "Sezony",
 );

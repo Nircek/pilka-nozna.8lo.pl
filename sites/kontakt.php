@@ -1,7 +1,3 @@
-<?php
-session_start();
-require_once("utils.php");
-?>
 <?php generate_header("kontakt"); ?>
 
 <div id="content">

@@ -1,7 +1,3 @@
-<?php
-session_start();
-require_once("utils.php");
-?>
 <?php generate_header("index"); ?>
 
 <div id="content">
@@ -9,7 +5,7 @@ require_once("utils.php");
         <div id="left-content">
             <h1> GALERIA </h1>
             <?php
-            include("./skrypty/db-connect.php");
+            include(ROOT_PATH . "/funkcje/db-connect.php");
             // POBIERANIE ZDJĘĆ Z BAZY
             try {
                 $sql = "SELECT `sciezka` FROM `zdjecia` ORDER BY RAND() LIMIT 4";
@@ -25,12 +21,12 @@ require_once("utils.php");
             foreach ($zdjecie as $zdjecie) :
             ?>
                 <div class='image'>
-                    <img src='<?= $zdjecie['sciezka'] ?>' width='192' />"
+                    <img src='<?= PREFIX ?>/<?= $zdjecie['sciezka'] ?>' width='192' />"
                     <!--wysokość auto. Nadwyżka zostanie ucięta-->
                 </div>
             <?php endforeach; ?>
             <div id="image-button">
-                <a href="galeria"><br /> ... </a>
+                <a href="<?= PREFIX ?>/galeria"><br /> ... </a>
             </div>
         </div>
         <div id="center-content">
@@ -70,12 +66,12 @@ require_once("utils.php");
                 <?php endforeach; ?>
             </div>
             <div id="info-button">
-                <a href="informacje"><br />...</a>
+                <a href="<?= PREFIX ?>/informacje"><br />...</a>
             </div>
         </div>
         <div id="right-content">
             <?php
-            include("./funkcje/funkcje.php");
+            include(ROOT_PATH . "/funkcje/funkcje.php");
 
             try {
                 $sql = "SELECT * FROM sezony ORDER BY sezon DESC LIMIT 1";

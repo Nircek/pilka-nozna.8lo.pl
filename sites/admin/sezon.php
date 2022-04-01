@@ -1,7 +1,5 @@
 <?php
-session_start();
-require_once("utils.php");
-include_once('./funkcje/funkcje_admin.php');
+include_once(ROOT_PATH . "/funkcje/funkcje_admin.php");
 is_logged();
 
 // Check if step exists
@@ -23,7 +21,7 @@ if (!isset($_SESSION['krok'])) {
     <div id="panel">
         <?php
         // Loading same script as step of creating next season
-        include('./skrypty/sezon_krok' . $krok . '.php');
+        include(ROOT_PATH . "/sites/fragment/sezon_krok$krok.php");
         ?>
     </div>
 </div>

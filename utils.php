@@ -1,12 +1,10 @@
 <?php
-define('ROOT_PATH', __DIR__);
-define("PREFIX", (ROOT_PATH === $_SERVER['DOCUMENT_ROOT'] ? '' : '/') . relative_path(ROOT_PATH, $_SERVER['DOCUMENT_ROOT']));
-require_once('config.php');
+require_once(ROOT_PATH . '/config.php');
 
 function trace_assert($bool, $desc = NULL)
 {
     if ($bool) return;
-    echo str_replace("\n", "<br/>\n", (new Exception)->getTraceAsString());
+    // echo str_replace("\n", "<br/>\n", (new Exception)->getTraceAsString());
     assert($bool, $desc);
 }
 
@@ -38,4 +36,4 @@ function relative_path($path, $root = NULL)
     return $relative;
 }
 
-require_once('template/template.php');
+require_once(ROOT_PATH . "/template/template.php");

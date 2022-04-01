@@ -1,6 +1,6 @@
 <?php
-
-function is_logged($admin_site = true, $redirect_url = 'adminelo')
+define("ADMIN_LOGIN_URL", "$PREFIX/admin/login");
+function is_logged($admin_site = true, $redirect_url = ADMIN_LOGIN_URL)
 {
     if (!isset($_SESSION['zalogowany'])) {
         if ($admin_site) {
@@ -12,7 +12,7 @@ function is_logged($admin_site = true, $redirect_url = 'adminelo')
 // Sprawdza czy cokolwiek wpisano i robi update odpowiednich rekordów
 function dodawanie_wyniku($sezon_terminarz, $id, $wynik_1, $wynik_2)
 {
-    include('./../skrypty/db-connect.php');
+    include(ROOT_PATH . "/funkcje/db-connect.php");
 
     if ((empty($wynik_1) and !is_numeric($wynik_1)) or (empty($wynik_2) and !is_numeric($wynik_1))) {
         $wynik_1 = null;
@@ -34,7 +34,7 @@ function dodawanie_wyniku($sezon_terminarz, $id, $wynik_1, $wynik_2)
 
 function resetowanie_tabeli($sezon_tabela)
 {
-    include('./../skrypty/db-connect.php');
+    include(ROOT_PATH . "/funkcje/db-connect.php");
 
     // RESETOWANIE TABELI Z PUNKTAMI
     // Trzeba to zrobić ze względu na to iż pkt dodaje się do już zapisanych i byłby problem gdyby chciało się jakiś mecz anulować
@@ -57,7 +57,7 @@ function resetowanie_tabeli($sezon_tabela)
 
 function tabela($sezon_tabela, $grupa, $d1, $d2, $gole_1, $gole_2)
 {
-    include('./../skrypty/db-connect.php');
+    include(ROOT_PATH . "/funkcje/db-connect.php");
 
     if ($gole_1 != null and $gole_2 != null) {
         // Dodawanie odpowiednich danych odpowiednim zespołom

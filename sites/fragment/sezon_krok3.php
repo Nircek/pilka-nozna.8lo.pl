@@ -1,7 +1,7 @@
 <?php
 is_logged();
 
-include("./skrypty/db-connect.php");
+include(ROOT_PATH . "/funkcje/db-connect.php");
 
 $_SESSION['krok'] = 3;
 $sezon = $_SESSION['sezon'];

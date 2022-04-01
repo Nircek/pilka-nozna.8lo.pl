@@ -1,6 +1,5 @@
 <?php
-session_start();
-include('./../funkcje/funkcje_admin.php');
+include(ROOT_PATH . "/funkcje/funkcje_admin.php");
 is_logged();
 
 // Sprawdzenie czy ktoś wysłał formularz
@@ -13,7 +12,7 @@ if (isset($_POST['info_tytul'])) {
         header('Location: ../admin.php');
         exit();
     } else {
-        include("./db-connect.php");
+        include(ROOT_PATH . "/funkcje/db-connect.php");
         try {
             $sql = "INSERT INTO `informacje` (`id`, `tytul`, `tresc`, `data`) VALUES (NULL, '$tytul', '$tresc', CURDATE())";
             $stmt = $pdo->prepare($sql);

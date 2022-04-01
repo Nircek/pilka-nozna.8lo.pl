@@ -1,13 +1,11 @@
 <?php
-session_start();
-require_once("utils.php");
 
 $ADMIN_PASS = '<credentials censored>';
 $ADMIN_LOGIN = '<credentials censored>';
 
 // Sprawdzenie czy formularz został wysłany (czu użytkownik kliknął 'zaloguj')
 if (isset($_POST['login'])) {
-    include("./skrypty/db-connect.php");
+    include(ROOT_PATH . "/funkcje/db-connect.php");
 
     $login = $_POST['login'];
     $password = $_POST['password'];
@@ -17,7 +15,7 @@ if (isset($_POST['login'])) {
     } else {
         if ($password == $ADMIN_PASS and $login == $ADMIN_LOGIN) {
             $_SESSION['zalogowany'] = true;
-            header('Location: admin.php');
+            header("Location: $PREFIX/admin");
             exit();
         } else {
             $_SESSION['e_log_dane'] = "Niepoprawny login lub hasło!";

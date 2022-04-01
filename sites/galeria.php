@@ -1,12 +1,8 @@
-<?php
-session_start();
-require_once("utils.php");
-?>
 <?php generate_header("galeria"); ?>
 
 <div id="content">
     <?php if (isset($_GET['s'])) : ?>
-        <div id="powrot"><a href="galeria"> &#8592; POWRÓT </a></div>';
+        <div id="powrot"><a href="<?= PREFIX ?>/galeria"> &#8592; POWRÓT </a></div>';
     <?php endif; ?>
     <h1> GALERIA </h1>
     <div style="clear: both;"></div>
@@ -20,7 +16,7 @@ require_once("utils.php");
         $sezon = $sezon_arr[0];
 
         // Nawiązywanie połączenia z bazą
-        include("./skrypty/db-connect.php");
+        include(ROOT_PATH . "/funkcje/db-connect.php");
 
         // Pobieranie z bazy sciezke zdjęć z danego sezonu
         try {
@@ -69,7 +65,7 @@ require_once("utils.php");
     } else {
         // Jeśli nie wybrano jeszcze sezonu to wyświetla się menu, z pobranymi z bazy danych wszystkimi sezonami
 
-        include("./skrypty/db-connect.php");
+        include(ROOT_PATH . "/funkcje/db-connect.php");
         // Pobieranie z bazy wszystkich sezonów (2014/2015 itp...)
         try {
             $sql = "SELECT DISTINCT    sezon FROM zdjecia ORDER BY sezon DESC";

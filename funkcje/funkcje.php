@@ -36,7 +36,7 @@ function sprawdzanie_tabela($pdo, $tabela)
 // Wypisuje harmonogram w formie pojedynczych tabelek na podstawie sezonu i grupy
 function harmonogram_grupy($sezon_terminarz, $grupa)
 {
-    include('./skrypty/db-connect.php');
+    include(ROOT_PATH . "/funkcje/db-connect.php");
 
     try {
         $sql = "SELECT * FROM $sezon_terminarz WHERE grupa=$grupa ORDER BY termin DESC";
@@ -69,12 +69,12 @@ function harmonogram_grupy($sezon_terminarz, $grupa)
             </tr>
             <tr id='tr_wynik'>
                 <td> <?= $grupa_1_wyniki['druzyna_1'] ?> </td>
-                <td id='td_wynik'>" .
+                <td id='td_wynik'>
                     <?= $grupa_1_wyniki['gole_1'] ?>:<?= $grupa_1_wyniki['gole_2'] ?>
                 </td>
                 <td> <?= $grupa_1_wyniki['druzyna_2'] ?> </td>
             </tr>
-        </table>";
+        </table>
     <?php
     endforeach;
 }
@@ -85,7 +85,7 @@ function show_tabela($wariant, $sezon_tabela, $grupa)
         wariant 1 = wersja rozszerzona ze wszystkim co jest w tabeli
         wariant 2 = wersja skrocona do najwazniejszych informacji
     */
-    include('./skrypty/db-connect.php');
+    include(ROOT_PATH . "/funkcje/db-connect.php");
     if ($wariant == 1) :
     ?>
         <table id="tabela" cellspacing="0">
@@ -150,7 +150,7 @@ function show_tabela($wariant, $sezon_tabela, $grupa)
                 <th> Z </th>
                 <th> R </th>
                 <th> P </th>
-            </tr> ';
+            </tr>
             <?php
             try {
                 $sql = "SELECT * FROM $sezon_tabela WHERE grupa=$grupa ORDER BY pkt DESC, (zdobyte - stracone) DESC, nazwa ASC";
@@ -168,18 +168,17 @@ function show_tabela($wariant, $sezon_tabela, $grupa)
                     'p' => $row['przegrane']
                 );
             }
-
             $i = 1;
             foreach ($tabela as $tabela) :
             ?>
                 <tr>
-                    <td> $i. </td>
+                    <td> <?= $i ?> </td>
                     <td> <?= $tabela['nazwa'] ?> </td>
                     <td> <?= $tabela['pkt'] ?> </td>
                     <td> <?= $tabela['z'] ?> </td>
                     <td> <?= $tabela['r'] ?> </td>
                     <td> <?= $tabela['p'] ?> </td>
-                </tr>";
+                </tr>
 
             <?php
                 $i++;

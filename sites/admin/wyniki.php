@@ -1,7 +1,5 @@
 <?php
-session_start();
-require_once("utils.php");
-include_once('./funkcje/funkcje_admin.php');
+include_once(ROOT_PATH . '/funkcje/funkcje_admin.php');
 is_logged();
 ?>
 <?php generate_header("admin,admin_wyniki"); ?>
@@ -9,8 +7,8 @@ is_logged();
 <div id="content">
     <h1> WPISZ WYNIKI (jesli się nie odbył to zostaw puste) </h1>
     <?php
-    include_once('./skrypty/db-connect.php');
-    include_once('./funkcje/funkcje.php');
+    include_once(ROOT_PATH . "/funkcje/db-connect.php");
+    include_once(ROOT_PATH . "/funkcje/funkcje.php");
 
     // Errors
     if (isset($_SESSION['e_wyniki_baza'])) {
@@ -50,7 +48,7 @@ is_logged();
         }
 
     ?>
-        <form method='post' action='skrypty/wyniki.php'>
+        <form method='post' action='<?= PREFIX ?>/skrypty/wyniki'>
             <?php
             $y = 4;
             foreach ($runda_finalowa as $runda_finalowa) {
@@ -140,7 +138,7 @@ is_logged();
     }
     ?>
     <div id='grupy'>
-        <form method='post' action='skrypty/wyniki.php'>
+        <form method='post' action='<?= PREFIX ?>/skrypty/wyniki'>
             <?php
 
             // =================== WYPISYWANIE INPUTÓW DLA OBU GRUP ===================

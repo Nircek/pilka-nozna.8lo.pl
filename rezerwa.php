@@ -1,12 +1,8 @@
-<?php
-session_start();
-require_once("utils.php");
-?>
 <?php generate_header("sezony"); ?>
 
 <?php
 // Nawiązywanie połączenia z bazą
-include("skrypty/db-connect.php");
+include(ROOT_PATH . "/funkcje/db-connect.php");
 
 if (!isset($_GET['s'])) :
     // ------------------ JEŚLI JESZCZE SEZON NIE WYBRANY ------------------
@@ -53,7 +49,7 @@ if (!isset($_GET['s'])) :
     <div id='content'>
         <!------------------ LEWA KOLUMNA ------------------>
         <div id="left-content">
-            <div id="powrot"><a href="sezony.php"> &#8592 POWRÓT </a></div>
+            <div id="powrot"><a href="<?= PREFIX ?>/sezony"> &#8592 POWRÓT </a></div>
         </div>
 
         <!------------------ ŚRODKOWA KOLUMNA ------------------>

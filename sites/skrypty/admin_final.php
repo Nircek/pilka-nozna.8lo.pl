@@ -1,10 +1,8 @@
 <?php
-
-session_start();
 is_logged();
 
-include('./db-connect.php');
-include('./../funkcje/funkcje.php');
+include(ROOT_PATH . "/funkcje/db-connect.php");
+include(ROOT_PATH . "/funkcje/funkcje.php");
 
 // Pobieranie obecnego sezonu
 $sezon = obecny_sezon($pdo);
