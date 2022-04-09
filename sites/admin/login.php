@@ -5,8 +5,6 @@ $ADMIN_LOGIN = '<credentials censored>';
 
 // Sprawdzenie czy formularz został wysłany (czu użytkownik kliknął 'zaloguj')
 if (isset($_POST['login'])) {
-    include(ROOT_PATH . "/funkcje/db-connect.php");
-
     $login = $_POST['login'];
     $password = $_POST['password'];
 

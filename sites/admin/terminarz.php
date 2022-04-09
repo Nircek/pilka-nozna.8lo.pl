@@ -24,8 +24,6 @@ is_logged();
             $sezon_terminarz = "${sezon}_terminarz";
 
             // Nawiązywanie połączenia z bazą
-            include(ROOT_PATH . "/funkcje/db-connect.php");
-
             // Tworzenie tabeli gdzie trzymane będą wyniki poszczególnych meczów.
             try {
                 // Wszystkiego jest po dwie (1_... ; 2_...), bo to mecze, więc muszą być dwie drużyny.
@@ -39,10 +37,10 @@ is_logged();
                     "`2_wynik` int," . // Wynik drugiej drużyny
                     "PRIMARY KEY(id)" .
                     ")";
-                $stmt = $pdo->prepare($sql);
+                $stmt = PDOS::Instance()->prepare($sql);
                 $stmt->execute();
             } catch (PDOException $e) {
-                echo "<div id='error'> Błąd bazy danych: $e </div>";
+                reportError("db", $e->getMessage());
             }
 
             // liczba drużyn w rozgrywkach
@@ -63,10 +61,10 @@ is_logged();
                     try {
                         // Wkładanie do bazy danych pierwszego zespołu z pary do '1_num' i drugiego do '2_num'
                         $sql = "INSERT INTO `$sezon_terminarz` (`id`, `1_num`, `2_num`) VALUES (NULL, '$a', '$i_tym')";
-                        $stmt = $pdo->prepare($sql);
+                        $stmt = PDOS::Instance()->prepare($sql);
                         $stmt->execute();
                     } catch (PDOException $e) {
-                        echo "<div id='error'> Błąd bazy danych: $e </div>";
+                        reportError("db", $e->getMessage());
                     }
                     echo " $a vs $i_tym";
                     // dodaje 1 do liczby drużyn i ponawia pentlę
@@ -85,7 +83,7 @@ is_logged();
                                             ON t1.1_num = t2.numer
                                         SET t1.1_text = t2.nazwa
                                         WHERE t2.grupa = 1";
-                $stmt = $pdo->prepare($sql);
+                $stmt = PDOS::Instance()->prepare($sql);
                 $stmt->execute();
 
                 // 1. Pobieranie nazwy zespołu z tabeli $sezon_tabela, którego 'numer' równa się '2_num' i 'grupa' = 1
@@ -95,18 +93,18 @@ is_logged();
                                                 ON t1.2_num = t2.numer
                                         SET t1.2_text = t2.nazwa
                                         WHERE t2.grupa = 1";
-                $stmt = $pdo->prepare($sql);
+                $stmt = PDOS::Instance()->prepare($sql);
                 $stmt->execute();
             } catch (PDOException $e) {
-                echo "<div id='error'> Błąd bazy danych: $e </div>";
+                reportError("db", $e->getMessage());
             }
 
             // Gdy już mamy wszystko co potrzebne następuje stateczne wybieranie wszystkiego z tabeli $sezon_terminarz
             try {
                 $sql = "SELECT * FROM $sezon_terminarz";
-                $result = $pdo->query($sql);
+                $result = PDOS::Instance()->query($sql);
             } catch (PDOException $e) {
-                echo "<div id='error'> Błąd bazy danych: $e </div>";
+                reportError("db", $e->getMessage());
             }
 
             while ($row = $result->fetch()) {

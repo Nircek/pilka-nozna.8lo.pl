@@ -11,3 +11,4 @@ $PRETTY_PAGE_TITLES = array( // TODO: make it const with bump to PHP7
     "regulamin.php" => "Regulamin",
     "sezony.php" => "Sezony",
 );
+define("ERROR_REPORTING", true);

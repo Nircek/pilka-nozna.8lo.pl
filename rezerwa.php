@@ -1,9 +1,6 @@
 <?php generate_header("sezony"); ?>
 
 <?php
-// Nawiązywanie połączenia z bazą
-include(ROOT_PATH . "/funkcje/db-connect.php");
-
 if (!isset($_GET['s'])) :
     // ------------------ JEŚLI JESZCZE SEZON NIE WYBRANY ------------------
 ?>
@@ -13,9 +10,9 @@ if (!isset($_GET['s'])) :
         try {
             // Wysyłanie zapytania
             $sql = "SELECT sezon FROM sezony ORDER BY id DESC";
-            $result = $pdo->query($sql);
+            $result = PDOS::Instance()->query($sql);
         } catch (PDOException $e) {
-            echo "<div id='error'> $e </div>";
+            reportError("db", $e->getMessage());
         }
         while ($row = $result->fetch()) {
             $sezon[] = array('sezon' => $row['sezon']);
@@ -61,9 +58,9 @@ if (!isset($_GET['s'])) :
             // ------------------ POBIERANIE TERMINARZU I WYNIKÓW GRUPY PIERWSZEJ------------------
             try {
                 $sql = "SELECT * FROM $sezon_terminarz WHERE grupa=1 ORDER BY termin ASC";
-                $result_terminarz = $pdo->query($sql);
+                $result_terminarz = PDOS::Instance()->query($sql);
             } catch (PDOException $e) {
-                echo "<div id='error'> $e </div>";
+                reportError("db", $e->getMessage());
             }
             while ($row = $result_terminarz->fetch()) {
                 $grupa_1_wyniki[] = array(
@@ -104,9 +101,9 @@ if (!isset($_GET['s'])) :
             // ------------------ POBIERANIE TERMINARZU I WYNIKÓW GRUPY PIERWSZEJ------------------
             try {
                 $sql = "SELECT * FROM $sezon_terminarz WHERE grupa=2 ORDER BY termin ASC";
-                $result_terminarz = $pdo->query($sql);
+                $result_terminarz = PDOS::Instance()->query($sql);
             } catch (PDOException $e) {
-                echo "<div id='error'> $e </div>";
+                reportError("db", $e->getMessage());
             }
             while ($row = $result_terminarz->fetch()) {
                 $grupa_2_wyniki[] = array(
@@ -164,9 +161,9 @@ if (!isset($_GET['s'])) :
                 // ------------------ POBIERANIE TABELI SEZONU GRUPY PIERWSZEJ ------------------
                 try {
                     $sql = "SELECT * FROM $sezon_tabela WHERE grupa=1 ORDER BY pkt DESC";
-                    $result_tabela = $pdo->query($sql);
+                    $result_tabela = PDOS::Instance()->query($sql);
                 } catch (PDOException $e) {
-                    echo "<div id='error'> $e </div>";
+                    reportError("db", $e->getMessage());
                 }
                 while ($row = $result_tabela->fetch()) {
                     $grupa_1_tabela[] = array(
@@ -219,9 +216,9 @@ if (!isset($_GET['s'])) :
                 // ------------------ POBIERANIE TABELI SEZONU GRUPY DRUGIEJ ------------------
                 try {
                     $sql = "SELECT * FROM $sezon_tabela WHERE grupa=2 ORDER BY pkt DESC";
-                    $result_tabela = $pdo->query($sql);
+                    $result_tabela = PDOS::Instance()->query($sql);
                 } catch (PDOException $e) {
-                    echo "<div id='error'> $e </div>";
+                    reportError("db", $e->getMessage());
                 }
                 while ($row = $result_tabela->fetch()) {
                     $grupa_2_tabela[] = array(
@@ -264,17 +261,17 @@ if (!isset($_GET['s'])) :
     // ------------------ POBIERANIE TABELI SEZONU GRUPY PIERWSZEJ ------------------
     try {
         $sql = "SELECT * FROM $sezon_tabela WHERE grupa=1 ORDER BY pkt DESC";
-        $result_tabela = $pdo->query($sql);
+        $result_tabela = PDOS::Instance()->query($sql);
     } catch (PDOException $e) {
-        echo "<div id='error'> $e </div>";
+        reportError("db", $e->getMessage());
     }
 
     // ------------------ POBIERANIE TABELI SEZONU GRUPY PIERWSZEJ ------------------
     try {
         $sql = "SELECT * FROM $sezon_tabela ORDER BY pkt DESC";
-        $result_terminarz = $pdo->query($sql);
+        $result_terminarz = PDOS::Instance()->query($sql);
     } catch (PDOException $e) {
-        echo "<div id='error'> $e </div>";
+        reportError("db", $e->getMessage());
     }
     ?>
 <?php endif; ?>

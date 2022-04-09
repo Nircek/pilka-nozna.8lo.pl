@@ -22,19 +22,6 @@ if (isset($_POST['sezon'])) {
 <!------------------ TWORZENIE SEZONU KROK 1 ------------------>
 <div id="panel">
     <form action="#" method="post" autocomplete="off">
-        <?php
-        // Validation errors
-        if (isset($_SESSION['e_sezon_pola'])) {
-            // Nie podano sezonu
-            echo '<div id="error">' . $_SESSION['e_sezon_pola'] . '</div><br/>';
-            unset($_SESSION['e_sezon_pola']);
-        } elseif (isset($_SESSION['e_sezon_baza'])) {
-            // Błąd bazy danych przy tworzeniu sezonu
-            echo '<div id="error">' . $_SESSION['e_sezon_baza'] . '</div><br/>';
-            unset($_SESSION['e_sezon_baza']);
-        }
-        ?>
-
         <h3>ROK ROZPOCZĘCIA: (np. 2016) </h3>
         <input type="number" name="sezon" maxlength="4" cols="9" id="sezon" min="2016" max="2030"> <br />
         <h3>LICZBA DRUŻYN W CAŁYM SEZONIE:</h3>

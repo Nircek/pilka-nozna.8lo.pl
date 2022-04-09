@@ -16,21 +16,19 @@
         $sezon = $sezon_arr[0];
 
         // Nawiązywanie połączenia z bazą
-        include(ROOT_PATH . "/funkcje/db-connect.php");
-
         // Pobieranie z bazy sciezke zdjęć z danego sezonu
         try {
             // Wysyłanie zapytania
             // $sql = "SELECT * FROM zdjecia WHERE sezon = '$sezon' ORDER BY data ";
-            // $result = $pdo->query($sql);
+            // $result = PDOS::Instance()->query($sql);
 
-            $sql = $pdo->prepare("SELECT * FROM zdjecia WHERE sezon=? ORDER BY data");
+            $sql = PDOS::Instance()->prepare("SELECT * FROM zdjecia WHERE sezon=? ORDER BY data");
             $sql->bindValue(1, $sezon);
 
             $sql->execute();
             $liczba_zdjec = $sql->rowCount();
         } catch (PDOException $e) {
-            echo "Błąd bazy danych: $e </div>";
+            reportError("db", $e->getMessage());
         }
         // Przypisanie każdej sciezce klucza $i++ gdzie $i to kolejna liczba całkowita
         for ($i = 0; $row = $sql->fetch(PDO::FETCH_ASSOC); $i++) {
@@ -64,14 +62,12 @@
         <?php
     } else {
         // Jeśli nie wybrano jeszcze sezonu to wyświetla się menu, z pobranymi z bazy danych wszystkimi sezonami
-
-        include(ROOT_PATH . "/funkcje/db-connect.php");
         // Pobieranie z bazy wszystkich sezonów (2014/2015 itp...)
         try {
             $sql = "SELECT DISTINCT    sezon FROM zdjecia ORDER BY sezon DESC";
-            $result = $pdo->query($sql);
+            $result = PDOS::Instance()->query($sql);
         } catch (PDOException $e) {
-            echo '<div id="error">Błąd bazy danych: ' . $e . '</div>';
+            reportError("db", $e->getMessage());
         }
 
         $sezon = array();

@@ -3,12 +3,10 @@
 <div id="content">
     <h1> INFORMACJE </h1>
     <?php
-    include(ROOT_PATH . "/funkcje/db-connect.php");
-
     try {
-        $result = $pdo->query("SELECT * FROM informacje ORDER BY id DESC");
+        $result = PDOS::Instance()->query("SELECT * FROM informacje ORDER BY id DESC");
     } catch (PDOException $e) {
-        echo "Błąd bazy danych: $e";
+        reportError("db", $e->getMessage());
     }
     $info = array();
     while ($row = $result->fetch()) {

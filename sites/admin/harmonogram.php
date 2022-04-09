@@ -7,29 +7,21 @@ is_logged();
 <div id="content">
     <h1> WPISYWANIE HARMONOGRAMU </h1>
     <?php
-    if (isset($_SESSION['e_harmonogram_baza'])) {
-        echo '<div id="error">' . $_SESSION['e_harmonogram_baza'] . '</div><br/>';
-        unset($_SESSION['e_harmonogram_baza']);
-    }
-
-    include(ROOT_PATH . "/funkcje/db-connect.php");
     include(ROOT_PATH . "/funkcje/funkcje.php");
 
-    $sezon = obecny_sezon($pdo);
+    $sezon = obecny_sezon();
     $sezon_terminarz = "${sezon}_terminarz";
     $sezon_final = "${sezon}_final";
 
     // =================== FAZA FINAŁOWA ===================
-    if (sprawdzanie_tabela($pdo, $sezon_final) == true) {
+    if (sprawdzanie_tabela($sezon_final) == true) {
         echo "<h2> FAZA FINAŁOWA </h2>";
 
         try {
             $sql = "SELECT * FROM $sezon_final ORDER BY id DESC";
-            $result = $pdo->query($sql);
+            $result = PDOS::Instance()->query($sql);
         } catch (PDOException $e) {
-            $_SESSION['e_harmonogram_baza'] = "Błąd bazy danych: $e";
-            header('Location: admin.php');
-            exit();
+            reportError("db", $e->getMessage());
         }
         while ($row = $result->fetch()) {
             $runda_finalowa[] = array(
@@ -55,7 +47,7 @@ is_logged();
                     $final['etap'] = "3 MIEJSCE";
                 }
             ?>
-                <input class='termin' type='date' name='f_<?= $id_final ?>' value='<?= $final['termin'] ?>'> <?= $final['druzyna_1'] ?> vs <?= $final['druzyna_2'] ?> (<?= $final['etap'] ?>) <br />";
+                <input class='termin' type='date' name='f_<?= $id_final ?>' value='<?= $final['termin'] ?>'> <?= $final['druzyna_1'] ?> vs <?= $final['druzyna_2'] ?> (<?= $final['etap'] ?>) <br />
             <?php
                 $id_final--;
             }
@@ -72,11 +64,9 @@ is_logged();
 
     try {
         $sql = "SELECT * FROM $sezon_terminarz ORDER BY id ASC";
-        $result = $pdo->query($sql);
+        $result = PDOS::Instance()->query($sql);
     } catch (PDOException $e) {
-        $_SESSION['e_harmonogram_baza'] = "Błąd bazy danych: $e";
-        header('Location: admin.php');
-        exit();
+        reportError("db", $e->getMessage());
     }
     while ($row = $result->fetch()) {
         $grupa[] = array(
@@ -87,7 +77,7 @@ is_logged();
         );
     }
     ?>
-    <form method='post' action='<?= PREFIX ?>/skrypty/terminarz'>";
+    <form method='post' action='<?= PREFIX ?>/skrypty/terminarz'>
         <?php
         // =================== FORMULARZ ===================
         $id_grupa = 1;

@@ -1,8 +1,5 @@
 <?php
 is_logged();
-
-include(ROOT_PATH . "/funkcje/db-connect.php");
-
 $_SESSION['krok'] = 3;
 $sezon = $_SESSION['sezon'];
 $sezon_tabela = "${sezon}_tabela";
@@ -16,14 +13,10 @@ if (isset($_POST['czy_wyslano'])) {
         try {
             // Przyporządkowanie terminu do danego meczu
             $sql =  "UPDATE `$sezon_terminarz` SET `termin` = '$termin' WHERE `id`='$i'";
-            $stmt = $pdo->prepare($sql);
+            $stmt = PDOS::Instance()->prepare($sql);
             $stmt->execute();
         } catch (PDOException $e) {
-            unset($_SESSION['przeladowanie']);
-            $_SESSION['e_terminarz_baza'] = "Błąd bazy danych: $e";
-            $_SESSION['krok'] = 3;
-            header('Location: admin_sezon.php');
-            exit();
+            reportError("db", $e->getMessage());
         }
     }
 
@@ -33,27 +26,19 @@ if (isset($_POST['czy_wyslano'])) {
         $termin = $_POST["termin_g2_$i"];
         try {
             // Przyporządkowanie terminu do danego meczu
-            $stmt = $pdo->prepare("UPDATE `$sezon_terminarz` SET `termin` = '$termin' WHERE `id`='$i'");
+            $stmt = PDOS::Instance()->prepare("UPDATE `$sezon_terminarz` SET `termin` = '$termin' WHERE `id`='$i'");
             $stmt->execute();
         } catch (PDOException $e) {
-            unset($_SESSION['przeladowanie']);
-            $_SESSION['e_terminarz_baza'] = "Błąd bazy danych: $e";
-            $_SESSION['krok'] = 3;
-            header('Location: admin_sezon.php');
-            exit();
+            reportError("db", $e->getMessage());
         }
     }
 
     try {
         // OSTATECZNE WPISANIE NOWEGO SEZONU NA LISTĘ SEZONÓW
-        $stmt = $pdo->prepare("INSERT INTO `sezony` (`id`, `sezon`) VALUES (NULL, '$sezon')");
+        $stmt = PDOS::Instance()->prepare("INSERT INTO `sezony` (`id`, `sezon`) VALUES (NULL, '$sezon')");
         $stmt->execute();
     } catch (PDOException $e) {
-        unset($_SESSION['przeladowanie']);
-        $_SESSION['e_terminarz_baza'] = "Błąd bazy danych: $e";
-        $_SESSION['krok'] = 3;
-        header('Location: admin_sezon.php');
-        exit();
+        reportError("db", $e->getMessage());
     }
 
     unset($_SESSION['przeladowanie']);
@@ -82,7 +67,7 @@ $_SESSION['krok'] = 3;
 // Sprawdzenie wkładanie terminu do bazy waliło jakieś błędy
 if (isset($_SESSION['e_terminarz_baza']) == true) {
     // Nie podana wszystkich drużyn
-    echo '<div id="error">' . $_SESSION['e_terminarz_baza'] . '</div><br/>';
+    echo '<div class="error">' . $_SESSION['e_terminarz_baza'] . '</div><br/>';
     unset($_SESSION['e_terminarz_baza']);
 }
 ?>
@@ -113,10 +98,10 @@ if (isset($_SESSION['e_terminarz_baza']) == true) {
                     "`grupa` int," . // Numer grupy drużyny
                     "PRIMARY KEY(id)
                         )";
-                $stmt = $pdo->prepare($sql);
+                $stmt = PDOS::Instance()->prepare($sql);
                 $stmt->execute();
             } catch (PDOException $e) {
-                echo "<div id='error'> Błąd bazy danych: $e </div>";
+                reportError("db", $e->getMessage());
             }
 
             // ------------------ LOSOWANIE GRUPY PIERWSZEJ ------------------
@@ -137,10 +122,10 @@ if (isset($_SESSION['e_terminarz_baza']) == true) {
                     try {
                         // Wkładanie do bazy danych pierwszego zespołu z pary do '1_num' i drugiego do '2_num'
                         $sql = "INSERT INTO `$sezon_terminarz` (`id`, `1_num`, `2_num` , `grupa`) VALUES (NULL, '$a', '$i_tym', '1')";
-                        $stmt = $pdo->prepare($sql);
+                        $stmt = PDOS::Instance()->prepare($sql);
                         $stmt->execute();
                     } catch (PDOException $e) {
-                        echo "<div id='error'> Błąd bazy danych: $e </div>";
+                        reportError("db", $e->getMessage());
                     }
                     // dodaje 1 do liczby drużyn i ponawia pentlę
                     $i_tym++;
@@ -160,10 +145,10 @@ if (isset($_SESSION['e_terminarz_baza']) == true) {
                 while ($i_tym <= $druzyny) {
                     try {
                         $sql = "INSERT INTO `$sezon_terminarz` (`id`, `1_num`, `2_num` , `grupa`) VALUES (NULL, '$a', '$i_tym', '2')";
-                        $stmt = $pdo->prepare($sql);
+                        $stmt = PDOS::Instance()->prepare($sql);
                         $stmt->execute();
                     } catch (PDOException $e) {
-                        echo "<div id='error'> Błąd bazy danych: $e </div>";
+                        reportError("db", $e->getMessage());
                     }
 
                     $i_tym++;
@@ -180,7 +165,7 @@ if (isset($_SESSION['e_terminarz_baza']) == true) {
                                 ON t1.1_num = t2.numer
                             SET t1.1_text = t2.nazwa
                             WHERE t2.grupa = 1 AND t1.grupa=1";
-                $stmt = $pdo->prepare($sql);
+                $stmt = PDOS::Instance()->prepare($sql);
                 $stmt->execute();
 
                 $sql = "UPDATE `$sezon_terminarz` t1
@@ -188,10 +173,10 @@ if (isset($_SESSION['e_terminarz_baza']) == true) {
                                 ON t1.2_num = t2.numer
                             SET t1.2_text = t2.nazwa
                             WHERE t2.grupa = 1 AND t1.grupa=1";
-                $stmt = $pdo->prepare($sql);
+                $stmt = PDOS::Instance()->prepare($sql);
                 $stmt->execute();
             } catch (PDOException $e) {
-                echo "<div id='error'> Błąd bazy danych: $e </div>";
+                reportError("db", $e->getMessage());
             }
             // ------------------ PRZYPORZĄDKOWANIE NAZW DO NUMERÓW GRUPY DRUGIEJ ------------------
             try {
@@ -200,7 +185,7 @@ if (isset($_SESSION['e_terminarz_baza']) == true) {
                                 ON t1.1_num = t2.numer
                             SET t1.1_text = t2.nazwa
                             WHERE t2.grupa = 2 AND t1.grupa=2";
-                $stmt = $pdo->prepare($sql);
+                $stmt = PDOS::Instance()->prepare($sql);
                 $stmt->execute();
 
                 $sql = "UPDATE `$sezon_terminarz` t1
@@ -208,18 +193,18 @@ if (isset($_SESSION['e_terminarz_baza']) == true) {
                                 ON t1.2_num = t2.numer
                             SET t1.2_text = t2.nazwa
                             WHERE t2.grupa = 2 AND t1.grupa=2";
-                $stmt = $pdo->prepare($sql);
+                $stmt = PDOS::Instance()->prepare($sql);
                 $stmt->execute();
             } catch (PDOException $e) {
-                echo "<div id='error'> Błąd bazy danych: $e </div>";
+                reportError("db", $e->getMessage());
             }
             // ------------------ WYPISYWANIE TERMINARZU GRUPY PIERWSZEJ ------------------
             // Gdy już mamy wszystko co potrzebne następuje ostateczne wybieranie wszystkiego z tabeli $sezon_terminarz
             try {
                 $sql = "SELECT * FROM `$sezon_terminarz` WHERE grupa=1";
-                $result = $pdo->query($sql);
+                $result = PDOS::Instance()->query($sql);
             } catch (PDOException $e) {
-                echo "<div id='error'> Błąd bazy danych: $e </div>";
+                reportError("db", $e->getMessage());
             }
             while ($row = $result->fetch()) {
                 $druzyny_g1[] = array('pierwsza' => $row['1_text'], 'druga' => $row['2_text']);
@@ -250,9 +235,9 @@ if (isset($_SESSION['e_terminarz_baza']) == true) {
             // ------------------ WYPISYWANIE TERMINARZU GRUPY DRUGIEJ ------------------
             try {
                 $sql = "SELECT * FROM $sezon_terminarz WHERE grupa=2";
-                $result = $pdo->query($sql);
+                $result = PDOS::Instance()->query($sql);
             } catch (PDOException $e) {
-                echo "<div id='error'> Błąd bazy danych: $e </div>";
+                reportError("db", $e->getMessage());
             }
             while ($row = $result->fetch()) {
                 $druzyny_g2[] = array('pierwsza' => $row['1_text'], 'druga' => $row['2_text']);

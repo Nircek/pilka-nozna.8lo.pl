@@ -1,12 +1,21 @@
 <?php
+$error_queue = popReports();
+foreach ($error_queue as $error) :
+?>
+    <div class="error"><?= $error[0] ?>
+        <?php if ($error[1] !== null) : ?>
+            <br><?= ERROR_REPORTING ? var_export($error[1]) : false ?><br><?= ERROR_REPORTING ? $error[2] : false ?>
+        <?php endif; ?>
+    </div>
+<?php endforeach; ?>
+<?php
 // Nawiązywanie połączenia z bazą
-include(ROOT_PATH . "/funkcje/db-connect.php");
 try {
     $sql = "SELECT * FROM sezony ORDER BY sezon DESC LIMIT 1";
-    $result = $pdo->query($sql);
+    $result = PDOS::Instance()->query($sql);
     $liczba = $result->rowCount();
 } catch (PDOException $e) {
-    echo "<div id='error'> $e </div>";
+    reportError("db", $e->getMessage());
 }
 if ($liczba === 1) {
     // TODO: refeactor

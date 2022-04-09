@@ -1,16 +1,14 @@
 <?php
 is_logged();
-
-include(ROOT_PATH . "/funkcje/db-connect.php");
 include(ROOT_PATH . "/funkcje/funkcje.php");
 
 // Pobieranie obecnego sezonu
-$sezon = obecny_sezon($pdo);
+$sezon = obecny_sezon();
 $sezon_tabela = "${sezon}_tabela";
 $sezon_final = "${sezon}_final";
 
 // Sprawdzanie czy już przypadkiem nie istnieje...
-if (sprawdzanie_tabela($pdo, $sezon_final)) {
+if (sprawdzanie_tabela($sezon_final)) {
     $_SESSION['e_final_istnieje'] = "Finał obecnego sezonu już istnieje!";
     header('Location: ../admin.php');
     exit();
@@ -27,22 +25,18 @@ if (sprawdzanie_tabela($pdo, $sezon_final)) {
                     `poziom` int null,
                     PRIMARY KEY(id)
                 )";
-        $stmt = $pdo->prepare($sql);
+        $stmt = PDOS::Instance()->prepare($sql);
         $stmt->execute();
     } catch (PDOException $e) {
-        $_SESSION['e_final_tabela'] = "Błąd tabeli $sezon_final: $e";
-        header('Location: ../admin.php');
-        exit();
+        reportError("db", $e->getMessage());
     }
 
     // =================== POBIERANIE DRUŻYN ===================
     try {
-        $result_1 = $pdo->query("SELECT nazwa FROM $sezon_tabela WHERE grupa=1 ORDER BY pkt DESC, (zdobyte - stracone) DESC, nazwa ASC LIMIT 2 ");
-        $result_2 = $pdo->query("SELECT nazwa FROM $sezon_tabela WHERE grupa=2 ORDER BY pkt DESC, (zdobyte - stracone) DESC, nazwa ASC LIMIT 2 ");
+        $result_1 = PDOS::Instance()->query("SELECT nazwa FROM $sezon_tabela WHERE grupa=1 ORDER BY pkt DESC, (zdobyte - stracone) DESC, nazwa ASC LIMIT 2 ");
+        $result_2 = PDOS::Instance()->query("SELECT nazwa FROM $sezon_tabela WHERE grupa=2 ORDER BY pkt DESC, (zdobyte - stracone) DESC, nazwa ASC LIMIT 2 ");
     } catch (PDOException $e) {
-        $_SESSION['e_final_tabela'] = "Błąd tabeli $sezon_final: $e";
-        header('Location: ../admin.php');
-        exit();
+        reportError("db", $e->getMessage());
     }
 
     while ($row = $result_1->fetch()) {
@@ -75,11 +69,9 @@ if (sprawdzanie_tabela($pdo, $sezon_final)) {
                                                                                             ('NULL', '$mecz_2[0]', '$mecz_2[1]', '2'),
                                                                                             ('NULL', NULL, NULL, '3'),
                                                                                             ('NULL', NULL, NULL, '1')";
-        $pdo->exec($sql);
+        PDOS::Instance()->exec($sql);
     } catch (PDOException $e) {
-        $_SESSION['e_final_tabela'] = "Błąd tabeli $sezon_final: $e";
-        header('Location: ../admin.php');
-        exit();
+        reportError("db", $e->getMessage());
     }
 
     $_SESSION['sukces_final'] = "Utworzono drzewko finałowe!";

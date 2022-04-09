@@ -4,8 +4,8 @@ function get_page_title($file, $add = NULL)
 {
     global $PRETTY_PAGE_TITLES;
     $pretty_title = null;
-    $file = @relative_path($file, ROOT_PATH . "/sites/");
-    $pretty_title = $PRETTY_PAGE_TITLES[$file];
+    $file = relative_path($file, ROOT_PATH . "/sites/");
+    $pretty_title = in_array($file, $PRETTY_PAGE_TITLES) ? $PRETTY_PAGE_TITLES[$file] : null;
     $title = "";
     $sep1 = TITLE_LIGHT_SEPARATOR;
     $sep2 = TITLE_HEAVY_SEPARATOR;

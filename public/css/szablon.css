@@ -82,18 +82,18 @@ h3 {
 }
 
 /* WŁAŚCIWOŚCI KOMUNIKATÓW */
-#error, #sukces {
+.error, .sukces {
     width: 100%;
     font-size: 25px;
     padding: 10px 0;
-    text-align: center;
+    /*text-align: center;*/
 }
 
-#error {
+.error {
     background-color: #ce2525;
 }
 
-#sukces {
+.sukces {
     background-color: #22C12D;
 }
 

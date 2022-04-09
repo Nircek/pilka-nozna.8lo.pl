@@ -2,8 +2,6 @@
 
 include(ROOT_PATH . "/funkcje/funkcje_admin.php");
 is_logged();
-include(ROOT_PATH . "/funkcje/db-connect.php");
-
 $sezon_terminarz = $_POST['sezon'] . "_terminarz";
 $sezon_tabela = $_POST['sezon'] . "_tabela";
 $sezon_final = $_POST['sezon'] . "_final";
@@ -18,11 +16,9 @@ if (isset($_POST['final'])) {
                             `wynik_1` = NULL,
                           `wynik_2` = NULL
                         WHERE `poziom` = '3' OR `poziom` = '1'";
-        $pdo->exec($sql);
+        PDOS::Instance()->exec($sql);
     } catch (PDOException $e) {
-        $_SESSION['e_wyniki_baza'] = "Błąd bazy danych: $e";
-        header('Location: ../admin_wyniki.php');
-        exit();
+        reportError("db", $e->getMessage());
     }
 
     for ($y = 1; $y <= 4; $y++) {
@@ -37,11 +33,9 @@ if (isset($_POST['final'])) {
             if ((empty($wynik_1) and !is_numeric($wynik_1)) or (empty($wynik_2) and !is_numeric($wynik_1))) {
                 $sql_1 = "UPDATE $sezon_final SET wynik_1 =NULL, wynik_2=NULL WHERE id='$y'";
                 try {
-                    $pdo->exec($sql_1);
+                    PDOS::Instance()->exec($sql_1);
                 } catch (PDOException $e) {
-                    $_SESSION['e_wyniki_baza'] = "Błąd tabeli finałowej: $e";
-                    header('Location: ../admin_wyniki.php');
-                    exit();
+                    reportError("db", $e->getMessage());
                 }
             } else {
                 $sql_1 = "UPDATE $sezon_final SET wynik_1 ='$wynik_1', wynik_2='$wynik_2' WHERE id='$y'";
@@ -64,22 +58,18 @@ if (isset($_POST['final'])) {
                     }
 
                     try {
-                        $pdo->exec($sql_1);
-                        $pdo->exec($sql_2);
-                        $pdo->exec($sql_3);
+                        PDOS::Instance()->exec($sql_1);
+                        PDOS::Instance()->exec($sql_2);
+                        PDOS::Instance()->exec($sql_3);
                     } catch (PDOException $e) {
-                        $_SESSION['e_wyniki_baza'] = "Błąd tabeli finałowej: $e";
-                        header('Location: ../admin_wyniki.php');
-                        exit();
+                        reportError("db", $e->getMessage());
                     }
                 } else {
                     // Jeśli finał lub 3 miejsce
                     try {
-                        $pdo->exec($sql_1);
+                        PDOS::Instance()->exec($sql_1);
                     } catch (PDOException $e) {
-                        $_SESSION['e_wyniki_baza'] = "Błąd tabeli finałowej: $e";
-                        header('Location: ../admin_wyniki.php');
-                        exit();
+                        reportError("db", $e->getMessage());
                     }
                 }
             }

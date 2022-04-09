@@ -2,8 +2,6 @@
 
 include(ROOT_PATH . "/funkcje/funkcje_admin.php");
 is_logged();
-include(ROOT_PATH . "/funkcje/db-connect.php");
-
 $sezon = $_POST['zdjecie_sezon'];
 $data = date('Y-m-d');
 function uuid()
@@ -60,12 +58,10 @@ if (!empty($_FILES['files']['name'][0])) {
                 $file_destination = "zdjecia/" . $name_array[$i];
                 make_thumb("../" . $file_destination, "../zdjecia/thumb." . $name_array[$i], 200);
                 try {
-                    $stmt = $pdo->prepare("INSERT INTO `zdjecia` (`id`, `sezon`, `sciezka`, `data`) VALUES (NULL, '$sezon', '$file_destination', '$data')");
+                    $stmt = PDOS::Instance()->prepare("INSERT INTO `zdjecia` (`id`, `sezon`, `sciezka`, `data`) VALUES (NULL, '$sezon', '$file_destination', '$data')");
                     $stmt->execute();
                 } catch (PDOException $e) {
-                    $_SESSION['e_zdjecia_baza'] = "Wystąpił problem z bazą danych: " . $e;
-                    header('Location: ../admin.php');
-                    exit();
+                    reportError("db", $e->getMessage());
                 }
             } else {
                 $_SESSION['e_zdjecia_serwer'] = "Wystąpił problem z przesłaniem pliku na serwer!";

@@ -1,11 +1,10 @@
 <?php
 require_once(ROOT_PATH . '/config.php');
 
-function trace_assert($bool, $desc = NULL)
+function load_config_file($file)
 {
-    if ($bool) return;
-    // echo str_replace("\n", "<br/>\n", (new Exception)->getTraceAsString());
-    assert($bool, $desc);
+    if (!file_exists($file)) return false;
+    return parse_ini_file($file);
 }
 
 function arrayify($x)
@@ -25,14 +24,15 @@ function relative_path($path, $root = NULL)
     if ($root === NULL) $root = ROOT_PATH;
     $path = realpath($path);
     $root = realpath($root);
-    trace_assert($path and $root, "corrupted paths");
+    if (!$path or $root)
+        return false;
     $helper = function ($prev, $next) {
         if ($prev === $next) return ["", ""];
         return [$prev ? "/.." : "", $next ? "/$next" : ""];
     };
     $arr = array_map($helper, explode("/", $root), explode("/", $path));
     $relative = implode("", tuple_export(0, $arr)) . implode("", tuple_export(1, $arr));
-    if ($relative[0] === "/") $relative = substr($relative, 1);
+    if (strlen($relative) > 0 and $relative[0] === "/") $relative = substr($relative, 1);
     return $relative;
 }
 

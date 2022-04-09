@@ -7,33 +7,18 @@ is_logged();
 <div id="content">
     <h1> WPISZ WYNIKI (jesli się nie odbył to zostaw puste) </h1>
     <?php
-    include_once(ROOT_PATH . "/funkcje/db-connect.php");
     include_once(ROOT_PATH . "/funkcje/funkcje.php");
 
-    // Errors
-    if (isset($_SESSION['e_wyniki_baza'])) {
-        echo '<div id="error">' . $_SESSION['e_wyniki_baza'] . '</div><br/>';
-        unset($_SESSION['e_wyniki_baza']);
-    } elseif (isset($_SESSION['wyniki_sukces'])) {
-        echo '<div id="sukces">' . $_SESSION['wyniki_sukces'] . '</div><br/>';
-        unset($_SESSION['wyniki_sukces']);
-    } elseif (isset($_SESSION['e_wyniki_remis'])) {
-        echo '<div id="error">' . $_SESSION['e_wyniki_remis'] . '</div><br/>';
-        unset($_SESSION['e_wyniki_remis']);
-    }
-
-    $sezon = obecny_sezon($pdo);
+    $sezon = obecny_sezon();
     $sezon_terminarz = "${sezon}_terminarz";
     $sezon_final = "${sezon}_final";
 
-    if (sprawdzanie_tabela($pdo, $sezon_final)) {
+    if (sprawdzanie_tabela($sezon_final)) {
         try {
             $sql = "SELECT * FROM $sezon_final ORDER BY id DESC";
-            $result = $pdo->query($sql);
+            $result = PDOS::Instance()->query($sql);
         } catch (PDOException $e) {
-            $_SESSION['e_wyniki_baza'] = "Błąd bazy danych: $e";
-            header('Location: admin.php');
-            exit();
+            reportError("db", $e->getMessage());
         }
         while ($row = $result->fetch()) {
             $runda_finalowa[] = array(
@@ -102,13 +87,11 @@ is_logged();
     // =================== POBIERANIE TERMINARZA ===================
     try {
         $sql = "SELECT * FROM $sezon_terminarz WHERE grupa=1";
-        $terminarz_1 = $pdo->query($sql);
+        $terminarz_1 = PDOS::Instance()->query($sql);
         $sql = "SELECT * FROM $sezon_terminarz WHERE grupa=2";
-        $terminarz_2 = $pdo->query($sql);
+        $terminarz_2 = PDOS::Instance()->query($sql);
     } catch (PDOException $e) {
-        $_SESSION['e_wyniki_baza'] = "Błąd bazy danych: $e";
-        header('Location: admin.php');
-        exit();
+        reportError("db", $e->getMessage());
     }
 
     while ($row = $terminarz_1->fetch()) {
@@ -193,7 +176,7 @@ is_logged();
             $i++;
         }
         ?>
-    </div>";
+    </div>
     <input type='hidden' value='$i' name='liczba_2'>
 
     <input type='hidden' value='$sezon' name='sezon'>

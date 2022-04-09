@@ -41,8 +41,6 @@ if (isset($_POST['grupa-pierwsza'])) {
     }
 
     // ------------------ TWORZENIE BAZY NA TE WSZYSTKIE DRUŻYNY ------------------
-    include(ROOT_PATH . "/funkcje/db-connect.php");
-
     // Tworzenie tabeli sezonu
     $sezon_tabela = $_SESSION['sezon'] . "_tabela";
     try {
@@ -58,11 +56,9 @@ if (isset($_POST['grupa-pierwsza'])) {
                         `zdobyte` int not null,
                         `stracone` int not null
                     ) ENGINE=InnoDB;";
-        $pdo->exec($sql);
+        PDOS::Instance()->exec($sql);
     } catch (PDOException $e) {
-        $_SESSION['e_druzyny_baza'] = "Błąd bazy danych: $e";
-        header('Location: admin_sezon.php');
-        exit();
+        reportError("db", $e->getMessage());
     }
 
     // ------------------ WKŁADANIE GRUPY PIERWSZEJ DO BAZY ------------------
@@ -74,11 +70,9 @@ if (isset($_POST['grupa-pierwsza'])) {
                     ) VALUES (
                         NULL, '" . $druzyny_g1[$i - 1] . "', '$i', '1', '0', '0', '0', '0', '0', ''
                     )";
-            $pdo->exec($sql);
+            PDOS::Instance()->exec($sql);
         } catch (PDOException $e) {
-            $_SESSION['e_db'] = "Błąd bazy danych: $e";
-            header('Location: ../admin.php');
-            exit();
+            reportError("db", $e->getMessage());
         }
     }
 
@@ -91,11 +85,9 @@ if (isset($_POST['grupa-pierwsza'])) {
                     ) VALUES (
                         NULL, '" . $druzyny_g2[$i - 1] . "', '$i', '2', '0', '0', '0', '0', '0', ''
                     )";
-            $pdo->exec($sql);
+            PDOS::Instance()->exec($sql);
         } catch (PDOException $e) {
-            $_SESSION['e_db'] = "Błąd bazy danych: $e";
-            header('Location: ../admin.php');
-            exit();
+            reportError("db", $e->getMessage());
         }
     }
 
@@ -135,11 +127,11 @@ $_SESSION['krok'] = 2;
     // Validation errors
     if (isset($_SESSION['e_druzyny_pola'])) {
         // Nie podana wszystkich drużyn
-        echo '<div id="error">' . $_SESSION['e_druzyny_pola'] . '</div><br/>';
+        echo '<div class="error">' . $_SESSION['e_druzyny_pola'] . '</div><br/>';
         unset($_SESSION['e_druzyny_pola']);
     } elseif (isset($_SESSION['e_druzyny_baza'])) {
         // Nie podana wszystkich drużyn
-        echo '<div id="error">' . $_SESSION['e_druzyny_baza'] . '</div><br/>';
+        echo '<div class="error">' . $_SESSION['e_druzyny_baza'] . '</div><br/>';
         unset($_SESSION['e_druzyny_baza']);
     }
 

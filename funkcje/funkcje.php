@@ -1,11 +1,11 @@
 <?php
 
 // Pobieranie nazwy obecnego sezonu
-function obecny_sezon($pdo)
+function obecny_sezon()
 {
     try {
         $sql = "SELECT sezon FROM sezony ORDER BY sezon DESC LIMIT 1";
-        $result = $pdo->query($sql);
+        $result = PDOS::Instance()->query($sql);
         $liczba = $result->rowCount();
     } catch (PDOException $e) {
         return 0;
@@ -23,10 +23,10 @@ function obecny_sezon($pdo)
 }
 
 // Sprawdzanie czy tabela istnieje
-function sprawdzanie_tabela($pdo, $tabela)
+function sprawdzanie_tabela($tabela)
 {
     try {
-        $x = $pdo->query("SELECT * FROM $tabela");
+        $x = PDOS::Instance()->query("SELECT * FROM $tabela");
     } catch (PDOException $e) {
         return false;
     }
@@ -36,13 +36,11 @@ function sprawdzanie_tabela($pdo, $tabela)
 // Wypisuje harmonogram w formie pojedynczych tabelek na podstawie sezonu i grupy
 function harmonogram_grupy($sezon_terminarz, $grupa)
 {
-    include(ROOT_PATH . "/funkcje/db-connect.php");
-
     try {
         $sql = "SELECT * FROM $sezon_terminarz WHERE grupa=$grupa ORDER BY termin DESC";
-        $result_terminarz = $pdo->query($sql);
+        $result_terminarz = PDOS::Instance()->query($sql);
     } catch (PDOException $e) {
-        echo "<div id='error'> $e </div>";
+        reportError("db", $e->getMessage());
     }
     while ($row = $result_terminarz->fetch()) {
         $grupa_1_wyniki[] = array(
@@ -85,7 +83,6 @@ function show_tabela($wariant, $sezon_tabela, $grupa)
         wariant 1 = wersja rozszerzona ze wszystkim co jest w tabeli
         wariant 2 = wersja skrocona do najwazniejszych informacji
     */
-    include(ROOT_PATH . "/funkcje/db-connect.php");
     if ($wariant == 1) :
     ?>
         <table id="tabela" cellspacing="0">
@@ -103,10 +100,11 @@ function show_tabela($wariant, $sezon_tabela, $grupa)
             <?php
             try {
                 $sql = "SELECT * FROM $sezon_tabela WHERE grupa=$grupa ORDER BY pkt DESC, (zdobyte - stracone) DESC, nazwa ASC";
-                $result_tabela = $pdo->query($sql);
+                $result_tabela = PDOS::Instance()->query($sql);
             } catch (PDOException $e) {
-                echo "<div id='error'> $e </div>";
+                reportError("db", $e->getMessage());
             }
+            $tabela = array();
             while ($row = $result_tabela->fetch()) {
                 $tabela[] = array(
                     'nazwa' => $row['nazwa'],
@@ -154,9 +152,9 @@ function show_tabela($wariant, $sezon_tabela, $grupa)
             <?php
             try {
                 $sql = "SELECT * FROM $sezon_tabela WHERE grupa=$grupa ORDER BY pkt DESC, (zdobyte - stracone) DESC, nazwa ASC";
-                $result_tabela = $pdo->query($sql);
+                $result_tabela = PDOS::Instance()->query($sql);
             } catch (PDOException $e) {
-                echo "<div id='error'> $e </div>";
+                reportError("db", $e->getMessage());
             }
 
             while ($row = $result_tabela->fetch()) {

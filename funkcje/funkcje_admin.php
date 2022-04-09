@@ -1,5 +1,6 @@
 <?php
-define("ADMIN_LOGIN_URL", "$PREFIX/admin/login");
+define("ADMIN_LOGIN_URL", PREFIX . "/admin/login");
+define("ADMIN_MAIN_URL", PREFIX . "/admin");
 function is_logged($admin_site = true, $redirect_url = ADMIN_LOGIN_URL)
 {
     if (!isset($_SESSION['zalogowany'])) {
@@ -12,8 +13,6 @@ function is_logged($admin_site = true, $redirect_url = ADMIN_LOGIN_URL)
 // Sprawdza czy cokolwiek wpisano i robi update odpowiednich rekordów
 function dodawanie_wyniku($sezon_terminarz, $id, $wynik_1, $wynik_2)
 {
-    include(ROOT_PATH . "/funkcje/db-connect.php");
-
     if ((empty($wynik_1) and !is_numeric($wynik_1)) or (empty($wynik_2) and !is_numeric($wynik_1))) {
         $wynik_1 = null;
         $wynik_2 = null;
@@ -24,18 +23,16 @@ function dodawanie_wyniku($sezon_terminarz, $id, $wynik_1, $wynik_2)
 
     // Wkładanie wszystkich wyników do bazy danych
     try {
-        $pdo->exec($sql);
+        PDOS::Instance()->exec($sql);
     } catch (PDOException $e) {
-        $_SESSION['e_wyniki_baza'] = "Błąd bazy danych: $e <br/> $sql";
-        header('Location: ../nowe_wyniki.php');
+        reportError("db", $e->getMessage());
+        header("Location: " . ADMIN_MAIN_URL);
         exit();
     }
 }
 
 function resetowanie_tabeli($sezon_tabela)
 {
-    include(ROOT_PATH . "/funkcje/db-connect.php");
-
     // RESETOWANIE TABELI Z PUNKTAMI
     // Trzeba to zrobić ze względu na to iż pkt dodaje się do już zapisanych i byłby problem gdyby chciało się jakiś mecz anulować
     // Dlatego wszystko zawsze zlicza się od poczatku
@@ -47,18 +44,16 @@ function resetowanie_tabeli($sezon_tabela)
                     `remisy` = 0,
                     `zdobyte` = 0,
                     `stracone` = 0";
-        $pdo->exec($sql);
+        PDOS::Instance()->exec($sql);
     } catch (PDOException $e) {
-        $_SESSION['e_wyniki_baza'] = "Błąd bazy danych: $e";
-        header('Location: admin_wyniki.php');
+        reportError("db", $e->getMessage());
+        header("Location: " . ADMIN_MAIN_URL);
         exit();
     }
 }
 
 function tabela($sezon_tabela, $grupa, $d1, $d2, $gole_1, $gole_2)
 {
-    include(ROOT_PATH . "/funkcje/db-connect.php");
-
     if ($gole_1 != null and $gole_2 != null) {
         // Dodawanie odpowiednich danych odpowiednim zespołom
         if ($gole_1 == $gole_2) {
@@ -66,10 +61,10 @@ function tabela($sezon_tabela, $grupa, $d1, $d2, $gole_1, $gole_2)
                 $sql = "UPDATE `$sezon_tabela`
                             SET `remisy` = `remisy` + 1, `pkt` = `pkt` + 1, `zdobyte` = `zdobyte` + '$gole_1', `stracone` = `stracone` + '$gole_2'
                             WHERE `numer` = '$d1' AND `grupa` = '$grupa'";
-                $pdo->exec($sql);
+                PDOS::Instance()->exec($sql);
             } catch (PDOException $e) {
-                $_SESSION['e_wyniki_baza'] = "Błąd bazy danych: $e <br/> $sql";
-                header('Location: ../nowe_wyniki.php');
+                reportError("db", $e->getMessage());
+                header("Location: " . ADMIN_MAIN_URL);
                 exit();
             }
 
@@ -77,10 +72,10 @@ function tabela($sezon_tabela, $grupa, $d1, $d2, $gole_1, $gole_2)
                 $sql = "UPDATE `$sezon_tabela`
                             SET `remisy` = `remisy` + 1, `pkt` = `pkt` + 1, `zdobyte` = `zdobyte` + '$gole_2', `stracone` = `stracone` + '$gole_1'
                             WHERE `numer` = '$d2' AND `grupa` = '$grupa'";
-                $pdo->exec($sql);
+                PDOS::Instance()->exec($sql);
             } catch (PDOException $e) {
-                $_SESSION['e_wyniki_baza'] = "Błąd bazy danych: $e <br/> $sql";
-                header('Location: ../nowe_wyniki.php');
+                reportError("db", $e->getMessage());
+                header("Location: " . ADMIN_MAIN_URL);
                 exit();
             }
         } elseif ($gole_1 > $gole_2) {
@@ -88,10 +83,10 @@ function tabela($sezon_tabela, $grupa, $d1, $d2, $gole_1, $gole_2)
                 $sql = "UPDATE `$sezon_tabela`
                             SET `zwyciestwa` = `zwyciestwa` + 1, `pkt` = `pkt` + 3, `zdobyte` = `zdobyte` + '$gole_1', `stracone` = `stracone` + '$gole_2'
                             WHERE `numer` = '$d1' AND `grupa` = '$grupa'";
-                $pdo->exec($sql);
+                PDOS::Instance()->exec($sql);
             } catch (PDOException $e) {
-                $_SESSION['e_wyniki_baza'] = "Błąd bazy danych: $e <br/> $sql";
-                header('Location: ../nowe_wyniki.php');
+                reportError("db", $e->getMessage());
+                header("Location: " . ADMIN_MAIN_URL);
                 exit();
             }
 
@@ -99,10 +94,10 @@ function tabela($sezon_tabela, $grupa, $d1, $d2, $gole_1, $gole_2)
                 $sql = "UPDATE `$sezon_tabela`
                             SET `przegrane` = `przegrane` + 1, `zdobyte` = `zdobyte` + '$gole_2', `stracone` = `stracone` + '$gole_1'
                             WHERE `numer` = '$d2' AND `grupa` = '$grupa'";
-                $pdo->exec($sql);
+                PDOS::Instance()->exec($sql);
             } catch (PDOException $e) {
-                $_SESSION['e_wyniki_baza'] = "Błąd bazy danych: $e <br/> $sql";
-                header('Location: ../nowe_wyniki.php');
+                reportError("db", $e->getMessage());
+                header("Location: " . ADMIN_MAIN_URL);
                 exit();
             }
         } elseif ($gole_1 < $gole_2) {
@@ -110,10 +105,10 @@ function tabela($sezon_tabela, $grupa, $d1, $d2, $gole_1, $gole_2)
                 $sql = "UPDATE `$sezon_tabela`
                             SET `przegrane` = `przegrane` + 1, `zdobyte` = `zdobyte` + '$gole_1', `stracone` = `stracone` + '$gole_2'
                             WHERE `numer` = '$d1' AND `grupa` = '$grupa'";
-                $pdo->exec($sql);
+                PDOS::Instance()->exec($sql);
             } catch (PDOException $e) {
-                $_SESSION['e_wyniki_baza'] = "Błąd bazy danych: $e <br/> $sql";
-                header('Location: ../nowe_wyniki.php');
+                reportError("db", $e->getMessage());
+                header("Location: " . ADMIN_MAIN_URL);
                 exit();
             }
 
@@ -121,10 +116,10 @@ function tabela($sezon_tabela, $grupa, $d1, $d2, $gole_1, $gole_2)
                 $sql = "UPDATE `$sezon_tabela`
                             SET `zwyciestwa` = `zwyciestwa` + 1, `pkt` = `pkt` + 3, `zdobyte` = `zdobyte` + '$gole_2', `stracone` = `stracone` + '$gole_1'
                             WHERE `numer` = '$d2' AND `grupa` = '$grupa'";
-                $pdo->exec($sql);
+                PDOS::Instance()->exec($sql);
             } catch (PDOException $e) {
-                $_SESSION['e_wyniki_baza'] = "Błąd bazy danych: $e <br/> $sql";
-                header('Location: ../nowe_wyniki.php');
+                reportError("db", $e->getMessage());
+                header("Location: " . ADMIN_MAIN_URL);
                 exit();
             }
         }

@@ -1,16 +1,16 @@
 <?php
-include(ROOT_PATH . "/funkcje/db-connect.php");
+define("SEZONY_URL", PREFIX . "/sezony");
 include(ROOT_PATH . "/funkcje/funkcje.php");
 if (isset($_GET['s'])) {
     $sezon_pelny = $_GET['s'];
     // Sezon zapisywany w bazie to tylko jego liczba początkowa
     // 2016/2017 to tylko 2016, dlatego $_GET musi rozdzielić te dwie liczby
-    $sezon = explode("/", $sezon_pelny)[0];
+    $sezon = $sezon_pelny === "obecny" ? obecny_sezon() : explode("/", $sezon_pelny)[0];
     $sezon_tabela = "${sezon}_tabela";
     $sezon_terminarz = "${sezon}_terminarz";
-    if (!sprawdzanie_tabela($pdo, $sezon_tabela) || !sprawdzanie_tabela($pdo, $sezon_terminarz)) {
-        header('Location: sezony.php');
-        echo "Podany sezon nie istnieje...";
+    if (!sprawdzanie_tabela($sezon_tabela) || !sprawdzanie_tabela($sezon_terminarz)) {
+        header("Location: " . SEZONY_URL);
+        reportError("Podany sezon nie istnieje...", NULL);
         exit();
     }
 }
@@ -26,9 +26,9 @@ if (!isset($_GET['s'])) :
         <?php
         try {
             $sql = "SELECT sezon FROM sezony ORDER BY id DESC";
-            $result = $pdo->query($sql);
+            $result = PDOS::Instance()->query($sql);
         } catch (PDOException $e) {
-            echo "<div id='error'> $e </div>";
+            reportError("db", $e->getMessage());
         }
         $sezon = array();
         while ($row = $result->fetch()) {
@@ -65,13 +65,13 @@ if (!isset($_GET['s'])) :
         <div id="runda-finalowa">
             <?php
             $sezon_final = "${sezon}_final";
-            if (sprawdzanie_tabela($pdo, $sezon_final)) {
+            if (sprawdzanie_tabela($sezon_final)) {
                 $check_final = true;
                 try {
                     $sql = "SELECT * FROM $sezon_final ORDER BY id DESC";
-                    $result = $pdo->query($sql);
+                    $result = PDOS::Instance()->query($sql);
                 } catch (PDOException $e) {
-                    echo "<div id='error'> $e </div>";
+                    reportError("db", $e->getMessage());
                 }
 
                 while ($row = $result->fetch()) {

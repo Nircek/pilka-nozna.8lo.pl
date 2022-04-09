@@ -5,13 +5,12 @@
         <div id="left-content">
             <h1> GALERIA </h1>
             <?php
-            include(ROOT_PATH . "/funkcje/db-connect.php");
             // POBIERANIE ZDJĘĆ Z BAZY
             try {
                 $sql = "SELECT `sciezka` FROM `zdjecia` ORDER BY RAND() LIMIT 4";
-                $result = $pdo->query($sql);
+                $result = PDOS::Instance()->query($sql);
             } catch (PDOException $e) {
-                echo '<div id="error">Błąd bazy danych: ' . $e . '</div>';
+                reportError("db", $e->getMessage());
             }
             $zdjecie = array();
             while ($row = $result->fetch()) {
@@ -36,9 +35,9 @@
                 // POBIERANIE INFORMACJI Z BAZY
                 try {
                     $sql = "SELECT * FROM informacje ORDER BY id DESC";
-                    $result = $pdo->query($sql);
+                    $result = PDOS::Instance()->query($sql);
                 } catch (PDOException $e) {
-                    echo '<div id="error">Błąd bazy danych: ' . $e . '</div>';
+                    reportError("db", $e->getMessage());
                 }
 
                 $info = array();
@@ -75,13 +74,15 @@
 
             try {
                 $sql = "SELECT * FROM sezony ORDER BY sezon DESC LIMIT 1";
-                $result = $pdo->query($sql);
+                $result = PDOS::Instance()->query($sql);
                 $liczba = $result->rowCount();
-                if ($liczba == 0) {
-                    echo "<div id='error'> Nie ma żadnego sezonu... </div>";
-                }
+                if ($liczba == 0) :
+            ?>
+                    <div class="error"> Nie ma żadnego sezonu... </div>
+                <?php
+                endif;
             } catch (PDOException $e) {
-                echo "<div id='error'> $e </div>";
+                reportError("db", $e->getMessage());
             }
             $sezon = array();
             while ($row = $result->fetch()) {
@@ -91,7 +92,7 @@
             if ($liczba != 0) :
                 foreach ($sezon as $sezon) :
                     $sezon = $sezon['sezon'];
-            ?>
+                ?>
                     <h2> TABELA <?= $sezon ?>/<?= $sezon + 1 ?> </h2>
                 <?php
                     $sezon_tabela = "${sezon}_tabela";

@@ -12,15 +12,12 @@ if (isset($_POST['info_tytul'])) {
         header('Location: ../admin.php');
         exit();
     } else {
-        include(ROOT_PATH . "/funkcje/db-connect.php");
         try {
             $sql = "INSERT INTO `informacje` (`id`, `tytul`, `tresc`, `data`) VALUES (NULL, '$tytul', '$tresc', CURDATE())";
-            $stmt = $pdo->prepare($sql);
+            $stmt = PDOS::Instance()->prepare($sql);
             $stmt->execute();
         } catch (PDOException $e) {
-            $_SESSION['e_info_baza'] = "Wystąpił problem z bazą danych: " . $e;
-            header('Location: ../admin.php');
-            exit();
+            reportError("db", $e->getMessage());
         }
 
         // Jesli sukces to się wyświetli, a jeśli nie to skrypt już wcześniej wywali błąd i przerwie działanie
