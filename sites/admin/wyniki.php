@@ -1,188 +1,71 @@
 <?php
-include_once(ROOT_PATH . '/funkcje/funkcje_admin.php');
+register_style("admin_wyniki");
 is_logged();
-?>
-<?php generate_header("admin,admin_wyniki"); ?>
 
-<div id="content">
-    <h1> WPISZ WYNIKI (jesli się nie odbył to zostaw puste) </h1>
-    <?php
-    include_once(ROOT_PATH . "/funkcje/funkcje.php");
-
+function page_init()
+{
     $sezon = obecny_sezon();
-    $sezon_terminarz = "${sezon}_terminarz";
     $sezon_final = "${sezon}_final";
+    $sezon_terminarz = "${sezon}_terminarz";
+    $harmonogram = array();
+    $harmonogram_stmt = PDOS::Instance()->prepare(
+        "SELECT *,
+            IFNULL(`1_wynik`, '') AS w1,
+            IFNULL(`2_wynik`, '') AS w2,
+            CASE WHEN termin IS NULL OR YEAR(termin) = 0 THEN 'nie ustalono' ELSE termin END AS data
+        FROM `$sezon_terminarz` WHERE grupa = ? ORDER BY termin DESC"
+    );
+    for ($i = 1; $i <= 2; ++$i) {
+        $harmonogram_stmt->execute([$i]);
+        $harmonogram[] = $harmonogram_stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    return array(
+        'sezon' => $sezon,
+        'harmonogram' => $harmonogram,
+        'finalowe' => sprawdzanie_tabela($sezon_final) ? PDOS::Instance()->query(
+            "SELECT *,
+                SUBSTRING_INDEX(SUBSTRING_INDEX('FINAŁ,PÓŁFINAŁ,3 MIEJSCE',',', poziom),',',-1) AS tytul,
+                CASE WHEN YEAR(termin) = 0 THEN 'nie ustalono' ELSE termin END AS data,
+                IFNULL(wynik_1, '') AS w1, IFNULL(wynik_2, '') AS w2,
+                IFNULL(druzyna_1, '???') AS d1, IFNULL(druzyna_2, '???') AS d2
+            FROM `$sezon_final` ORDER BY id DESC"
+        )->fetchAll(PDO::FETCH_ASSOC) : NULL,
+    );
+}
 
-    if (sprawdzanie_tabela($sezon_final)) {
-        try {
-            $sql = "SELECT * FROM $sezon_final ORDER BY id DESC";
-            $result = PDOS::Instance()->query($sql);
-        } catch (PDOException $e) {
-            reportError("db", $e->getMessage());
-        }
-        while ($row = $result->fetch()) {
-            $runda_finalowa[] = array(
-                'id' => $row['id'],
-                'druzyna_1' => $row['druzyna_1'],
-                'druzyna_2' => $row['druzyna_2'],
-                'wynik_1' => $row['wynik_1'],
-                'wynik_2' => $row['wynik_2'],
-                'termin' => $row['termin'],
-                'etap' => $row['poziom']
-            );
-        }
+function page_render($obj)
+{ ?>
 
-    ?>
+    <div id="content">
+        <h1> WPISZ WYNIKI (jesli się nie odbył to zostaw puste) </h1>
+
         <form method='post' action='<?= PREFIX ?>/skrypty/wyniki'>
-            <?php
-            $y = 4;
-            foreach ($runda_finalowa as $runda_finalowa) {
-                $final[$y][0] = $runda_finalowa['id'];
-                $final[$y][1] = $runda_finalowa['druzyna_1'];
-                $final[$y][2] = $runda_finalowa['druzyna_2'];
-                $final[$y][3] = $runda_finalowa['wynik_1'];
-                $final[$y][4] = $runda_finalowa['wynik_2'];
-                $final[$y][5] = $runda_finalowa['etap'];
-
-                if ($final[$y][5] == 1) {
-                    $etap = "FINAŁ";
-                } elseif ($final[$y][5] == 2) {
-                    $etap = "PÓŁFINAŁ";
-                } elseif ($final[$y][5] == 3) {
-                    $etap = "3 MIEJSCE";
-                }
-
-                if (empty($final[$y][1]) or empty($final[$y][2])) {
-                    if (empty($final[$y][1])) {
-                        $final[$y][1] = "??? ";
-                    }
-
-                    if (empty($final[$y][2])) {
-                        $final[$y][2] = " ???";
-                    }
-            ?>
-                    <?= $etap ?> | <?= $final[$y][1] ?> vs <?= $final[$y][2] ?> <br />";
-                <?php
-                } else {
-                ?>
-                    <?= $etap ?> | <?= $final[$y][1] ?><input class='wynik' type='number' value='<?= $final[$y][3] ?>' name='f_wynik_1_$y'>
-                    <input type='hidden' value='<?= $final[$y][1] ?>' name='f_d1_$y'>:
-                    <input class='wynik' type='number' value='<?= $final[$y][4] ?>' name='f_wynik_2_$y'>
-                    <input type='hidden' value='<?= $final[$y][2] ?>' name='f_d2_$y'><?= $final[$y][2] ?>
-                    <input type='hidden' value='<?= $final[$y][5] ?>' name='f_etap_<?= $y ?>'><br />
-            <?php
-                }
-                $y--;
-            }
-            ?>
-            <input type='hidden' name='final'><!-- Zmienna żeby sprawdzić czy wysłano -->
-            <input type='hidden' value='$sezon' name='sezon'>
+            <?php if (!is_null($obj['finalowe'])) : ?>
+                <?php foreach ($obj['finalowe'] as $mecz) : ?>
+                    <?= $mecz['tytul'] ?> | <?= $mecz['data'] ?> <br /><?= $mecz['d1'] ?>
+                    <input class='wynik' type='number' value='<?= $mecz['w1'] ?>' name='f<?= $mecz['id'] ?>_1'> :
+                    <input class='wynik' type='number' value='<?= $mecz['w2'] ?>' name='f<?= $mecz['id'] ?>_2'>
+                    <?= $mecz['d2'] ?>
+                    <br />
+                <?php endforeach; ?>
+            <?php endif; ?>
+            <?php for ($grupa = 0; $grupa <= 1; ++$grupa) : ?>
+                <div id='grupy'>
+                    <?php foreach ($obj['harmonogram'][$grupa] as $mecz) : ?>
+                        <?= $mecz['data'] ?><br />
+                        <?= $mecz['1_text'] ?>
+                        <input class='wynik' type='number' name='<?= $mecz['id'] ?>_1' value='<?= $mecz['w1'] ?>'> :
+                        <input class='wynik' type='number' name='<?= $mecz['id'] ?>_2' value='<?= $mecz['w2'] ?>'>
+                        <?= $mecz['2_text'] ?>
+                        <br />
+                    <?php endforeach; ?>
+                </div>
+            <?php endfor; ?>
+            <div style="clear: both;"></div>
+            <input type='hidden' value='<?= $obj['sezon'] ?>' name='sezon'>
             <input type='submit' value='AKTUALIZUJ!'>
-        </form><br />
-    <?php
-    }
-
-    // >>>>>>>>>>>>>>>>>>>> FAZA GRUPOWA <<<<<<<<<<<<<<<<<<<<
-
-    // =================== POBIERANIE TERMINARZA ===================
-    try {
-        $sql = "SELECT * FROM $sezon_terminarz WHERE grupa=1";
-        $terminarz_1 = PDOS::Instance()->query($sql);
-        $sql = "SELECT * FROM $sezon_terminarz WHERE grupa=2";
-        $terminarz_2 = PDOS::Instance()->query($sql);
-    } catch (PDOException $e) {
-        reportError("db", $e->getMessage());
-    }
-
-    while ($row = $terminarz_1->fetch()) {
-        $termin_1[] = array(
-            'id' => $row['id'],
-            '1_text' => $row['1_text'],
-            '2_text' => $row['2_text'],
-            '1_num' => $row['1_num'],
-            '2_num' => $row['2_num'],
-            '1_wynik' => $row['1_wynik'],
-            '2_wynik' => $row['2_wynik'],
-            'termin' => $row['termin']
-        );
-    }
-
-    while ($row = $terminarz_2->fetch()) {
-        $termin_2[] = array(
-            'id' => $row['id'],
-            '1_text' => $row['1_text'],
-            '2_text' => $row['2_text'],
-            '1_num' => $row['1_num'],
-            '2_num' => $row['2_num'],
-            '1_wynik' => $row['1_wynik'],
-            '2_wynik' => $row['2_wynik'],
-            'termin' => $row['termin']
-        );
-    }
-    ?>
-    <div id='grupy'>
-        <form method='post' action='<?= PREFIX ?>/skrypty/wyniki'>
-            <?php
-
-            // =================== WYPISYWANIE INPUTÓW DLA OBU GRUP ===================
-            $i = 1;
-            foreach ($termin_1 as $termin_1) {
-                $termin_1[$i][0] = $termin_1['id'];
-                $termin_1[$i][1] = $termin_1['1_text'];
-                $termin_1[$i][2] = $termin_1['2_text'];
-                $termin_1[$i][3] = $termin_1['1_num'];
-                $termin_1[$i][4] = $termin_1['2_num'];
-                $termin_1[$i][5] = $termin_1['1_wynik'];
-                $termin_1[$i][6] = $termin_1['2_wynik'];
-                $termin_1[$i][7] = $termin_1['termin'];
-
-                $d1 = $termin_1[$i][0];
-                $d2 = $termin_1[$i][0];
-            ?>
-                <?= $termin_1[$i][1] ?>
-                <input class='wynik' type='number' name='<?= $d1 ?>_1' value='<?= $termin_1[$i][5] ?>'>
-                <input type='hidden' name='d1_<?= $i ?>' value='<?= $termin_1[$i][3] ?>'>
-                :<input class='wynik' type='number' name='<?= $d2 ?>_2' value='<?= $termin_1[$i][6] ?>'>
-                <input type='hidden' name='d2_<?= $i ?>' value='<?= $termin_1[$i][4] ?>'><?= $termin_1[$i][2] ?>
-                <br />
-            <?php
-                $i++;
-            }
-            ?>
-            <input type='hidden' value='$i' name='liczba_1'>
+        </form>
     </div>
-    <div id='grupy'>
-        <?php
-        $i = 1;
-        foreach ($termin_2 as $termin_2) {
-            $termin_2[$i][0] = $termin_2['id'];
-            $termin_2[$i][1] = $termin_2['1_text'];
-            $termin_2[$i][2] = $termin_2['2_text'];
-            $termin_2[$i][3] = $termin_2['1_num'];
-            $termin_2[$i][4] = $termin_2['2_num'];
-            $termin_2[$i][5] = $termin_2['1_wynik'];
-            $termin_2[$i][6] = $termin_2['2_wynik'];
-            $termin_2[$i][7] = $termin_2['termin'];
+    <div style='clear: both;'></div>
 
-            $d1 = $termin_2[$i][0];
-            $d2 = $termin_2[$i][0];
-        ?>
-            <?= $termin_2[$i][1] ?><input class='wynik' type='number' name='<?= $d1 ?>_1' value='<?= $termin_2[$i][5] ?>'>
-            <input type='hidden' name='d1_<?= $i ?>' value='<?= $termin_2[$i][3] ?>'>
-            :<input class='wynik' type='number' name='<?= $d2 ?>_2' value='<?= $termin_2[$i][6] ?>'>
-            <input type='hidden' name='d2_<?= $i ?>' value='<?= $termin_2[$i][4] ?>'><?= $termin_2[$i][2] ?>
-            <br />
-        <?php
-            $i++;
-        }
-        ?>
-    </div>
-    <input type='hidden' value='$i' name='liczba_2'>
-
-    <input type='hidden' value='$sezon' name='sezon'>
-    <input type='submit' value='AKTUALIZUJ!'>
-    </form>
-</div>
-<div style='clear: both;'></div>
-
-<?php generate_footer(); ?>
+<?php }

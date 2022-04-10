@@ -1,10 +1,14 @@
 <?php
-
-include(ROOT_PATH . "/funkcje/funkcje_admin.php");
 is_logged();
-$sezon = $_POST['zdjecie_sezon'];
-$data = date('Y-m-d');
-function uuid()
+header('Location: ' . PANEL_URL);
+
+$sezon = cast_int($_POST['zdjecie_sezon']);
+if (is_null($sezon)) {
+    report_error("sezon violation", NULL);
+    exit();
+}
+
+function random_uuid()
 {
     // SRC: https://solvit.io/50064cf
     return sprintf(
@@ -50,36 +54,27 @@ if (!empty($_FILES['files']['name'][0])) {
         if ($ext == "jpg" or $ext == "JPG") {
             // Tworzymy unikatową nazwę dla pliku
             do {
-                $random = uuid();
+                $random = random_uuid();
                 $name_array[$i] = "${random}.jpg";
-            } while (file_exists("../zdjecia/" . $name_array[$i]));
+            } while (file_exists(ROOT_PATH . "/public/zdjecia/" . $name_array[$i]));
 
-            if (move_uploaded_file($tmp_name_array[$i], "../zdjecia/" . $name_array[$i])) {
+            $file_absolute = ROOT_PATH . "/public/zdjecia/" . $name_array[$i];
+            if (move_uploaded_file($tmp_name_array[$i], $file_absolute)) {
                 $file_destination = "zdjecia/" . $name_array[$i];
-                make_thumb("../" . $file_destination, "../zdjecia/thumb." . $name_array[$i], 200);
-                try {
-                    $stmt = PDOS::Instance()->prepare("INSERT INTO `zdjecia` (`id`, `sezon`, `sciezka`, `data`) VALUES (NULL, '$sezon', '$file_destination', '$data')");
-                    $stmt->execute();
-                } catch (PDOException $e) {
-                    reportError("db", $e->getMessage());
-                }
+                make_thumb($file_absolute, ROOT_PATH . "/public/zdjecia/thumb." . $name_array[$i], 200);
+                PDOS::Instance()->prepare("INSERT INTO `zdjecia` (`sezon`, `sciezka`, `data`) VALUES (?, ?, CURDATE())")->execute([$sezon, $file_destination]);
             } else {
-                $_SESSION['e_zdjecia_serwer'] = "Wystąpił problem z przesłaniem pliku na serwer!";
-                header('Location: ../admin.php');
+                report_error("Wystąpił problem z przesłaniem pliku na serwer!", NULL);
                 exit();
             }
         } else {
-            $_SESSION['e_zdjecia_rozszerzenie'] = "$name_array[$i] - Rozszerzenie nie jest obsługiwane!";
-            header('Location: ../admin.php');
+            report_error($name_array[$i] . " - Rozszerzenie nie jest obsługiwane!", NULL);
             exit();
         }
     }
 } else {
-    $_SESSION['e_zdjecia_pliki'] = "Wybierz pliki!";
-    header('Location: ../admin.php');
+    report_error("Wybierz pliki!", NULL);
     exit();
 }
 
-$_SESSION['e_zdjecia_sukces'] = "Zdjęcia zostały dodane pomyślnie!";
-header('Location: ../admin.php');
 exit();

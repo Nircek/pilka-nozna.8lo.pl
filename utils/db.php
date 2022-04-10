@@ -14,7 +14,7 @@ final class PDOS
         $ini = load_config_file(ROOT_PATH . "/config.ini");
         if (!$ini) $ini = load_config_file(ROOT_PATH . "/config.sample.ini");
         if (!$ini) {
-            reportError("db", "No valid config found.");
+            report_error("db", "No valid config found.");
             return false;
         }
         $dbname = $ini["dbname"];
@@ -23,9 +23,10 @@ final class PDOS
         $haslo = $ini["password"];
 
         try {
-            $pdo = new PDO("mysql:host=$host; dbname=$dbname", $login, $haslo);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $pdo->exec('SET NAMES "utf8"');
+            $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $login, $haslo, array(
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_PERSISTENT => false
+            ));
             $arr = array("CREATE TABLE IF NOT EXISTS `sezony` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `sezon` int(11) NOT NULL,
@@ -33,13 +34,13 @@ final class PDOS
         )", "CREATE TABLE IF NOT EXISTS `zdjecia` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `sezon` int(11) NOT NULL,
-            `sciezka` text COLLATE utf8_polish_ci NOT NULL,
+            `sciezka` text COLLATE utf8mb4_general_ci NOT NULL,
             `data` date NOT NULL,
             PRIMARY KEY(`id`)
         )", "CREATE TABLE IF NOT EXISTS `informacje` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
-            `tytul` text COLLATE utf8_polish_ci NOT NULL,
-            `tresc` text COLLATE utf8_polish_ci NOT NULL,
+            `tytul` text COLLATE utf8mb4_general_ci NOT NULL,
+            `tresc` text COLLATE utf8mb4_general_ci NOT NULL,
             `data` date NOT NULL,
             PRIMARY KEY(`id`)
         )");
@@ -49,8 +50,39 @@ final class PDOS
             }
             return $pdo;
         } catch (PDOException $e) {
-            reportError("db", $e->getMessage());
+            report_error("db", $e->getMessage());
         }
         return false;
     }
+}
+
+function obecny_sezon()
+{
+    $arr = PDOS::Instance()->query("SELECT sezon FROM sezony ORDER BY sezon DESC LIMIT 1")->fetchAll(PDO::FETCH_COLUMN);
+    return $arr ? $arr[0] : NULL;
+}
+
+// Sprawdzanie czy tabela istnieje
+function sprawdzanie_tabela($tabela)
+{
+    try {
+        PDOS::Instance()->query("SELECT * FROM $tabela");
+    } catch (PDOException $_) {
+        return false;
+    }
+    return true;
+}
+
+define("ADMIN_LOGIN_URL", PREFIX . "/admin/login");
+function is_logged($required = true)
+{
+    $logged = isset($_SESSION['zalogowany']);
+    if($logged and MAINTENANCE) {
+        unset($_SESSION['zalogowany']);
+    }
+    if ($required and !$logged) {
+        header("Location: " . ADMIN_LOGIN_URL);
+        exit();
+    }
+    return $logged;
 }

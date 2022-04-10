@@ -51,6 +51,12 @@
     overflow: hidden;
 }
 
+#content.wybierz {
+    background-color: rgba(20, 21, 24, 0.9);
+    width: 960px;
+    padding: 20px;
+}
+
 #head,
 #runda-finalowa {
     background-color: rgba(0, 0, 0, 0.5);

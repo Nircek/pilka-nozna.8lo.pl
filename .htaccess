@@ -4,10 +4,24 @@ Order Allow,Deny
 Deny from all
 </FilesMatch>
 
+<IfModule mod_expires.c>
+    # SRC: https://stackoverflow.com/a/13029007/6732111
+    ExpiresActive On
+    ExpiresDefault "access plus 1 seconds"
+    ExpiresByType text/html "access plus 1 seconds"
+    ExpiresByType image/x-icon "access plus 2592000 seconds"
+    ExpiresByType image/gif "access plus 2592000 seconds"
+    ExpiresByType image/jpeg "access plus 2592000 seconds"
+    ExpiresByType image/png "access plus 2592000 seconds"
+    ExpiresByType text/css "access plus 86400 seconds"
+    ExpiresByType text/javascript "access plus 86400 seconds"
+    ExpiresByType application/x-javascript "access plus 86400 seconds"
+</IfModule>
+
 <IfModule mod_rewrite.c>
     RewriteEngine on
     # make some dirs public
-    RewriteRule "^(upload|css|img|pic|fontello|js)/.*$" "public/$0" [S=1]
+    RewriteRule "^(upload|css|img|zdjecia|fontello|js)/.*$" "public/$0" [S=1]
     # and all other pass through single PHP entry point
     RewriteRule "^" "main.php" [END]
     # or if public file doesn't exist...
@@ -27,3 +41,4 @@ php_value memory_limit 300M
 php_value post_max_size 1000M
 php_value upload_max_filesize 300M
 php_flag display_errors off
+# php_flag log_errors off

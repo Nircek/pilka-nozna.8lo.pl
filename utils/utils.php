@@ -1,6 +1,12 @@
 <?php
 require_once(ROOT_PATH . '/config.php');
 
+function cast_int($x)
+{
+    if (!is_numeric($x)) return NULL;
+    return $x + 0;
+}
+
 function load_config_file($file)
 {
     if (!file_exists($file)) return false;
@@ -35,5 +41,3 @@ function relative_path($path, $root = NULL)
     if (strlen($relative) > 0 and $relative[0] === "/") $relative = substr($relative, 1);
     return $relative;
 }
-
-require_once(ROOT_PATH . "/template/template.php");

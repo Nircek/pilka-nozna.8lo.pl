@@ -58,7 +58,7 @@ if (isset($_POST['grupa-pierwsza'])) {
                     ) ENGINE=InnoDB;";
         PDOS::Instance()->exec($sql);
     } catch (PDOException $e) {
-        reportError("db", $e->getMessage());
+        report_error("db", $e->getMessage());
     }
 
     // ------------------ WKŁADANIE GRUPY PIERWSZEJ DO BAZY ------------------
@@ -72,7 +72,7 @@ if (isset($_POST['grupa-pierwsza'])) {
                     )";
             PDOS::Instance()->exec($sql);
         } catch (PDOException $e) {
-            reportError("db", $e->getMessage());
+            report_error("db", $e->getMessage());
         }
     }
 
@@ -87,7 +87,7 @@ if (isset($_POST['grupa-pierwsza'])) {
                     )";
             PDOS::Instance()->exec($sql);
         } catch (PDOException $e) {
-            reportError("db", $e->getMessage());
+            report_error("db", $e->getMessage());
         }
     }
 

@@ -1,5 +1,6 @@
 <?php
-$error_queue = popReports();
+
+$error_queue = pop_reports();
 foreach ($error_queue as $error) :
 ?>
     <div class="error"><?= $error[0] ?>
@@ -8,27 +9,12 @@ foreach ($error_queue as $error) :
         <?php endif; ?>
     </div>
 <?php endforeach; ?>
-<?php
-// Nawiązywanie połączenia z bazą
-try {
-    $sql = "SELECT * FROM sezony ORDER BY sezon DESC LIMIT 1";
-    $result = PDOS::Instance()->query($sql);
-    $liczba = $result->rowCount();
-} catch (PDOException $e) {
-    reportError("db", $e->getMessage());
-}
-if ($liczba === 1) {
-    // TODO: refeactor
-    while ($row = $result->fetch()) {
-        $obecny_sezon[] = array('sezon' => $row['sezon']);
-    }
-    foreach ($obecny_sezon as $obecny_sezon) {
-        $obecny_sezon = $obecny_sezon['sezon'];
-        $obecny_sezon = $obecny_sezon . "/" . ($obecny_sezon + 1);
-    }
-}
-?>
-<?php if (isset($_SESSION['zalogowany'])) : ?>
+<?php if (!is_null(MOTD)) : ?>
+    <div class="warn">
+        <?= MOTD ?>
+    </div>
+<?php endif; ?>
+<?php if (is_logged(false)) : ?>
     <div id='zalogowany' style='font-weight: bold; padding: 5px 0; margin: auto; text-align: center; background-color: #22c12d; width: 1000px; font-size: 25px;'>
         ADMIN ZALOGOWANY | <a href='<?= PREFIX ?>/skrypty/logout'> WYLOGUJ </a> | <a href='<?= PREFIX ?>/admin'> PANEL ADMINA </a>
     </div>
@@ -64,7 +50,7 @@ if ($liczba === 1) {
         </div>
         <div id="bottom-options">
             <div id="obecny-sezon">
-                <a <?php if ($liczba === 1) : ?> href="<?= PREFIX ?>/sezony?s=<?= $obecny_sezon ?>" <?php endif; ?>>
+                <a href="<?= PREFIX ?>/sezony/obecny">
                     OBECNY SEZON
                 </a>
             </div>

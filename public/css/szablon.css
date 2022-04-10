@@ -82,7 +82,7 @@ h3 {
 }
 
 /* WŁAŚCIWOŚCI KOMUNIKATÓW */
-.error, .sukces {
+.error, .sukces, .warn {
     width: 100%;
     font-size: 25px;
     padding: 10px 0;
@@ -93,8 +93,22 @@ h3 {
     background-color: #ce2525;
 }
 
+.error:first-of-type::before {
+    /* this doesn't work if there's another div before */
+    font-size: 2em;
+    content: 'Wystąpiły błędy:';
+    padding: .5em;
+    display: block;
+}
+
+
 .sukces {
     background-color: #22C12D;
+}
+
+.warn {
+    background-color: #c3b622;
+    letter-spacing: .13em;
 }
 
 /* WŁAŚCIWOŚCI FORMULARZY */

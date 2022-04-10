@@ -1,120 +1,82 @@
 <?php
-
-include(ROOT_PATH . "/funkcje/funkcje_admin.php");
 is_logged();
-$sezon_terminarz = $_POST['sezon'] . "_terminarz";
-$sezon_tabela = $_POST['sezon'] . "_tabela";
-$sezon_final = $_POST['sezon'] . "_final";
+define("WYNIKI_URL", PREFIX . "/admin/wyniki");
+header('Location: ' . WYNIKI_URL);
 
-// =================== FAZA FINAŁOWA ===================
-if (isset($_POST['final'])) {
-    // Początkowy reset finału i 3 miejsca, gdybym pomylono wyniki i drużyny musiały być rozdzielone na nowo (żeby nie trzeba było wchodzić do bazy danych)
-    try {
-        $sql = "UPDATE `$sezon_final`
-                        SET `druzyna_1` = NULL,
-                            `druzyna_2` = NULL,
-                            `wynik_1` = NULL,
-                          `wynik_2` = NULL
-                        WHERE `poziom` = '3' OR `poziom` = '1'";
-        PDOS::Instance()->exec($sql);
-    } catch (PDOException $e) {
-        reportError("db", $e->getMessage());
-    }
-
-    for ($y = 1; $y <= 4; $y++) {
-        if (isset($_POST['f_etap_' . $y])) {
-            $etap = $_POST['f_etap_' . $y];
-            $d1 = $_POST['f_d1_' . $y];
-            $d2 = $_POST['f_d2_' . $y];
-            $wynik_1 = $_POST['f_wynik_1_' . $y];
-            $wynik_2 = $_POST['f_wynik_2_' . $y];
-
-            // Jeśli wpisane dane są puste ale nie są też "0"
-            if ((empty($wynik_1) and !is_numeric($wynik_1)) or (empty($wynik_2) and !is_numeric($wynik_1))) {
-                $sql_1 = "UPDATE $sezon_final SET wynik_1 =NULL, wynik_2=NULL WHERE id='$y'";
-                try {
-                    PDOS::Instance()->exec($sql_1);
-                } catch (PDOException $e) {
-                    reportError("db", $e->getMessage());
-                }
-            } else {
-                $sql_1 = "UPDATE $sezon_final SET wynik_1 ='$wynik_1', wynik_2='$wynik_2' WHERE id='$y'";
-
-                // Jeśli analizuje półfinały
-                if ($etap == 2) {
-                    if ($wynik_1 == $wynik_2) {
-                        $_SESSION['e_wyniki_remis'] = "W finale nie może być remisu!";
-                        header('Location: ../admin_wyniki.php');
-                        exit();
-                    } else {
-                        // Przydzielanie drużyn odpowiednio do finały lub 3 miejsca
-                        if (max($wynik_1, $wynik_2) == $wynik_1) {
-                            $sql_2 = "UPDATE $sezon_final SET druzyna_$y ='$d1' WHERE poziom='1'";
-                            $sql_3 = "UPDATE $sezon_final SET druzyna_$y ='$d2' WHERE poziom='3'";
-                        } elseif (max($wynik_1, $wynik_2) == $wynik_2) {
-                            $sql_2 = "UPDATE $sezon_final SET druzyna_$y ='$d2' WHERE poziom='1'";
-                            $sql_3 = "UPDATE $sezon_final SET druzyna_$y ='$d1' WHERE poziom='3'";
-                        }
-                    }
-
-                    try {
-                        PDOS::Instance()->exec($sql_1);
-                        PDOS::Instance()->exec($sql_2);
-                        PDOS::Instance()->exec($sql_3);
-                    } catch (PDOException $e) {
-                        reportError("db", $e->getMessage());
-                    }
-                } else {
-                    // Jeśli finał lub 3 miejsce
-                    try {
-                        PDOS::Instance()->exec($sql_1);
-                    } catch (PDOException $e) {
-                        reportError("db", $e->getMessage());
-                    }
-                }
-            }
-        }
-    }
-} elseif (isset($_POST['liczba_1']) == true) {
-    // =================== FAZA GRUPOWA ===================
-    $ilosc_1 = $_POST['liczba_1'] - 1;
-    $ilosc_2 = $ilosc_1 + $_POST['liczba_2'] - 1;
-
-    // Resetowanie tabeli dla nowych danych
-    resetowanie_tabeli($sezon_tabela);
-
-    // =================== PĘTLA GRUPY 1 ===================
-    for ($i = 1; $i <= $ilosc_1; $i++) {
-        $dane[$i][0] = $i;
-        $dane[$i][1] = $_POST["${i}_1"];
-        $dane[$i][2] = $_POST["${i}_2"];
-        $dane[$i][3] = $_POST["d1_$i"];
-        $dane[$i][4] = $_POST["d2_$i"];
-        $wynik_1 = $dane[$i][1];
-        $wynik_2 = $dane[$i][2];
-        $id = $i;
-
-        tabela($sezon_tabela, 1, $dane[$i][3], $dane[$i][4], $wynik_1, $wynik_2);
-        dodawanie_wyniku($sezon_terminarz, $id, $wynik_1, $wynik_2);
-    }
-
-    $x = 1;
-    // =================== PĘTLA GRUPY 2 ===================
-    for ($i = $i; $i <= $ilosc_2; $i++) {
-        $dane[$i][0] = $i;
-        $dane[$i][1] = $_POST[$i . "_1"];
-        $dane[$i][2] = $_POST[$i . "_2"];
-        $dane[$i][3] = $_POST["d1_" . $x];
-        $dane[$i][4] = $_POST["d2_" . $x];
-        $wynik_1 = $dane[$i][1];
-        $wynik_2 = $dane[$i][2];
-        $id = $i;
-
-        tabela($sezon_tabela, 2, $dane[$i][3], $dane[$i][4], $wynik_1, $wynik_2);
-        dodawanie_wyniku($sezon_terminarz, $id, $wynik_1, $wynik_2);
-        $x++;
-    }
+$sezon = cast_int($_POST['sezon']);
+if (is_null($sezon)) {
+    report_error("sezon violation", NULL);
+    exit();
 }
 
-header('Location: ../admin_wyniki.php');
+$sezon_tabela = "${sezon}_tabela";
+$sezon_terminarz = "${sezon}_terminarz";
+$sezon_final = "${sezon}_final";
+if (sprawdzanie_tabela($sezon_final)) {
+    $final = PDOS::Instance()->query("SELECT id, poziom FROM `$sezon_final`")->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($final as $mecz) {
+        $w1 = cast_int($_POST['f' . $mecz['id'] . '_1']);
+        $w2 = cast_int($_POST['f' . $mecz['id'] . '_2']);
+        if (is_null($w1) or is_null($w2)) continue;
+        if ($mecz['poziom'] = 2 and $w1 == $w2) {
+            report_error("W półfinale nie może być remisu!", NULL);
+            continue;
+        }
+        PDOS::Instance()->prepare("UPDATE `$sezon_final` SET wynik_1 = ?, wynik_2 = ? WHERE id = ?")->execute([$w1, $w2, $mecz['id']]);
+    }
+
+    $druzyny = PDOS::Instance()->query(
+        "SELECT
+            IF(wynik_1-wynik_2,IF(wynik_1>wynik_2,druzyna_1,druzyna_2),NULL) AS w,
+            IF(wynik_1-wynik_2,IF(wynik_1<wynik_2,druzyna_1,druzyna_2),NULL) AS p
+        FROM `$sezon_final` WHERE poziom=2"
+    )->fetchAll(PDO::FETCH_ASSOC);
+    PDOS::Instance()->prepare("UPDATE $sezon_final SET druzyna_1 = ?, druzyna_2 = ? WHERE poziom=1")->execute([$druzyny[0]['w'], $druzyny[1]['w']]);
+    PDOS::Instance()->prepare("UPDATE $sezon_final SET druzyna_1 = ?, druzyna_2 = ? WHERE poziom=3")->execute([$druzyny[0]['p'], $druzyny[1]['p']]);
+}
+$ids = PDOS::Instance()->query("SELECT id FROM `$sezon_terminarz`")->fetchAll(PDO::FETCH_COLUMN);
+foreach ($ids as $id) {
+    $w1 = cast_int($_POST[$id . '_1']);
+    $w2 = cast_int($_POST[$id . '_2']);
+    if (is_null($w1) or is_null($w2)) continue;
+    PDOS::Instance()->prepare("UPDATE `$sezon_terminarz` SET `1_wynik` = ?, `2_wynik` = ? WHERE id = ?")->execute([$w1, $w2, $id]);
+}
+try {
+    PDOS::Instance()->beginTransaction();
+    PDOS::Instance()->prepare("TRUNCATE `$sezon_tabela`")->execute();
+    if (true) { // TODO: jeden lub dwa sezony
+        PDOS::Instance()->prepare(
+            "INSERT INTO `$sezon_tabela` (`numer`,`nazwa`,`grupa`,`zwyciestwa`,`remisy`,`przegrane`,`zdobyte`,`stracone`,`pkt`)
+            SELECT id, name, g, win, tie, los, gain, lost, 3*win+tie AS pkt FROM (
+                SELECT us AS id, name, g, SUM(IF(our>their,1,0)) AS win, SUM(IF(our=their,1,0)) AS tie, SUM(IF(our<their,1,0)) AS los, SUM(our) AS gain, SUM(their) AS lost FROM
+                    (SELECT 1 AS g, `1_num` AS us, `1_text` AS name, `1_wynik` AS our, `2_wynik` AS their FROM `$sezon_terminarz` WHERE grupa=1
+                    UNION
+                    SELECT 1 AS g, `2_num` AS us, `2_text` AS name, `2_wynik` AS our, `1_wynik` AS their FROM `$sezon_terminarz` WHERE grupa=1
+                    UNION
+                    SELECT 2 AS g, `1_num` AS us, `1_text` AS name, `1_wynik` AS our, `2_wynik` AS their FROM `$sezon_terminarz`
+                    UNION
+                    SELECT 2 AS g, `2_num` AS us, `2_text` AS name, `2_wynik` AS our, `1_wynik` AS their FROM `$sezon_terminarz`) AS t GROUP BY g, name
+            ) AS tt ORDER BY g, id"
+        )->execute();
+    } else {
+        PDOS::Instance()->prepare(
+            "INSERT INTO `$sezon_tabela` (`numer`,`nazwa`,`grupa`,`zwyciestwa`,`remisy`,`przegrane`,`zdobyte`,`stracone`,`pkt`)
+            SELECT id, name, g, win, tie, los, gain, lost, 3*win+tie AS pkt FROM (
+                SELECT us AS id, name, g, SUM(IF(our>their,1,0)) AS win, SUM(IF(our=their,1,0)) AS tie, SUM(IF(our<their,1,0)) AS los, SUM(our) AS gain, SUM(their) AS lost FROM
+                    (SELECT 1 AS g, `1_num` AS us, `1_text` AS name, `1_wynik` AS our, `2_wynik` AS their FROM `$sezon_terminarz` WHERE grupa=1
+                    UNION
+                    SELECT 1 AS g, `2_num` AS us, `2_text` AS name, `2_wynik` AS our, `1_wynik` AS their FROM `$sezon_terminarz` WHERE grupa=1
+                    UNION
+                    SELECT 2 AS g, `1_num` AS us, `1_text` AS name, `1_wynik` AS our, `2_wynik` AS their FROM `$sezon_terminarz` WHERE grupa=2
+                    UNION
+                    SELECT 2 AS g, `2_num` AS us, `2_text` AS name, `2_wynik` AS our, `1_wynik` AS their FROM `$sezon_terminarz` WHERE grupa=2) AS t GROUP BY g, name
+            ) AS tt ORDER BY g, id"
+        )->execute();
+    }
+    PDOS::Instance()->commit();
+} catch (Exception $e) {
+    PDOS::Instance()->rollback();
+    throw $e;
+}
+
 exit();
