@@ -64,7 +64,7 @@ function page_render($obj)
                 <h1> GALERIA </h1>
                 <?php foreach ($obj["zdjecia"] as $zdjecie) : ?>
                     <div class='image'>
-                        <img src='<?= PREFIX ?>/<?= $zdjecie ?>' width='192' />"
+                        <img src='<?= PREFIX ?>/<?= $zdjecie ?>' width='192' />
                         <!--wysokość auto. Nadwyżka zostanie ucięta-->
                     </div>
                 <?php endforeach; ?>

@@ -1,8 +1,15 @@
 <?php
 register_style("admin_log");
 
-$ADMIN_PASS = '<credentials censored>';
-$ADMIN_LOGIN = '<credentials censored>';
+$ini = load_config_file(ROOT_PATH . "/config.ini");
+if (!$ini) $ini = load_config_file(ROOT_PATH . "/config.sample.ini");
+if (!$ini) {
+    report_error("config", "No valid config found.");
+    return false;
+}
+
+$ADMIN_PASS = $ini['panel_pass'];
+$ADMIN_LOGIN = $ini['panel_user'];
 
 // Sprawdzenie czy formularz został wysłany (czu użytkownik kliknął 'zaloguj')
 if (is_logged(false)) goto xkcd292;

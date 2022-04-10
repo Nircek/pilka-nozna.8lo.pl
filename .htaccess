@@ -20,6 +20,7 @@ Deny from all
 
 <IfModule mod_rewrite.c>
     RewriteEngine on
+    RewriteRule ^archiwum(.*) https://web.archive.org/web/20211023121934/http://pilka-nozna.8lo.pl/archiwum$1 [R=303,END]
     # make some dirs public
     RewriteRule "^(upload|css|img|zdjecia|fontello|js)/.*$" "public/$0" [S=1]
     # and all other pass through single PHP entry point
