@@ -4,7 +4,12 @@ register_title("Informacje");
 
 function page_init()
 {
-    return PDOS::Instance()->query("SELECT * FROM informacje ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+    return PDOS::Instance()->query(
+        "SELECT
+            `article_id`, `title`, `content`, `created_at`
+        FROM `ng_article` WHERE `publish_on_news_page` = 1
+        ORDER BY `article_id` DESC;"
+    )->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function page_render($obj)
@@ -15,15 +20,15 @@ function page_render($obj)
         <?php foreach ($obj as $info) : ?>
             <div class='info'>
                 <span id='tytul'>
-                    <?= $info['tytul'] ?>
+                    <?= $info['title'] ?>
                 </span>
                 <br />
                 <span id='tresc'>
-                    <?= $info['tresc'] ?>
+                    <?= $info['content'] ?>
                 </span>
                 <br />
                 <span id='data'>
-                    <?= $info['data'] ?>
+                    <?= $info['created_at'] ?>
                 </span>
             </div>
         <?php endforeach; ?>

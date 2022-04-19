@@ -2,7 +2,12 @@
 is_logged();
 register_style("admin");
 
-function page_render()
+function page_init()
+{ // seasons()
+    return PDOS::Instance()->query("SELECT `season_id`, `name` FROM `ng_season` ORDER BY `created_at` DESC")->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function page_render($obj)
 {
 ?>
     <div id="content">
@@ -39,8 +44,11 @@ function page_render()
                 <h2> DODAJ ZDJĘCIA </h2>
                 <form method="post" enctype="multipart/form-data" action="<?= PREFIX ?>/skrypty/dodaj-zdjecie">
                     <h3> WYBIERZ SEZON: </h3>
-                    <?php $sezon = explode("/", obecny_sezon())[0]; ?>
-                    <input type="number" min='2000' id="zdjecia_sezon" name="zdjecie_sezon" max='<?= $sezon ?>' value='<?= $sezon ?>'>
+                    <select id="zdjecia_sezon" name="zdjecie_sezon">
+                        <?php foreach ($obj as $sezon) : ?>
+                            <option value="<?= $sezon['season_id'] ?>"><?= $sezon['name'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
                     <h3> WYBIERZ ZDJĘCIA (.jpg) </h3>
                     <input type="file" name="files[]" id="zdjecia_wybor" accept=".jpg,.jpeg,.png" multiple><br />
                     <input type="submit" value="DODAJ">

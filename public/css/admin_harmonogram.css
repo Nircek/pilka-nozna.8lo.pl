@@ -3,3 +3,8 @@
     border-width: 1.5px;
     font-size: 18px;
 }
+
+#grupy { /* TODO: make it a class */
+    float: left;
+    width: 50%;
+}

@@ -3,7 +3,13 @@ register_additional_title("Wybierz");
 
 function page_init()
 {
-    return PDOS::Instance()->query("SELECT DISTINCT sezon FROM zdjecia ORDER BY sezon DESC")->fetchAll(PDO::FETCH_ASSOC);
+    return PDOS::Instance()->query( // gallery_seasons()
+        "SELECT
+            p.`season_id`, s.`name`, s.`html_name`
+        FROM `ng_photo` p
+            LEFT JOIN `ng_season` s ON p.`season_id` = s.`season_id`
+        GROUP BY `season_id` ORDER BY s.`created_at` DESC"
+    )->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function page_render($obj)
@@ -13,8 +19,8 @@ function page_render($obj)
         <h1> GALERIA </h1>
         <?php foreach ($obj as $sezon) : ?>
             <div class='sezon'>
-                <a href='<?= PREFIX ?>/galeria/<?= $sezon['sezon'] ?>'>
-                    <?= $sezon['sezon'] ?>/<?= $sezon['sezon'] + 1 ?>
+                <a href='<?= PREFIX ?>/galeria/<?= $sezon['season_id'] ?>'>
+                    <?= $sezon['html_name'] ?>
                 </a>
             </div>
         <?php endforeach; ?>
