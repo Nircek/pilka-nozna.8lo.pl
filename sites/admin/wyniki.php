@@ -39,21 +39,21 @@ function page_render($obj)
         <form method='post' action='<?= PREFIX ?>/skrypty/wyniki'>
             <?php if (!is_null($obj['finalowe'])) : ?>
                 <?php foreach ($obj['finalowe'] as $mecz) : ?>
-                    <?= $mecz['title'] ?> | <?= is_null($mecz['date']) ? 'nie ustalono' : $mecz['date'] /* TODO: null coalescing operator */ ?> <br /><?= $mecz['A_team'] ?>
-                    <input class='wynik' type='number' value='<?= $mecz['A_score'] ?>' name='f<?= $mecz['game_id'] ?>_1'> :
-                    <input class='wynik' type='number' value='<?= $mecz['B_score'] ?>' name='f<?= $mecz['game_id'] ?>_2'>
-                    <?= $mecz['B_team'] ?>
+                    <?= $mecz['title'] ?> | <?= coalesce($mecz['date'], 'nie ustalono') ?> <br /><?= coalesce($mecz['A_team'], '???') ?>
+                    <input class='wynik' type='number' value='<?= $mecz['A_score'] ?>' name='<?= $mecz['game_id'] ?>_1'> :
+                    <input class='wynik' type='number' value='<?= $mecz['B_score'] ?>' name='<?= $mecz['game_id'] ?>_2'>
+                    <?= coalesce($mecz['B_team'], '???') ?>
                     <br />
                 <?php endforeach; ?>
             <?php endif; ?>
             <?php for ($grupa = 0; $grupa <= 1; ++$grupa) : ?>
                 <div id='grupy'>
                     <?php foreach ($obj['grupowe'][$grupa] as $mecz) : ?>
-                        <?= $mecz['date'] ?><br />
-                        <?= $mecz['A_team'] ?>
+                        <?= coalesce($mecz['date'], 'nie ustalono') ?><br />
+                        <?= coalesce($mecz['A_team'], '???') ?>
                         <input class='wynik' type='number' name='<?= $mecz['game_id'] ?>_1' value='<?= $mecz['A_score'] ?>'> :
                         <input class='wynik' type='number' name='<?= $mecz['game_id'] ?>_2' value='<?= $mecz['B_score'] ?>'>
-                        <?= $mecz['B_team'] ?>
+                        <?= coalesce($mecz['B_team'], '???') ?>
                         <br />
                     <?php endforeach; ?>
                 </div>

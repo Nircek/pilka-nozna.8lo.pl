@@ -43,10 +43,10 @@ final class PDOS
                     `season_id` int(10) UNSIGNED NOT NULL,
                     `type` enum('first','second','half1','half2','final','third') COLLATE utf8mb4_polish_ci NOT NULL,
                     `date` date NOT NULL,
-                    `A_team_id` int(10) NOT NULL,
+                    `A_team_id` int(10) NULL,
                     `A_score` int(11) DEFAULT NULL,
                     `B_score` int(11) DEFAULT NULL,
-                    `B_team_id` int(10) NOT NULL
+                    `B_team_id` int(10) NULL
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;",
                 "CREATE TABLE IF NOT EXISTS `ng_photo` (
                     `photo_id` int(11) UNSIGNED NOT NULL,

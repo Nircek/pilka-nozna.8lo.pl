@@ -7,6 +7,14 @@ function cast_int($x)
     return $x + 0;
 }
 
+function coalesce() {
+    foreach(func_get_args() as $e)
+        if(!is_null($e))
+            return $e;
+    return null;
+
+}
+
 function load_config_file($file)
 {
     if (!file_exists($file)) return false;

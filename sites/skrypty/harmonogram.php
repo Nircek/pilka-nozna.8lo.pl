@@ -9,19 +9,16 @@ if (is_null($sezon)) {
     exit();
 }
 
-$sezon_terminarz = "${sezon}_terminarz";
-$sezon_final = "${sezon}_final";
-if (sprawdzanie_tabela($sezon_final)) {
-    $final = PDOS::Instance()->query("SELECT id FROM `$sezon_final`")->fetchAll(PDO::FETCH_COLUMN);
-    foreach ($final as $id) {
-        $termin = $_POST['f' . $id];
-        PDOS::Instance()->prepare("UPDATE `$sezon_final` SET termin = ? WHERE id = ?")->execute([$termin, $id]);
-    }
-}
-$ids = PDOS::Instance()->query("SELECT id FROM `$sezon_terminarz`")->fetchAll(PDO::FETCH_COLUMN);
+$ids_stmt = PDOS::Instance()->prepare( // get_game_ids(season)
+    "SELECT `game_id` FROM `ng_game` WHERE `season_id` = ?;"
+);
+$ids_stmt->execute([$sezon]);
+$ids = $ids_stmt->fetchAll(PDO::FETCH_COLUMN);
 foreach ($ids as $id) {
     $termin = $_POST[$id];
-    PDOS::Instance()->prepare("UPDATE `$sezon_terminarz` SET `termin` = ? WHERE id = ?")->execute([$termin, $id]);
+    PDOS::Instance()->prepare( // set_game_date(date, season, game_id)
+        "UPDATE `ng_game` SET `date` = ? WHERE `season_id` = ? AND `game_id` = ?;"
+    )->execute([$termin, $sezon, $id]);
 }
 
 exit();

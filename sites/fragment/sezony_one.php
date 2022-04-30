@@ -23,9 +23,11 @@ function page_init()
     $name_stmt->execute([$sezon]);
     $name = $name_stmt->fetchAll(PDO::FETCH_COLUMN);
     $name = count($name) > 0 ? $name[0] : null;
-    $details_stmt = PDOS::Instance()->prepare("SELECT `description`, `grouping_type` FROM `ng_season` WHERE `season_id` = ?;");
+    $details_stmt = PDOS::Instance()->prepare( // get_season_details(season)
+        "SELECT `description`, `grouping_type` FROM `ng_season` WHERE `season_id` = ?;"
+    );
     $details_stmt->execute([$sezon]);
-    $details = $details_stmt->fetchAll(PDO::FETCH_ASSOC)[0];
+    $details = $details_stmt->fetch(PDO::FETCH_ASSOC);
     if ($details['grouping_type'] != 'no_grouping') {
         $tabele = array();
         $harmonogram = array();
@@ -51,14 +53,15 @@ function page_init()
         );
         $harmonogram_stmt = PDOS::Instance()->prepare( // get_games(season, finals?, group)
             "SELECT
-            g.`game_id`, a.`name` AS `A_team`, b.`name` AS `B_team`,
-            g.`A_score`, g.`B_score`,
-            CASE WHEN g.`date` IS NULL OR YEAR(g.`date`) = 0 THEN NULL ELSE g.`date` END AS `date`, g.`type`,
-            SUBSTRING_INDEX(SUBSTRING_INDEX('PÓŁFINAŁ,FINAŁ,3 MIEJSCE', ',', FIND_IN_SET(g.`type`, 'final,third')+1), ',', -1) AS `title`
-        FROM `ng_game` g
-            LEFT JOIN `ng_team` a ON g.`season_id` = a.`season_id` AND g.`A_team_id` = a.`team_id`
-            LEFT JOIN `ng_team` b ON g.`season_id` = b.`season_id` AND g.`B_team_id` = b.`team_id`
-        WHERE g.`season_id` = ? AND ((? AND g.`type` NOT IN ('first', 'second')) OR g.`type` = ?) ORDER BY g.`type`, `date`, `game_id`;"
+                g.`game_id`, a.`name` AS `A_team`, b.`name` AS `B_team`,
+                g.`A_score`, g.`B_score`,
+                CASE WHEN g.`date` IS NULL OR YEAR(g.`date`) = 0 THEN NULL ELSE g.`date` END AS `date`, g.`type`,
+                IF(g.`type` IN ('first', 'second'), NULL,
+                    SUBSTRING_INDEX(SUBSTRING_INDEX('PÓŁFINAŁ,FINAŁ,3 MIEJSCE', ',', FIND_IN_SET(g.`type`, 'final,third')+1), ',', -1)) AS `title`
+            FROM `ng_game` g
+                LEFT JOIN `ng_team` a ON g.`season_id` = a.`season_id` AND g.`A_team_id` = a.`team_id`
+                LEFT JOIN `ng_team` b ON g.`season_id` = b.`season_id` AND g.`B_team_id` = b.`team_id`
+            WHERE g.`season_id` = ? AND ((? AND g.`type` NOT IN ('first', 'second')) OR g.`type` = ?) ORDER BY g.`type`, `date`, `game_id`;"
         );
         for ($i = 1; $i <= 2; ++$i) {
             $tabela_stmt->execute([$sezon, false, $i == 1 ? 'first' : 'second']);
@@ -71,7 +74,7 @@ function page_init()
             $cala_tabela = $tabela_stmt->fetchAll(PDO::FETCH_ASSOC);
         } else if ($details['grouping_type'] == "two_groups") {
             $harmonogram_stmt->execute([$sezon, true, '']);
-            $finalowe = $tabela_stmt->fetchAll(PDO::FETCH_ASSOC);
+            $finalowe = $harmonogram_stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     }
     return array(
@@ -105,17 +108,17 @@ function page_render($obj)
         <?php if (!is_null($obj["finalowe"])) : ?>
             <div id="runda-finalowa">
                 <?php
-                foreach ($obj["finalowe"] as $mecz => $i)
+                foreach ($obj["finalowe"] as $i => $mecz)
                     if ($i > 1) : // half1, half2, final, third
                 ?>
                     <h2> <?= $mecz["title"] ?> </h2>
                     <table id='tabela' cellspacing='0'>
                         <tr>
-                            <th colspan='3'> <?= is_null($mecz['date']) ? 'nie ustalono' : $mecz['date'] /* TODO: null coalescing operator */ ?> </th>
+                            <th colspan='3'> <?= coalesce($mecz['date'], 'nie ustalono') ?> </th>
                         </tr>
-                        <td style='width: 33%;'> <?= $mecz["A_team"] ?> </td>
-                        <td style='width: 33%;'> <?= $mecz["A_score"] ?> : <?= $mecz["B_score"] ?> </td>
-                        <td style='width: 33%;'> <?= $mecz["B_team"] ?> </td>
+                        <td style='width: 33%;'> <?= coalesce($mecz["A_team"], '???') ?> </td>
+                        <td style='width: 33%;'> <?= coalesce($mecz["A_score"], '-') ?> : <?= coalesce($mecz["B_score"], '-') ?> </td>
+                        <td style='width: 33%;'> <?= coalesce($mecz["B_team"], '???') ?> </td>
                         <tr>
                     </table>
                 <?php endif; ?>
@@ -130,11 +133,11 @@ function page_render($obj)
                     <h2> <?= $mecz["title"] ?> </h2>
                     <table id='tabela' cellspacing='0'>
                         <tr>
-                            <th colspan='3'> <?= is_null($mecz['date']) ? 'nie ustalono' : $mecz['date'] /* TODO: null coalescing operator */ ?> </th>
+                            <th colspan='3'> <?= coalesce($mecz['date'], 'nie ustalono') ?> </th>
                         </tr>
-                        <td style='width: 33%;'> <?= $mecz["A_team"] ?> </td>
-                        <td style='width: 33%;'> <?= $mecz["A_score"] ?> : <?= $mecz["B_score"] ?> </td>
-                        <td style='width: 33%;'> <?= $mecz["B_team"] ?> </td>
+                        <td style='width: 33%;'> <?= coalesce($mecz["A_team"], '???') ?> </td>
+                        <td style='width: 33%;'> <?= coalesce($mecz["A_score"], '-') ?> : <?= coalesce($mecz["B_score"], '-') ?> </td>
+                        <td style='width: 33%;'> <?= coalesce($mecz["B_team"], '?') ?> </td>
                         <tr>
                     </table>
                 <?php endif; ?>
@@ -175,14 +178,14 @@ function page_render($obj)
                 ?>
                     <table id='terminarz' cellspacing='0'>
                         <tr id='tr_termin'>
-                            <td colspan='3'> <?= is_null($mecz['date']) ? 'nie ustalono' : $mecz['date'] /* TODO: null coalescing operator */ ?> </td>
+                            <td colspan='3'> <?= coalesce($mecz['date'], 'nie ustalono') ?> </td>
                         </tr>
                         <tr id='tr_wynik'>
-                            <td> <?= $mecz['A_team'] ?> </td>
+                            <td> <?= coalesce($mecz['A_team'], '???') ?> </td>
                             <td id='td_wynik'>
-                                <?= is_null($mecz['A_score']) ? '-' : $mecz['A_score'] /* TODO: null coalescing operator */ ?>:<?= is_null($mecz['B_score']) ? '-' : $mecz['B_score'] /* TODO: null coalescing operator */ ?>
+                                <?= coalesce($mecz['A_score'], '-') ?>:<?= coalesce($mecz['B_score'], '-') ?>
                             </td>
-                            <td> <?= $mecz['B_team'] ?> </td>
+                            <td> <?= coalesce($mecz['B_team'], '???') ?> </td>
                         </tr>
                     </table>
                 <?php
