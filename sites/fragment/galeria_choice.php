@@ -18,8 +18,8 @@ function page_render($obj)
     <div id="content">
         <h1> GALERIA </h1>
         <?php foreach ($obj as $sezon) : ?>
-            <div class='sezon'>
-                <a href='<?= PREFIX ?>/galeria/<?= $sezon['season_id'] ?>'>
+            <div class="sezon link">
+                <a href="<?= PREFIX ?>/galeria/<?= $sezon['season_id'] ?>">
                     <?= $sezon['html_name'] ?>
                 </a>
             </div>

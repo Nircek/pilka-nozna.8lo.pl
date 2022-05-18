@@ -1,5 +1,11 @@
 #formularz {
     margin: auto;
-    width: 300px;
-    font-size: 25px;
+    width: 40%;
+    text-align: center;
+}
+#formularz input {
+    width: 90%;
+}
+#formularz input[type=submit] {
+    width: 60%;
 }

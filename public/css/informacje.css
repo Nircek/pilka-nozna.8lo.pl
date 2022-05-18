@@ -5,21 +5,3 @@
     text-align: center;
     line-height: 150%;
 }
-
-#tytul {
-    text-transform: uppercase;
-    font-size: 25px;
-    margin: auto;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-#tresc {
-    font-size: 18px;
-    font-weight: normal;
-}
-
-#data {
-    font-size: 15px;
-    text-align: right;
-}

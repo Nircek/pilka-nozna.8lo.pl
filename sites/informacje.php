@@ -18,18 +18,10 @@ function page_render($obj)
     <div id="content">
         <h1> INFORMACJE </h1>
         <?php foreach ($obj as $info) : ?>
-            <div class='info'>
-                <span id='tytul'>
-                    <?= $info['title'] ?>
-                </span>
-                <br />
-                <span id='tresc'>
-                    <?= $info['content'] ?>
-                </span>
-                <br />
-                <span id='data'>
-                    <?= $info['created_at'] ?>
-                </span>
+            <div class="info">
+                <div class="informacja-tytul"> <?= $info['title'] ?> </div>
+                <div class="informacja-tresc"> <?= $info['content'] ?> </div>
+                <div class="informacja-data"> <?= $info['created_at'] ?> </div>
             </div>
         <?php endforeach; ?>
     </div>

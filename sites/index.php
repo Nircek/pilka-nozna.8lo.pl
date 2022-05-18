@@ -68,72 +68,67 @@ function page_init()
 function page_render($obj)
 {
 ?>
-    <div id="content">
-        <div id="columns">
-            <div id="left-content">
-                <h1> GALERIA </h1>
-                <?php foreach ($obj["zdjecia"] as $zdjecie) : ?>
-                    <div class='image'>
-                        <img src='<?= $zdjecie ?>' width='192' />
-                        <!--wysokość auto. Nadwyżka zostanie ucięta-->
+    <div id="content" class="fullish">
+        <div class="left-drawer">
+            <h1> GALERIA </h1>
+            <?php foreach ($obj["zdjecia"] as $zdjecie) : ?>
+                <div class='image'>
+                    <img src='<?= $zdjecie ?>' />
+                    <!--wysokość auto. Nadwyżka zostanie ucięta-->
+                </div>
+            <?php endforeach; ?>
+            <div class="image link button">
+                <a href="<?= PREFIX ?>/galeria"><div class="center-vert"> &middot;&middot;&middot; </div></a>
+            </div>
+        </div>
+        <div class="center-drawer">
+            <h1> INFORMACJE </h1>
+            <div id="informacje-content">
+                <?php foreach ($obj["informacje"] as $info) : ?>
+                    <div class='info'>
+                        <div class="informacja-tytul"> <?= $info['title'] ?> </div>
+                        <div class="informacja-tresc"> <?= $info['content'] ?> </div>
+                        <div class="informacja-data"> <?= $info['created_at'] ?> </div>
                     </div>
                 <?php endforeach; ?>
-                <div id="image-button">
-                    <a href="<?= PREFIX ?>/galeria"><br /> ... </a>
-                </div>
             </div>
-            <div id="center-content">
-                <h1> INFORMACJE </h1>
-                <div id="informacje-content">
-                    <?php foreach ($obj["informacje"] as $info) : ?>
-                        <div class='info'>
-                            <h3> <?= $info['title'] ?> </h3>
-                            <span id='tresc'>
-                                <?= $info['content'] ?>
-                            </span>
-                            <br />
-                            <div id='data'>
-                                <?= $info['created_at'] ?>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-                <div id="info-button">
-                    <a href="<?= PREFIX ?>/informacje"><br />...</a>
-                </div>
+            <div class="link button">
+                <a href="<?= PREFIX ?>/informacje"><div class="center-vert"> &middot;&middot;&middot; </div></a>
             </div>
-            <div id="right-content">
-                <?php if (is_null($obj["sezon"])) :   ?>
-                    <div class="error"> Nie ma rozgrywek... </div>
-                <?php else : ?>
-                    <h2> TABELA <?= $obj["sezon_name"] ?> </h2>
-                    <?php if (!is_null($obj["tabele"])) for ($grupa = 0; $grupa < 2; ++$grupa) : ?>
-                        <h2> <?= $obj["podzial"][$grupa] ?> </h2>
-                        <table id="tabela" cellspacing="0">
-                            <tr>
-                                <th> LP </th>
-                                <th> ZESPÓŁ </th>
-                                <th> PKT </th>
-                                <th> Z </th>
-                                <th> R </th>
-                                <th> P </th>
-                            </tr>
-                            <?php foreach ($obj["tabele"][$grupa] as $i => $t) : ?>
-                                <tr>
-                                    <td> <?= $i + 1 ?> </td>
-                                    <td> <?= $t['team'] ?> </td>
-                                    <td> <?= $t['points'] ?> </td>
-                                    <td> <?= $t['win'] ?> </td>
-                                    <td> <?= $t['tie'] ?> </td>
-                                    <td> <?= $t['los'] ?> </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </table>
-                    <?php endfor; ?>
-                <?php endif; ?>
-            </div>
-            <div style="clear: both;"></div>
         </div>
+        <div class="right-drawer">
+            <?php if (is_null($obj["sezon"])) :   ?>
+                <div class="error"> Nie ma rozgrywek... </div>
+            <?php else : ?>
+                <h2> TABELA <?= $obj["sezon_name"] ?> </h2>
+                <?php if (!is_null($obj["tabele"])) for ($grupa = 0; $grupa < 2; ++$grupa) : ?>
+                    <h2> <?= $obj["podzial"][$grupa] ?> </h2>
+                    <div class="tabela-container">
+                    <table class="tabela" cellspacing="0">
+                        <tr>
+                            <th> LP </th>
+                            <th> ZESPÓŁ </th>
+                            <th> PKT </th>
+                            <th> Z </th>
+                            <th> R </th>
+                            <th> P </th>
+                        </tr>
+                        <?php foreach ($obj["tabele"][$grupa] as $i => $t) : ?>
+                            <tr>
+                                <td> <?= $i + 1 ?> </td>
+                                <td> <?= $t['team'] ?> </td>
+                                <td> <?= $t['points'] ?> </td>
+                                <td> <?= $t['win'] ?> </td>
+                                <td> <?= $t['tie'] ?> </td>
+                                <td> <?= $t['los'] ?> </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </table>
+                    </div>
+                <?php endfor; ?>
+            <?php endif; ?>
+        </div>
+        <div style="height: 0; clear: both;"></div>
     </div>
 
 <?php }

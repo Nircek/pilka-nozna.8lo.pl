@@ -102,7 +102,7 @@ function page_render($obj)
                 <h1> SEZON <?= $obj["sezon_nazwa"] ?> </h1>
             </span>
             <?php if (!empty($obj['opis'])) : ?>
-                <p class="spacious"> <?= $obj['opis'] ?> </p>
+                <p class="description"> <?= $obj['opis'] ?> </p>
             <?php endif; ?>
         </div>
         <?php if (!is_null($obj["finalowe"])) : ?>
@@ -112,13 +112,13 @@ function page_render($obj)
                     if ($i > 1) : // half1, half2, final, third
                 ?>
                     <h2> <?= $mecz["title"] ?> </h2>
-                    <table id='tabela' cellspacing='0'>
+                    <table class="tabela" cellspacing="0">
                         <tr>
-                            <th colspan='3'> <?= coalesce($mecz['date'], 'nie ustalono') ?> </th>
+                            <th colspan="3"> <?= coalesce($mecz['date'], 'nie ustalono') ?> </th>
                         </tr>
-                        <td style='width: 33%;'> <?= coalesce($mecz["A_team"], '???') ?> </td>
-                        <td style='width: 33%;'> <?= coalesce($mecz["A_score"], '-') ?> : <?= coalesce($mecz["B_score"], '-') ?> </td>
-                        <td style='width: 33%;'> <?= coalesce($mecz["B_team"], '???') ?> </td>
+                        <td style="width: 33%;"> <?= coalesce($mecz["A_team"], '???') ?> </td>
+                        <td style="width: 33%;"> <?= coalesce($mecz["A_score"], '-') ?> : <?= coalesce($mecz["B_score"], '-') ?> </td>
+                        <td style="width: 33%;"> <?= coalesce($mecz["B_team"], '???') ?> </td>
                         <tr>
                     </table>
                 <?php endif; ?>
@@ -131,21 +131,21 @@ function page_render($obj)
                     $mecz = $obj['finalowe'][$grupa - 1]; // half1, half2, final, third
                 ?>
                     <h2> <?= $mecz["title"] ?> </h2>
-                    <table id='tabela' cellspacing='0'>
+                    <table class="tabela" cellspacing="0">
                         <tr>
-                            <th colspan='3'> <?= coalesce($mecz['date'], 'nie ustalono') ?> </th>
+                            <th colspan="3"> <?= coalesce($mecz['date'], 'nie ustalono') ?> </th>
                         </tr>
-                        <td style='width: 33%;'> <?= coalesce($mecz["A_team"], '???') ?> </td>
-                        <td style='width: 33%;'> <?= coalesce($mecz["A_score"], '-') ?> : <?= coalesce($mecz["B_score"], '-') ?> </td>
-                        <td style='width: 33%;'> <?= coalesce($mecz["B_team"], '?') ?> </td>
+                        <td style="width: 33%;"> <?= coalesce($mecz["A_team"], '???') ?> </td>
+                        <td style="width: 33%;"> <?= coalesce($mecz["A_score"], '-') ?> : <?= coalesce($mecz["B_score"], '-') ?> </td>
+                        <td style="width: 33%;"> <?= coalesce($mecz["B_team"], '?') ?> </td>
                         <tr>
                     </table>
                 <?php endif; ?>
 
                 <h2> <?= $obj["podzial"][$grupa - 1] ?> </h2>
                 <!------------------ TEBELA ------------------>
-                <h3> TABELA </h3>
-                <table id="tabela" cellspacing="0">
+                <p class="big spacious"> TABELA </p>
+                <table class="tabela" cellspacing="0">
                     <tr>
                         <th> LP </th>
                         <th> ZESPÓŁ </th>
@@ -172,17 +172,17 @@ function page_render($obj)
                     <?php endforeach; ?>
                 </table>
 
-                <h3> HARMONOGRAM </h3>
+                <p class="big spacious"> HARMONOGRAM </p>
                 <?php
                 foreach ($obj["harmonogram"][$grupa - 1] as $mecz) :
                 ?>
-                    <table id='terminarz' cellspacing='0'>
-                        <tr id='tr_termin'>
-                            <td colspan='3'> <?= coalesce($mecz['date'], 'nie ustalono') ?> </td>
+                    <table class="terminarz" cellspacing="0">
+                        <tr class="termin">
+                            <td colspan="3"> <?= coalesce($mecz['date'], 'nie ustalono') ?> </td>
                         </tr>
-                        <tr id='tr_wynik'>
+                        <tr class="wynik">
                             <td> <?= coalesce($mecz['A_team'], '???') ?> </td>
-                            <td id='td_wynik'>
+                            <td class="wynik">
                                 <?= coalesce($mecz['A_score'], '-') ?>:<?= coalesce($mecz['B_score'], '-') ?>
                             </td>
                             <td> <?= coalesce($mecz['B_team'], '???') ?> </td>

@@ -14,9 +14,7 @@
 
     <div id="container">
         <?php include(ROOT_PATH . '/template/menu.php'); ?>
-        <div id="content-border">
-            <?php page_render($obj); ?>
-        </div>
+        <?php page_render($obj); ?>
         <?php include(ROOT_PATH . '/template/footer.php'); ?>
     </div>
 </body>

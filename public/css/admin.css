@@ -10,6 +10,7 @@
 #aktualizacja-sezonu,
 #tworzenie-sezonu {
     float: left;
+    text-align: center;
     width: 50%;
     padding: 15px 0;
     padding-bottom: 20000px;
@@ -18,26 +19,26 @@
 
 /* ------------------ SEKCJA - DODAWANIE INFORMACJI ------------------ */
 #informacje {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: #00f2;
 }
 
 /* ------------------ SEKCJA - DODAWANIE ZDJĘĆ ------------------*/
 #zdjecia {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: #0f02;
 }
 
 /* ------------------ SEKCJA - AKTUALIZOWANIE SEZONU ------------------*/
 #aktualizacja-sezonu {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: #f002;
 }
 
 /* ------------------ SEKCJA - TWORZENIE SEZONU ------------------*/
 #tworzenie-sezonu {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: #f0f2;
 }
 
 #dalej-button {
-    background-color: black;
+    background-color: #000;
     font-size: 85px;
     width: 250px;
     height: 100px;
@@ -46,17 +47,7 @@
     margin-bottom: 30px;
 }
 
-#dalej-button a {
-    text-decoration: none;
-    color: #ffffff;
-    display: block;
-    width: 250px;
-    height: 100px;
-    -webkit-transition: background-color 0.15s linear 0s;
-    transition: background-color 0.15s linear 0s;
+#content {
+    text-align: center;
 }
 
-#dalej-button a:hover {
-    color: black;
-    background-color: #ffffff;
-}

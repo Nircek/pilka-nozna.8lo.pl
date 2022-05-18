@@ -19,11 +19,11 @@ function page_render($obj)
             </div>
         <?php endforeach; ?>
 
-        <div class='sezon'>
-            <a href='http://www.pilka-nozna.8lo.pl/archiwum/' target='_blank' style="color: chartreuse;">
+        <div class="sezon link">
+            <a href="http://www.pilka-nozna.8lo.pl/archiwum/" target="_blank" style="color: chartreuse;">
                 ARCHIWUM
             </a>
         </div>
-        <div style='clear: both;'></div>
+        <div style="clear: both;"></div>
     </div>
 <?php }

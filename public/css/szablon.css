@@ -1,97 +1,67 @@
-/* ------------------ RESET I CONTAINER ------------------ */
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
-}
-article, aside, details, figcaption, figure,  footer, header, hgroup, menu, nav, section {
-    display: block;
-}
-
-body {
-    line-height: 1;
-}
-
-ol, ul {
-    list-style: none;
-}
-
-blockquote, q {
-    quotes: none;
-}
-
-blockquote:before, blockquote:after, q:before, q:after {
-    content: '';
-    content: none;
-}
-
-html, body {
-    /* cechy wspólne całego dokumentu */
-    background-image: url("../img/background.png");
-    background-color: #242424;
-    font-family: 'Monda', sans-serif;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    color: #ffffff;
-}
-
-#container {
-    /* ogólny pojemnik, w kórym siedzi wszystko inne */
-    width: 1000px;
-    min-height: 100%;
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#content {
-    background-color: rgba(20, 21, 24, 0.9);
-    color: #ffffff;
-    text-align: center;
-    font-weight: bold;
-    width: 960px;
-    padding: 20px;
-    margin: auto;
-}
-
-/* WŁAŚCIWOŚCI NAGŁÓWKÓW */
 h1 {
-    font-weight: bold;
+    margin: .5em auto 1em;
     text-align: center;
-    margin: auto;
-    margin-bottom: 15px;
-    font-size: 30px;
+    font-size: 1.8em;
+    font-weight: bold;
 }
 
 h2 {
+    margin: .5em auto 1em;
     text-align: center;
-    margin: auto;
-    margin-bottom: 20px;
-    font-size: 25px;
+    font-size: 1.5em;
 }
 
-h3 {
+.big {
+    margin: 1em auto;
     text-align: center;
-    margin: auto;
-    margin-bottom: 5px;
-    font-size: 22px;
+    font-size: 1.3em;
+    line-height: 1.2em;
 }
 
-/* WŁAŚCIWOŚCI KOMUNIKATÓW */
+.spacious {
+    line-height: 1.2em;
+    letter-spacing: 0.3px;
+}
+
+/*************************************/
+
+html, body {
+    height: 100%;
+    font-family: 'Monda', sans-serif;
+    background-image: url("../img/background.png");
+    background-color: #242424;
+    color: #fff;
+}
+#container {
+    width: clamp(850px, 1000px, 95vw);
+    min-height: 100%;
+    margin: 0 auto;
+}
+#menu, #content, #footer {
+    background-color: hsl(225, 4%, 4%);
+}
+
+#content {
+    width: 96%;
+    padding: 2%;
+}
+#content.fullish { /* full width img */
+    width: 100%;
+    padding: 0;
+}
+#content.fullish > img {
+    width: 100%;
+}
+
 .error, .sukces, .warn {
     width: 100%;
-    font-size: 25px;
     padding: 10px 0;
-    /*text-align: center;*/
+    font-size: 1.5em;
+    /* text-align: center; */
 }
-
-.error {
-    background-color: #ce2525;
-}
+.error { background-color: #ce2525; }
+.sukces { background-color: #22C12D; }
+.warn { background-color: #c3b622; }
 
 .error:first-of-type::before {
     /* this doesn't work if there's another div before */
@@ -100,26 +70,18 @@ h3 {
     padding: .5em;
     display: block;
 }
-
-
-.sukces {
-    background-color: #22C12D;
-}
-
 .warn {
-    background-color: #c3b622;
     letter-spacing: .13em;
 }
 
 /* WŁAŚCIWOŚCI FORMULARZY */
 input, textarea, select {
-    font-weight: bold;
+    margin-bottom: 15px;
     border: 5px solid rgba(0, 0, 0, 0.8);
     padding: 2px 0;
-    resize: none;
-    margin-bottom: 15px;
-    font-size: 20px;
     text-align: center;
+    font-size: 1.25em;
+    font-weight: bold;
     resize: none;
 }
 
@@ -128,235 +90,227 @@ input[type=submit] {
 }
 
 input[type=file] {
-    background-color: #ffffff;
-    color: black;
+    background-color: #fff;
+    color: #000;
 }
 
-/* ------------------ MENU ------------------ */
 #menu {
     width: 100%;
     height: 180px;
+    margin-top: 60px;
     font-weight: bold;
-    padding-top: 60px;
+}
+
+#menu {
+    text-align: center;
+}
+
+#menu a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#logo, #title, #options {
+    height: 100%;
+    float: left;
+}
+
+.left-drawer {
+    width: 25%;
+}
+.center-drawer {
+    width: 35%;
+    background-color: hsl(225, 9%, 9%);
+}
+.right-drawer {
+    width: 40%;
 }
 
 #logo {
-    width: 250px;
-    height: 100%;
-    background-color: #fff1;
-    float: left;
-    text-align: center;
+    background-color: rgba(255, 255, 255, 20%);
+}
+#logo img {
+    height: 90%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
-#logo a {
-    display: block;
-    width: 250px;
-    height: 180px;
-}
 
 #title {
-    width: 350px;
-    height: 100%;
-    background-color: rgba(20, 21, 24, 0.9);
-    float: left;
-    color: rgba(255, 255, 255, 1);
-    font-size: 40px;
-}
-
-#title-content {
-    /* pojemnik z napisem w sekcji #title w #menu */
-    margin-top: 40px;
+    font-size: 2.5em;
     line-height: 130%;
-    text-align: center;
 }
 
-/* ------------------ OPCJE MENU ------------------ */
 
-#options {
-    /* pojemnik ze wszystkimi opcjami:
-        -górne (#top-options)
-        -dolne (#bottom-options)
-    */
-    width: 400px;
-    height: 100%;
+#options > div {
     float: left;
-    color: rgba(255, 255, 255, 1);
-    text-align: center;
-}
-
-#options a {
-    /* wspólne cechy wszystkich hiper³¹czy w opcjach menu */
-    -webkit-transition: background-color 0.15s linear 0s;
-    transition: background-color 0.15s linear 0s;
-    display: block;
-    text-decoration: none;
-    color: rgba(255, 255, 255, 1);
-}
-
-/* ------------------ GÓRE OPCJE MENU ------------------ */
-
-#top-options {
-    /* pojemnik z 3 górnymi opcjami*/
-    width: 100%;
     height: 50%;
-}
-
-#top-options a {
-    /* cechy wspólne hiper³¹czy górnych opcji menu */
-    width: 133px;
-    /* wymiary obszaru display dla górnych hiper³¹czy opcji */
-    height: 90px;
-}
-
-#top-options a:hover {
-    /* cechy wspólne hiper³¹czy górnych opcji menu po najechaniu */
-    background-color: rgba(190, 190, 190, 1);
 }
 
 #facebook, #pik, #galeria {
-    /* cechy wspólne wszystkich 3 górnych opcji w menu */
-    width: 33.3%;
-    height: 100%;
-    float: left;
-}
-
-#facebook {
-    /* cechy typowe dla opcji facebook */
-    background-color: #3c5a9a;
-}
-
-#facebook a:hover {
-    /* cechy typowe dla opcji facebook po najechaniu*/
-    color: #3c5a9a;
-}
-
-#pik {
-    /* cechy typowe dla opcji pik */
-    background-color: #0a6642;
-}
-
-#pik a:hover {
-    /* cechy typowe dla opcji pik po najechaniu*/
-    color: #0a6642;
-}
-
-#galeria {
-    /* cechy typowe dla opcji galeria */
-    background-color: #663300;
-}
-
-#galeria a:hover {
-    /* cechy typowe dla opcji galeria po najechaniu*/
-    color: #663300;
-}
-
-/* ------------------ DOLNE OPCJE MENU ------------------ */
-
-#bottom-options {
-    /* pojemnik z 2 dolnymi opcjami */
-    width: 100%;
-    height: 50%;
-}
-
-#bottom-options a {
-    /* cechy wspólne hiperłączy dolnych opcji menu */
-    width: 200px;
-    /* wymiary obszaru display dla dolnych hiperłączy opcji */
-    height: 90px;
-}
-
-#bottom-options a:hover {
-    /* cechy wspólne hiperłączy dolnych opcji menu po najechaniu */
-    background-color: rgba(190, 190, 190, 1);
-    color: rgba(0, 0, 0, 1);
+    width: 33.33%;
 }
 
 #obecny-sezon, #wszystkie-sezony {
-    /* cechy wspólne wszystkich 2 dolnych opcji w menu */
-    font-size: 30px;
-    color: rgba(255, 255, 255, 1);
-    background-color: rgba(0, 0, 0, 0.5);
-    width: 200px;
-    height: 90px;
-    float: left;
+    width: 50%;
+    font-size: 1.8em;
     line-height: 140%;
 }
 
-/* ------------------ KONTENT I KONTENT BORDER ABY FOOTER NIE WJEŻDŻAŁ NA CONTENT ------------------*/
-#content-border {
-    /* to cholerstwo sprawia, że footer nie wjeżdża w kontent i zostaje w odległości 40px niżej */
-    padding-bottom: 190px;
-    /* jeżli dodamy height w #footer, to tutaj analogicznie trzeba dodać odstępu...
-    Oprócz tego trzeba też uwzględnić w #footer parametr bottom, który dodaje tutaj jeszcze ze 30px*/
-}
+#facebook { background-color: hsl(221, 50%, 30%); }
+#facebook a:hover { color: hsl(221, 100%, 30%); }
+
+#pik { background-color: hsl(147, 50%, 30%); }
+#pik a:hover { color: hsl(147, 100%, 30%); }
+
+#galeria { background-color: hsl(30, 50%, 30%); }
+#galeria a:hover { color: hsl(30, 100%, 30%); }
 
 #content {
     margin-top: 40px;
 }
 
 /* ------------------ FOOTER ------------------ */
+
 #footer {
-    text-align: center;
+    overflow: auto;
     width: 100%;
-    height: 120px;
-    position: absolute;
-    bottom: 30px;
-    left: 0;
-    line-height: 200%;
-    font-size: 16px;
-    color: rgba(255, 255, 255, 1);
+    height: 150px;
+    margin-top: 40px;
+    text-align: center;
+    font-size: 1em;
+    color: #fff;
     font-weight: bold;
     letter-spacing: 1px;
 }
 
 #footer a {
-    /* cechy wspólne wszystkich hiperłączy w #footer */
-    text-decoration: none;
-    color: #ffffff;
-    display: block;
     width: 100%;
-    color: rgba(255, 255, 255, 1);
-    -webkit-transition: background-color 0.15s linear 0s;
-    transition: background-color 0.15s linear 0s;
 }
 
-#footer a:hover {
-    /* cechy wspólne wszystkich hiperłączy w #footer po najechaniu */
-    text-decoration: none;
-    background-color: rgba(190, 190, 190, 1);
-    color: rgba(0, 0, 0, 1);
-}
-
-#left-footer, #center-footer, #right-footer {
-    /* cechy wspólne wszystkich 3 kolumn */
-    padding: 15px 0;
+#footer .left-drawer, #footer .center-drawer, #footer .right-drawer {
+    padding: 15px 0 0;
     float: left;
-    height: 100%;
+    height: 120px;
 }
 
-#left-footer {
-    background-color: rgba(0, 0, 0, 0.5);
-    width: 250px;
-}
-
-#left-footer a {
+#half-links a {
     height: 30px;
-    /* Definiowanie wysokości obszaru display hiperłącza w lewej kolumnie*/
 }
 
-#center-footer {
-    width: 350px;
-    background-color: rgba(20, 21, 24, 0.9);
-}
 
-#right-footer {
-    width: 400px;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-#right-footer a {
+#whole-links a {
     height: 60px;
-    /* Definiowanie wysokości obszaru display hiperłącza w prawej*/
-    line-height: 350%;
-    /* Aby tekst w obszarze display hiperłącza był na œrodku */
+}
+
+.center-vert {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.stylenone {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.link a {
+    text-align: center;
+    color: #fff;
+    display: block;
+    text-decoration: none;
+    -webkit-transition: background-color 0.20s linear 0s;
+    transition: background-color 0.20s linear 0s;
+}
+
+.link a:hover {
+    background-color: hsl(0, 0%, 75%);
+    color: #000;
+}
+
+#powrot {
+    text-align: left;
+    font-size: 1.1em;
+    margin-left: 10px;
+    position: absolute;
+}
+#powrot a {
+    color: #fff;
+    text-decoration: none;
+    -webkit-transition: color 0.07s linear 0s;
+    transition: color 0.07s linear 0s;
+}
+#powrot a:hover {
+    color: #999;
+}
+
+ol.bigitems > li {
+    font-size: 1.4em;
+    margin-bottom: 1em;
+    line-height: 110%;
+}
+
+ol.roman {
+    padding-left: 6ch;
+    list-style-type: upper-roman;
+}
+
+div.alpha {
+    padding-left: 4ch;
+    counter-reset: divalpha;
+}
+div.alpha > div {
+    position: relative;
+}
+div.alpha > div:before {
+    counter-increment: divalpha;
+    content: counter(divalpha, lower-alpha) ") ";
+    position: absolute;
+    left: -1.4em;
+}
+
+.informacja-tytul {
+    text-transform: uppercase;
+    font-size: 1.4em;
+    line-height: 1.15em;
+    margin: auto;
+    font-weight: bold;
+}
+
+.informacja-tresc {
+    font-size: .95em;
+}
+
+.informacja-data {
+    font-weight: bold   ;
+    font-size: .9em;
+    text-align: right;
+}
+
+.tabela-container {
+    padding: 0 1em;
+}
+
+.tabela {
+    font-weight: bold;
+    text-align: center;
+    margin: auto;
+    width: min(100%, 375px);
+    margin-bottom: 30px;
+    border: solid 0.5px rgba(0, 0, 0, 0.9);
+}
+
+.tabela th {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 6px 0;
+    border: solid 0.5px rgba(0, 0, 0, 0.9);
+}
+
+.tabela td {
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 5px 2px;
+    border: solid 0.5px rgba(0, 0, 0, 0.9);
 }

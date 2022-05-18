@@ -32,9 +32,9 @@ function page_krok_render()
     <!------------------ TWORZENIE SEZONU KROK 1 ------------------>
     <div id="panel">
         <form action="#" method="post" autocomplete="off">
-            <h3>ROK ROZPOCZĘCIA: (np. 2016) </h3>
+            <p class="big">ROK ROZPOCZĘCIA: (np. 2016) </p>
             <input type="number" name="sezon" maxlength="4" cols="9" id="sezon" min="2016" max="2030"> <br />
-            <h3>LICZBA DRUŻYN W CAŁYM SEZONIE:</h3>
+            <p class="big">LICZBA DRUŻYN W CAŁYM SEZONIE:</p>
             <input type="number" name="liczba_druzyn" id="liczba_druzyn" min="2" max="30"> <br />
             <input type="submit" value="DALEJ">
         </form>

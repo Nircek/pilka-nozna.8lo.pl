@@ -39,9 +39,9 @@ function page_render()
         <h1> LOGOWANIE ADMINISTRATORA </h1>
         <div id="formularz">
             <form method="post" action="#">
-                <h3> Login: </h3>
-                <input type="text" id="login" name="login"><br />
-                <h3> Hasło: </h3>
+                <p class="big"> Login: </p>
+                <input type="text" id="login" name="login">
+                <p class="big"> Hasło: </p>
                 <input type="password" id="password" name="password"><br />
                 <input type="submit" value="ZALOGUJ">
             </form>
