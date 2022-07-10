@@ -4,7 +4,7 @@ register_title("Kontakt");
 
 function page_render()
 {
-?>
+    ?>
     <style>
         a#facebook-link {
             background-color: rgba(0, 0, 0, 0.35);
@@ -29,4 +29,5 @@ function page_render()
             </a>
         </div>
     </div>
-<?php }
+<?php
+}

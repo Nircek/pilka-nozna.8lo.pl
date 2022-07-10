@@ -3,7 +3,7 @@ register_title("Regulamin");
 
 function page_render()
 {
-?>
+    ?>
     <div id="content">
         <h1> REGULAMIN ROZGRYWEK</h1>
         <div id="regulamin-content">
@@ -29,4 +29,5 @@ function page_render()
             </ol>
         </div>
     </div>
-<?php }
+<?php
+}

@@ -6,7 +6,7 @@ $name = PDOS::Instance()->cmd("get_season_name(season)", [$sezon])->fetchAll(PDO
 $name = count($name) > 0 ? $name[0] : null;
 if (is_null($name) or PDOS::Instance()->cmd("count_gallery_photos(season)", [$sezon])->fetchAll(PDO::FETCH_COLUMN)[0] == 0) {
     header("Location: " . GALERIA_URL);
-    report_error("Podany sezon nie istnieje...", NULL);
+    report_error("Podany sezon nie istnieje...", null);
     exit();
 }
 register_additional_title("Sezon $name");
@@ -31,7 +31,7 @@ function page_init()
 
 function page_render($obj)
 {
-?>
+    ?>
     <div id="content">
         <div id="powrot"><a href="<?= PREFIX ?>/galeria"> &#8592; POWRÓT </a></div>
         <h1> GALERIA <?= $obj['sezon_nazwa'] ?> </h1>
@@ -52,4 +52,5 @@ function page_render($obj)
         <div style='clear: both;'></div>
         <script src="<?= PREFIX ?>/js/galeria.js"></script>
     </div>
-<?php }
+<?php
+}

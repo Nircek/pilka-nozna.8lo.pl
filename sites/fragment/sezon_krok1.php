@@ -5,13 +5,13 @@ is_logged();
 if (isset($_POST['sezon'])) {
     // Sprawdzanie czy wszystkie pola są wypełnione
     if (empty($_POST['sezon']) or empty($_POST['liczba_druzyn'])) {
-        report_error("Wszystkie pola są wymagane!", NULL);
+        report_error("Wszystkie pola są wymagane!", null);
         $_SESSION['krok'] = 1;
     } else {
         $sezon = cast_int($_POST['sezon']);
         $liczba_druzyn = cast_int($_POST['liczba_druzyn']);
         if (is_null($sezon) or is_null($liczba_druzyn)) {
-            report_error("sezon or liczba violation", NULL);
+            report_error("sezon or liczba violation", null);
             exit();
         }
         $_SESSION['liczba_druzyn'] = $liczba_druzyn;
@@ -26,7 +26,7 @@ if (isset($_POST['sezon'])) {
 
 function page_krok_render()
 {
-?>
+    ?>
     <div class="error">Funkcja nie została zaimplementowana.</div>
     <?php SERVER_ERROR(501); ?>
     <!------------------ TWORZENIE SEZONU KROK 1 ------------------>
@@ -39,4 +39,5 @@ function page_krok_render()
             <input type="submit" value="DALEJ">
         </form>
     </div>
-<?php }
+<?php
+}

@@ -1,4 +1,5 @@
 <?php
+
 register_style("admin");
 register_title("Administracja");
 

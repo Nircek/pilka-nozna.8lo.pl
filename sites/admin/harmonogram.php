@@ -20,12 +20,12 @@ function page_init()
     return array(
         'sezon' => $sezon,
         'grupowe' => $grupowe,
-        'finalowe' => count($finalowe) > 0 ? $finalowe : NULL
+        'finalowe' => count($finalowe) > 0 ? $finalowe : null
     );
 }
 function page_render($obj)
 {
-?>
+    ?>
     <div id="content">
         <h1> WPISYWANIE HARMONOGRAMU </h1>
         <form method='post' action='<?= PREFIX ?>/skrypty/harmonogram'>
@@ -47,4 +47,5 @@ function page_render($obj)
             <input type='submit' value='AKTUALIZUJ!'>
         </form>
     </div>
-<?php }
+<?php
+}

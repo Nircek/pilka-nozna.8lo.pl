@@ -10,7 +10,7 @@ require(ROOT_PATH . "/sites/fragment/sezon_krok$krok.php");
 
 function page_render()
 {
-?>
+    ?>
     <div id="content">
         <h1> TWORZENIE SEZONU - KROK <?= $_SESSION['sezon_krok'] ?> </h1>
 
@@ -18,4 +18,5 @@ function page_render()
             <?php page_krok_render(); ?>
         </div>
     </div>
-<?php }
+<?php
+}

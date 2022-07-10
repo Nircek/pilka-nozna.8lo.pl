@@ -9,7 +9,7 @@ function page_init()
 
 function page_render($obj)
 {
-?>
+    ?>
     <div id="content">
         <h1> INFORMACJE </h1>
         <?php foreach ($obj as $info) : ?>
@@ -20,4 +20,5 @@ function page_render($obj)
             </div>
         <?php endforeach; ?>
     </div>
-<?php }
+<?php
+}

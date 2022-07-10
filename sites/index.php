@@ -29,21 +29,21 @@ function page_init()
             [PREFIX]
         )->fetchAll(PDO::FETCH_COLUMN),
         'sezon' => $sezon,
-        'sezon_name' => isset($name) ? $name : NULL,
-        'tabele' => isset($tabele) ? $tabele : NULL,
+        'sezon_name' => isset($name) ? $name : null,
+        'tabele' => isset($tabele) ? $tabele : null,
         'podzial' => isset($details) ?
             ($details['grouping_type'] == "two_rounds" ?
                 array("RUNDA ZASADNICZA", "RUNDA REWANŻOWA") :
                 array("GRUPA PIERWSZA", "GRUPA DRUGA"))
-            : NULL,
+            : null,
         'informacje' => PDOS::Instance()->cmd("get_recent_news()")->fetchAll(PDO::FETCH_ASSOC),
-        'tabele' => isset($tabele) ? $tabele : NULL
+        'tabele' => isset($tabele) ? $tabele : null
     );
 }
 
 function page_render($obj)
 {
-?>
+    ?>
     <div id="content" class="fullish">
         <div class="left-drawer">
             <h1> GALERIA </h1>
@@ -107,4 +107,5 @@ function page_render($obj)
         <div style="height: 0; clear: both;"></div>
     </div>
 
-<?php }
+<?php
+}

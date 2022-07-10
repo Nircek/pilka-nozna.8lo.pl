@@ -8,7 +8,7 @@ function page_init()
 
 function page_render($obj)
 {
-?>
+    ?>
     <div id='content' class="wybierz">
         <h1> WYBIERZ SEZON </h1>
         <?php foreach ($obj as $sezon) : ?>
@@ -26,4 +26,5 @@ function page_render($obj)
         </div>
         <div style="clear: both;"></div>
     </div>
-<?php }
+<?php
+}

@@ -1,4 +1,5 @@
 <?php
+
 is_logged();
 
 $sezon = obecny_sezon();
@@ -9,7 +10,7 @@ $grouping = PDOS::Instance()->cmd(
 )->fetch(PDO::FETCH_ASSOC)['grouping_type'];
 if ($grouping !== "two_groups") {
     header("Location: " . PANEL_URL);
-    report_error("Tylko grupowanie `two_groups` pozwala na utworzenie rundy finałowej.", NULL);
+    report_error("Tylko grupowanie `two_groups` pozwala na utworzenie rundy finałowej.", null);
     exit();
 }
 
@@ -30,7 +31,7 @@ array_splice($grupa_2, 2);
 
 if (count($grupa_1) + count($grupa_2) < 4) {
     header('Location: ' . PANEL_URL);
-    report_error("Za mało drużyn by stworzyć rundę finałową", NULL);
+    report_error("Za mało drużyn by stworzyć rundę finałową", null);
     exit();
 }
 

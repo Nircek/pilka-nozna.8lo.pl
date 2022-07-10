@@ -1,11 +1,12 @@
 <?php
+
 is_logged();
 define("HARMONOGRAM_URL", PREFIX . "/admin/harmonogram");
 header('Location: ' . HARMONOGRAM_URL);
 
 $sezon = cast_int($_POST['sezon']);
 if (is_null($sezon)) {
-    report_error("sezon violation", NULL);
+    report_error("sezon violation", null);
     exit();
 }
 

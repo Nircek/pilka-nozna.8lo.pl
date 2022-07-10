@@ -4,7 +4,7 @@ register_title("O nas");
 
 function page_render()
 {
-?>
+    ?>
     <div id="content">
         <h1> O NAS </h1>
         <p class="big spacious">
@@ -16,4 +16,5 @@ function page_render()
         </p>
 
     </div>
-<?php }
+<?php
+}

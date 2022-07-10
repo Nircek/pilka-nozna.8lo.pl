@@ -7,7 +7,7 @@ $name = count($name) > 0 ? $name[0] : null;
 
 if (is_null($name)) {
     header("Location: " . SEZONY_URL);
-    report_error("Podany sezon nie istnieje...", NULL);
+    report_error("Podany sezon nie istnieje...", null);
     exit();
 }
 HIT_PACK($sezon);
@@ -45,18 +45,18 @@ function page_init()
     return array(
         'sezon' => $sezon,
         'sezon_nazwa' => $name,
-        'tabele' => isset($tabele) ? $tabele : NULL,
+        'tabele' => isset($tabele) ? $tabele : null,
         'opis' => $details['description'],
         'podzial' => $details['grouping_type'] == "two_rounds" ? array("RUNDA ZASADNICZA", "RUNDA REWANŻOWA") : array("GRUPA PIERWSZA", "GRUPA DRUGA"),
-        'cala_tabela' => isset($cala_tabela) ? $cala_tabela : NULL,
-        'harmonogram' => isset($harmonogram) ? $harmonogram : NULL,
-        'finalowe' => (isset($finalowe) and count($finalowe) > 0) ? $finalowe : NULL,
+        'cala_tabela' => isset($cala_tabela) ? $cala_tabela : null,
+        'harmonogram' => isset($harmonogram) ? $harmonogram : null,
+        'finalowe' => (isset($finalowe) and count($finalowe) > 0) ? $finalowe : null,
     );
 }
 
 function page_render($obj)
 {
-?>
+    ?>
     <div id="content">
         <div id="head">
             <div id="powrot">
@@ -93,8 +93,8 @@ function page_render($obj)
             <div id="grupa-<?= $grupa == 1 ? "pierwsza" : "druga" ?>">
                 <?php
                 if (!is_null($obj["finalowe"])) :
-                    $mecz = $obj['finalowe'][$grupa - 1]; // half1, half2, final, third
-                ?>
+                    // half1, half2, final, third
+                    $mecz = $obj['finalowe'][$grupa - 1]; ?>
                     <h2> <?= $mecz["title"] ?> </h2>
                     <table class="tabela" cellspacing="0">
                         <tr>
@@ -153,10 +153,9 @@ function page_render($obj)
                             <td> <?= coalesce($mecz['B_team'], '???') ?> </td>
                         </tr>
                     </table>
-                <?php
-                endforeach;
-                ?>
+                <?php endforeach; ?>
             </div>
         <?php endfor; ?>
     </div>
-<?php }
+<?php
+}

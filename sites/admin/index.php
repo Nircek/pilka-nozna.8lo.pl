@@ -9,7 +9,7 @@ function page_init()
 
 function page_render($obj)
 {
-?>
+    ?>
     <div id="content">
         <h1> PANEL ADMINISTRATORA </h1>
         <div id="panel">
@@ -71,4 +71,5 @@ function page_render($obj)
             <div style="clear: both;"></div>
         </div>
     </div>
-<?php }
+<?php
+}

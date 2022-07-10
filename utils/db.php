@@ -1,4 +1,5 @@
 <?php
+
 class CmdPDO
 {
     # SRC: https://stackoverflow.com/a/3012389/6732111
@@ -45,8 +46,8 @@ final class PDOS
 {
     public static function Instance() // singletons are bad but no one would test it
     { // https://stackoverflow.com/a/203359/6732111
-        static $inst = NULL;
-        if ($inst === NULL) {
+        static $inst = null;
+        if ($inst === null) {
             try {
                 $r = PDOS::_construct();
                 $inst = new CmdPDO($r[0], $r[1]);
@@ -63,7 +64,9 @@ final class PDOS
     private static function _construct()
     {
         $ini = load_config_file(ROOT_PATH . "/config.ini");
-        if (!$ini) $ini = load_config_file(ROOT_PATH . "/config.sample.ini");
+        if (!$ini) {
+            $ini = load_config_file(ROOT_PATH . "/config.sample.ini");
+        }
         if (!$ini) {
             report_error("db", "No valid config found.");
             return false;
@@ -101,7 +104,7 @@ final class PDOS
 function obecny_sezon()
 {
     $arr = PDOS::Instance()->cmd("get_latest_season()")->fetchAll(PDO::FETCH_COLUMN);
-    return $arr ? $arr[0] : NULL;
+    return $arr ? $arr[0] : null;
 }
 
 define("ADMIN_LOGIN_URL", PREFIX . "/admin/login");

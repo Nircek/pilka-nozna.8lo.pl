@@ -21,7 +21,7 @@ function page_init()
     return array(
         'sezon' => $sezon,
         'grupowe' => $grupowe,
-        'finalowe' => count($finalowe) > 0 ? $finalowe : NULL,
+        'finalowe' => count($finalowe) > 0 ? $finalowe : null,
     );
 }
 

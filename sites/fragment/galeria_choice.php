@@ -8,7 +8,7 @@ function page_init()
 
 function page_render($obj)
 {
-?>
+    ?>
     <div id="content">
         <h1> GALERIA </h1>
         <?php foreach ($obj as $sezon) : ?>
@@ -21,4 +21,5 @@ function page_render($obj)
         <div style="clear: both;"></div>
     </div>
 
-<?php }
+<?php
+}
