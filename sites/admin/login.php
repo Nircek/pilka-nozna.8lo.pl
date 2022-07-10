@@ -1,17 +1,9 @@
 <?php
 register_style("admin_log");
 
-$ini = load_config_file(ROOT_PATH . "/config.ini");
-if (!$ini) {
-    $ini = load_config_file(ROOT_PATH . "/config.sample.ini");
-}
-if (!$ini) {
-    report_error("config", "No valid config found.");
-    return false;
-}
-
-$ADMIN_PASS = $ini['panel_pass'];
-$ADMIN_LOGIN = $ini['panel_user'];
+global $config_ini;
+$ADMIN_PASS = $config_ini['panel_pass'];
+$ADMIN_LOGIN = $config_ini['panel_user'];
 
 // Sprawdzenie czy formularz został wysłany (czu użytkownik kliknął 'zaloguj')
 if (is_logged(false)) {

@@ -1,7 +1,5 @@
 <?php
 
-require_once(ROOT_PATH . '/config.php');
-
 function cast_int($x)
 {
     if (!is_numeric($x)) {
@@ -18,19 +16,6 @@ function coalesce()
         }
     }
     return null;
-}
-
-function load_config_file($file)
-{
-    if (!file_exists($file)) {
-        return false;
-    }
-    return parse_ini_file($file);
-}
-
-function arrayify($x)
-{
-    return is_array($x) ? $x : explode(',', $x);
 }
 
 function tuple_export($i, $arr)

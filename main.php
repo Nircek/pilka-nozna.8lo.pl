@@ -2,19 +2,24 @@
 
 mb_internal_encoding('UTF-8');
 mb_http_output('UTF-8');
+
 session_start();
 
-function SERVER_ERROR($code = 500)
+function SERVER_ERROR($code = 500, $msg = null)
 {
     http_response_code($code);
+    if (!is_null($msg)) {
+        print($msg);
+    }
     die();
 }
 if (!isset($_SERVER["REDIRECT_URL"])) { // I think it is always present in Apache2 setups
-    SERVER_ERROR(501);
+    SERVER_ERROR(501, "REDIRECT_URL not in _SERVER");
 }
 
 
 define("ROOT_PATH", __DIR__);
+require_once(ROOT_PATH . '/config.php');
 require_once(ROOT_PATH . "/utils/utils.php");
 require_once(ROOT_PATH . "/utils/error.php");
 require_once(ROOT_PATH . "/utils/prefix.php");

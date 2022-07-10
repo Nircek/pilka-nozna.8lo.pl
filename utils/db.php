@@ -63,18 +63,11 @@ final class PDOS
     }
     private static function _construct()
     {
-        $ini = load_config_file(ROOT_PATH . "/config.ini");
-        if (!$ini) {
-            $ini = load_config_file(ROOT_PATH . "/config.sample.ini");
-        }
-        if (!$ini) {
-            report_error("db", "No valid config found.");
-            return false;
-        }
-        $dbname = $ini["dbname"];
-        $host = $ini["host"];
-        $login = $ini["login"];
-        $haslo = $ini["password"];
+        global $config_ini;
+        $dbname = $config_ini["dbname"];
+        $host = $config_ini["host"];
+        $login = $config_ini["login"];
+        $haslo = $config_ini["password"];
 
         $sql = file_get_contents(ROOT_PATH . "/utils/commands.sql");
         if ($sql === false) {
@@ -113,6 +106,7 @@ function is_logged($required = true)
     $logged = isset($_SESSION['zalogowany']);
     if ($logged and MAINTENANCE) {
         unset($_SESSION['zalogowany']);
+        $logged = false;
     }
     if ($required and !$logged) {
         header("Location: " . ADMIN_LOGIN_URL);

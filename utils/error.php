@@ -9,15 +9,6 @@ function report_error($known, $desc)
     return true;
 }
 
-/*
-function report_assert($bool, $known, $desc)
-{
-    if ($bool) return false;
-    report_error($known, $desc);
-    return true;
-}
-*/
-
 function pop_reports()
 {
     $queue = isset($_SESSION["error_queue"]) ? $_SESSION["error_queue"] : "";
