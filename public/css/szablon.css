@@ -193,7 +193,7 @@ input[type=file] {
 #footer .left-drawer, #footer .center-drawer, #footer .right-drawer {
     padding: 15px 0 0;
     float: left;
-    height: 120px;
+    height: 90%;
 }
 
 #half-links a {

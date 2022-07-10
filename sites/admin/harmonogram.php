@@ -1,5 +1,5 @@
 <?php
-register_style("admin_harmonogram");
+register_style("admin");
 is_logged();
 
 function page_init()
@@ -25,7 +25,7 @@ function page_init()
 }
 function page_render($obj)
 {
-    ?>
+?>
     <div id="content">
         <h1> WPISYWANIE HARMONOGRAMU </h1>
         <form method='post' action='<?= PREFIX ?>/skrypty/harmonogram'>
@@ -39,12 +39,14 @@ function page_render($obj)
             <?php for ($grupa = 0; $grupa <= 1; ++$grupa) : ?>
                 <div id='grupy'>
                     <?php foreach ($obj['grupowe'][$grupa] as $mecz) : ?>
-                        <input class='termin' type='date' name='<?= $mecz['game_id'] ?>' value='<?= coalesce($mecz['date'], '') ?>'> <?= coalesce($mecz['A_team'], '???') ?> vs <?= coalesce($mecz['B_team'], '???') ?><br />
+                        <div class="termin_meczu">
+                            <input class='termin' type='date' name='<?= $mecz['game_id'] ?>' value='<?= coalesce($mecz['date'], '') ?>'> <?= coalesce($mecz['A_team'], '???') ?> vs <?= coalesce($mecz['B_team'], '???') ?><br />
+                        </div>
                     <?php endforeach; ?>
                 </div>
             <?php endfor; ?>
             <input type='hidden' value='<?= $obj['sezon'] ?>' name='sezon'>
-            <input type='submit' value='AKTUALIZUJ!'>
+            <input type='submit' value='AKTUALIZUJ!' style="margin-top:2vh;">
         </form>
     </div>
 <?php

@@ -1,5 +1,5 @@
 <?php
-register_style("admin_log");
+register_style("admin");
 
 $ini = load_config_file(ROOT_PATH . "/config.ini");
 if (!$ini) {

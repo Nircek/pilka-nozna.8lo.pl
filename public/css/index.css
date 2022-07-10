@@ -1,7 +1,10 @@
 #content {
     background-color: #121212;
 }
-#content .left-drawer, #content .center-drawer, #content .right-drawer {
+
+#content .left-drawer,
+#content .center-drawer,
+#content .right-drawer {
     position: relative;
     padding: 15px 0;
     float: left;
@@ -37,7 +40,7 @@
     margin: auto;
     margin-top: 40px;
     font-size: 18px;
-    max-height: 516px; /* dirty but works */
+    max-height: 516px;/* dirty but works */
     overflow: hidden;
 }
 

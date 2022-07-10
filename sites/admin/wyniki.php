@@ -1,5 +1,5 @@
 <?php
-register_style("admin_wyniki");
+register_style("admin");
 is_logged();
 
 function page_init()
@@ -45,10 +45,12 @@ function page_render($obj)
                 <div id='grupy'>
                     <?php foreach ($obj['grupowe'][$grupa] as $mecz) : ?>
                         <?= coalesce($mecz['date'], 'nie ustalono') ?><br />
-                        <?= coalesce($mecz['A_team'], '???') ?>
-                        <input class='wynik' type='number' name='<?= $mecz['game_id'] ?>_1' value='<?= $mecz['A_score'] ?>'> :
-                        <input class='wynik' type='number' name='<?= $mecz['game_id'] ?>_2' value='<?= $mecz['B_score'] ?>'>
-                        <?= coalesce($mecz['B_team'], '???') ?>
+                        <div class="wynik_meczu">
+                            <?= coalesce($mecz['A_team'], '???') ?>
+                            <input class='wynik' type='number' name='<?= $mecz['game_id'] ?>_1' value='<?= $mecz['A_score'] ?>'> :
+                            <input class='wynik' type='number' name='<?= $mecz['game_id'] ?>_2' value='<?= $mecz['B_score'] ?>'>
+                            <?= coalesce($mecz['B_team'], '???') ?>
+                        </div>
                         <br />
                     <?php endforeach; ?>
                 </div>

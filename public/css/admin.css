@@ -4,6 +4,10 @@
     overflow: hidden;
 }
 
+#content {
+    text-align: center;
+}
+
 /* WSPÓLNE WŁAŚCIWOŚCI WSZYSTKICH 4 SEKCJI PANELU */
 #informacje,
 #zdjecia,
@@ -32,7 +36,6 @@
     background-color: #f002;
 }
 
-/* ------------------ SEKCJA - TWORZENIE SEZONU ------------------*/
 #tworzenie-sezonu {
     background-color: #f0f2;
 }
@@ -47,7 +50,223 @@
     margin-bottom: 30px;
 }
 
-#content {
+/* ------------------ harmonogram ------------------*/
+
+.termin {
+    margin-top: -10px;
+    border-width: 1.5px;
+    font-size: 18px;
+}
+
+#grupy {
+    /* TODO: make it a class */
+    width: 50%;
+}
+
+.termin_meczu {
+    float: left;
+    margin-left: 20%;
+}
+
+/* ------------------ login ------------------*/
+
+#formularz {
+    margin: auto;
+    width: 40%;
     text-align: center;
 }
 
+#formularz input {
+    width: 90%;
+}
+
+#formularz input[type=submit] {
+    width: 60%;
+}
+
+/* ------------------ nowy_sezon ------------------*/
+
+#grupa-pierwsza,
+#grupa-druga {
+    width: 50%;
+    float: left;
+    padding-bottom: 20000px;
+    margin-bottom: -20000px;
+}
+
+table {
+    margin: auto;
+    border: solid 2px rgba(0, 0, 0, 0.9);
+}
+
+td,
+th {
+    border: solid 2px rgba(0, 0, 0, 0.9);
+    margin-bottom: 0;
+    font-size: 15px;
+    padding: 0 5px;
+}
+
+th {
+    padding: 5px 0;
+}
+
+#termin {
+    margin-bottom: 0px;
+}
+
+#akceptuje-sezon {
+    margin-top: 30px;
+    padding: 10px 30px;
+}
+
+/* ------------------ terminarz ------------------*/
+
+#grupa-pierwsza,
+#grupa-druga {
+    margin-top: 10px;
+}
+
+#grupa-pierwsza {
+    float: left;
+    width: 50%;
+}
+
+#grupa-druga {
+    float: left;
+    width: 50%;
+    background-color: red;
+    height: 300px;
+}
+
+table {
+    margin: auto;
+    border-spacing: 0;
+    border-collapse: collapse;
+    width: 400px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 40%);
+}
+
+th {
+    background-color: #fff;
+    color: #000;
+    font-weight: bold;
+}
+
+th,
+td {
+    border: black solid 2px;
+}
+
+#termin {
+    width: 150px;
+}
+
+/* ------------------ wyniki ------------------*/
+
+.wynik {
+    border-width: 1.5px;
+    width: 100px;
+}
+
+#grupy {
+    float: left;
+    width: 50%;
+}
+
+/* TODO: DO sth like flex/grid */
+.wynik_meczu {
+    text-align: center;
+}
+
+/* .wynik_input {
+    float: left;
+    margin-left: 10px;
+    text-align: center;
+} */
+
+/* ------------------ nowe ------------------*/
+
+#desc {
+    text-align: left;
+    line-height: 3vh;
+}
+
+.update {
+    display: inline-block;
+    margin: 3% 2% 3% 2%;
+    background-color: #242424;
+    padding: 2%;
+}
+
+.update:hover {
+    background-color: #707070;
+}
+
+.group {
+    padding: 3%;
+    line-height: 3vh;
+    display: inline-block;
+    text-align: center;
+    background-color: #242424;
+    margin: 2% 7% 5% 7%;
+}
+
+/* ------------------ WYBÓR_SEZONU_DO_EDYCJI ------------------ */
+
+#sezony {
+    background-color: transparent;
+    padding: 0px;
+    width: 1000px;
+    overflow: hidden;
+}
+
+#sezony.wybierz {
+    background-color: hsl(225, 9%, 9%);
+    width: 960px;
+    padding: 20px;
+} 
+
+.sezon {
+    float: left;
+    height: 90px;
+    line-height: 300%;
+    width: 300px;
+    background-color: rgba(0, 0, 0, 0.3);
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 10px;
+}
+
+.sezon:hover{
+    background-color: #707070;
+}
+
+a.sezon_link{
+    color: white;
+    text-decoration: none;
+}
+
+a.sezon_link:visited{
+    color: white;
+    text-decoration: none;
+}
+
+#panel {
+    width: 94%;
+    padding: 3%;
+    background-color: #000;
+    text-align: center;
+}
+
+a.tile {
+    color: white;
+    text-decoration: none;
+}
+
+a.tile:visited {
+    color: white;
+    text-decoration: none;
+}
