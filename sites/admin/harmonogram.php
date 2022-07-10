@@ -32,15 +32,18 @@ function page_render($obj)
             <?php if (!is_null($obj['finalowe'])) : ?>
                 <h2> FAZA FINAŁOWA </h2>
                 <?php foreach ($obj['finalowe'] as $mecz) : ?>
-                    <input class='termin' type='date' name='<?= $mecz['game_id'] ?>' value='<?= coalesce($mecz['date'], '') ?>'> <?= coalesce($mecz['A_team'], '???') ?> vs <?= coalesce($mecz['B_team'], '???') ?> (<?= $mecz['title'] ?>) <br />
+                    <div class="termin_meczu">
+                        <input class='termin' type='date' name='<?= $mecz['game_id'] ?>' value='<?= coalesce($mecz['date'], '') ?>'> <?= coalesce($mecz['A_team'], '???') ?> vs <?= coalesce($mecz['B_team'], '???') ?> (<?= $mecz['title'] ?>) <br />
+                    </div>
                 <?php endforeach; ?>
             <?php endif; ?>
             <h2> FAZA GRUPOWA </h2>
             <?php for ($grupa = 0; $grupa <= 1; ++$grupa) : ?>
-                <div id='grupy'>
+                <div class="grupy">
+                    <h2>Grupa <?= coalesce($grupa + 1) ?></h2>
                     <?php foreach ($obj['grupowe'][$grupa] as $mecz) : ?>
                         <div class="termin_meczu">
-                            <input class='termin' type='date' name='<?= $mecz['game_id'] ?>' value='<?= coalesce($mecz['date'], '') ?>'> <?= coalesce($mecz['A_team'], '???') ?> vs <?= coalesce($mecz['B_team'], '???') ?><br />
+                            <input class="termin" type='date' name='<?= $mecz['game_id'] ?>' value='<?= coalesce($mecz['date'], '') ?>'> <?= coalesce($mecz['A_team'], '???') ?> vs <?= coalesce($mecz['B_team'], '???') ?><br />
                         </div>
                     <?php endforeach; ?>
                 </div>

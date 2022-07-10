@@ -1,6 +1,6 @@
 <?php
 is_logged();
-register_style("admin");
+register_style("index");
 // TODO: Move to sites and switch to sezony.css or index.css
 function page_init()
 {
@@ -21,7 +21,7 @@ function page_render($obj)
         <?php endforeach; ?>
 
         <div class="sezon">
-            <a href="http://www.pilka-nozna.8lo.pl/admin/nowy_sezon" style="color: chartreuse;">
+            <a href="http://www.pilka-nozna.8lo.pl/admin/nowy_sezon" style="color: chartreuse; text-decoration: none;">
                 DODAJ NOWY SEZON
             </a>
         </div>

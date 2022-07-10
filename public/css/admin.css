@@ -58,14 +58,9 @@
     font-size: 18px;
 }
 
-#grupy {
-    /* TODO: make it a class */
-    width: 50%;
-}
-
 .termin_meczu {
     float: left;
-    margin-left: 20%;
+    margin-left:18%;
 }
 
 /* ------------------ login ------------------*/
@@ -170,23 +165,17 @@ td {
     width: 100px;
 }
 
-#grupy {
+.grupy {
     float: left;
     width: 50%;
 }
 
-/* TODO: DO sth like flex/grid */
+/* TODO: Do sth like flex/grid */
 .wynik_meczu {
     text-align: center;
 }
 
-/* .wynik_input {
-    float: left;
-    margin-left: 10px;
-    text-align: center;
-} */
-
-/* ------------------ nowe ------------------*/
+/* ------------------ edytor sezonu ------------------*/
 
 #desc {
     text-align: left;
@@ -214,52 +203,6 @@ td {
 }
 
 /* ------------------ WYBÓR_SEZONU_DO_EDYCJI ------------------ */
-
-#sezony {
-    background-color: transparent;
-    padding: 0px;
-    width: 1000px;
-    overflow: hidden;
-}
-
-#sezony.wybierz {
-    background-color: hsl(225, 9%, 9%);
-    width: 960px;
-    padding: 20px;
-} 
-
-.sezon {
-    float: left;
-    height: 90px;
-    line-height: 300%;
-    width: 300px;
-    background-color: rgba(0, 0, 0, 0.3);
-    font-size: 30px;
-    font-weight: bold;
-    text-align: center;
-    margin: 10px 10px;
-}
-
-.sezon:hover{
-    background-color: #707070;
-}
-
-a.sezon_link{
-    color: white;
-    text-decoration: none;
-}
-
-a.sezon_link:visited{
-    color: white;
-    text-decoration: none;
-}
-
-#panel {
-    width: 94%;
-    padding: 3%;
-    background-color: #000;
-    text-align: center;
-}
 
 a.tile {
     color: white;

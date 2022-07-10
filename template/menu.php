@@ -16,17 +16,17 @@ foreach ($error_queue as $error) :
 <?php endif; ?>
 <?php if (is_logged(false)) : ?>
     <div id='zalogowany' style='font-weight: bold; padding: 5px 0; margin: auto; text-align: center; background-color: #22c12d; width: 1000px; font-size: 25px;'>
-        ADMIN ZALOGOWANY | <a href='<?= PREFIX ?>/skrypty/logout'> WYLOGUJ </a> | <a href='<?= PREFIX ?>/admin'> PANEL ADMINA </a>
+        ADMIN ZALOGOWANY | <a href='<?= PREFIX ?>/skrypty/logout' class="standard"> WYLOGUJ </a> | <a href='<?= PREFIX ?>/admin' class="standard"> PANEL ADMINA </a>
     </div>
 <?php endif; ?>
 <div id="menu">
-    <div id="logo" class="left-drawer">
+    <div id="logo" class="left-drawer-top">
         <a href="<?= PREFIX ?>/"><img src="<?= PREFIX ?>/img/logo.png"></a>
     </div>
-    <div id="title" class="center-drawer">
+    <div id="title" class="center-drawer-top">
         <div class="center-vert"> VIII LO "PIK" PIŁKA NOŻNA </div>
     </div>
-    <div id="options" class="right-drawer link">
+    <div id="options" class="right-drawer-top link">
         <div id="facebook">
             <a target="_blank" href="#">
                 <i class="icon-facebook"></i>

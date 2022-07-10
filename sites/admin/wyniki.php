@@ -42,7 +42,8 @@ function page_render($obj)
                 <?php endforeach; ?>
             <?php endif; ?>
             <?php for ($grupa = 0; $grupa <= 1; ++$grupa) : ?>
-                <div id='grupy'>
+                <div class='grupy'>
+                    <h2>Grupa <?= coalesce($grupa + 1) ?></h2>
                     <?php foreach ($obj['grupowe'][$grupa] as $mecz) : ?>
                         <?= coalesce($mecz['date'], 'nie ustalono') ?><br />
                         <div class="wynik_meczu">
@@ -51,11 +52,9 @@ function page_render($obj)
                             <input class='wynik' type='number' name='<?= $mecz['game_id'] ?>_2' value='<?= $mecz['B_score'] ?>'>
                             <?= coalesce($mecz['B_team'], '???') ?>
                         </div>
-                        <br />
                     <?php endforeach; ?>
                 </div>
             <?php endfor; ?>
-            <div style="clear: both;"></div>
             <input type='hidden' value='<?= $obj['sezon'] ?>' name='sezon'>
             <input type='submit' value='AKTUALIZUJ!'>
         </form>

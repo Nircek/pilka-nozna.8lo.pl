@@ -28,8 +28,8 @@ function page_render()
                     <label for="format">Wybierz format rozgrywek: </label>
                     <select name="Format_rozgrywek" id="format">
                         <option value="null">null</option>
-                        <option value="double-robin">Double-robin</option>
-                        <option value="robin">Dwie grupy</option>
+                        <option value="doublerobin">Double-robin</option>
+                        <option value="groups">Dwie grupy</option>
                     </select>
                 </div>
                 <div>
