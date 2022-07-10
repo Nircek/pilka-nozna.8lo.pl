@@ -4,12 +4,7 @@ register_title("Informacje");
 
 function page_init()
 {
-    return PDOS::Instance()->query(
-        "SELECT
-            `article_id`, `title`, `content`, `created_at`
-        FROM `ng_article` WHERE `publish_on_news_page` = 1
-        ORDER BY `article_id` DESC;"
-    )->fetchAll(PDO::FETCH_ASSOC);
+    return PDOS::Instance()->cmd("get_news()")->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function page_render($obj)

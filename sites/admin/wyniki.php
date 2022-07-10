@@ -6,23 +6,18 @@ function page_init()
 {
     $sezon = obecny_sezon();
     $grupowe = array();
-    $harmonogram_stmt = PDOS::Instance()->prepare( // schedule(season, finals?, group)
-        "SELECT
-            g.`game_id`, a.`name` AS `A_team`, b.`name` AS `B_team`,
-            g.`A_score`, g.`B_score`,
-            CASE WHEN g.`date` IS NULL OR YEAR(g.`date`) = 0 THEN NULL ELSE g.`date` END AS `date`, g.`type`,
-            SUBSTRING_INDEX(SUBSTRING_INDEX('PÓŁFINAŁ,FINAŁ,3 MIEJSCE', ',', FIND_IN_SET(g.`type`, 'final,third')+1), ',', -1) AS `title`
-        FROM `ng_game` g
-            LEFT JOIN `ng_team` a ON g.`season_id` = a.`season_id` AND g.`A_team_id` = a.`team_id`
-            LEFT JOIN `ng_team` b ON g.`season_id` = b.`season_id` AND g.`B_team_id` = b.`team_id`
-        WHERE g.`season_id` = ? AND ((? AND g.`type` NOT IN ('first', 'second')) OR g.`type` = ?) ORDER BY g.`type`, `date`, `game_id`;"
-    );
-    $harmonogram_stmt->execute([$sezon, false, 'first']);
-    $grupowe[] = $harmonogram_stmt->fetchAll(PDO::FETCH_ASSOC);
-    $harmonogram_stmt->execute([$sezon, false, 'second']);
-    $grupowe[] = $harmonogram_stmt->fetchAll(PDO::FETCH_ASSOC);
-    $harmonogram_stmt->execute([$sezon, true, '']);
-    $finalowe = $harmonogram_stmt->fetchAll(PDO::FETCH_ASSOC);
+    $grupowe[] = PDOS::Instance()->cmd(
+        "get_games(season, finals?, group)",
+        [$sezon, false, 'first']
+    )->fetchAll(PDO::FETCH_ASSOC);
+    $grupowe[] = PDOS::Instance()->cmd(
+        "get_games(season, finals?, group)",
+        [$sezon, false, 'second']
+    )->fetchAll(PDO::FETCH_ASSOC);
+    $finalowe = PDOS::Instance()->cmd(
+        "get_games(season, finals?, group)",
+        [$sezon, true, '']
+    )->fetchAll(PDO::FETCH_ASSOC);
     return array(
         'sezon' => $sezon,
         'grupowe' => $grupowe,

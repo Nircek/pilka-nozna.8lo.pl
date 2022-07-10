@@ -1,11 +1,62 @@
 <?php
+class CmdPDO
+{
+    # SRC: https://stackoverflow.com/a/3012389/6732111
+    protected $_instance;
+
+    public function cmd($cmd, $arg = array())
+    {
+        $i = 0;
+        foreach ($this->cmds[$cmd] as $sql) {
+            $stmt = $this->_instance->prepare($sql);
+            $stmt->execute($arg);
+            ++$i;
+        }
+        if (count($this->cmds[$cmd]) > 1) {
+            return $i;
+        }
+        return $stmt;
+    }
+
+    public function __construct(PDO $instance, $cmds)
+    {
+        $this->_instance = $instance;
+        $this->cmds = $cmds;
+    }
+
+    public function __call($method, $args)
+    {
+        return call_user_func_array(array($this->_instance, $method), $args);
+    }
+
+    public function __get($key)
+    {
+        return $this->_instance->$key;
+    }
+
+    public function __set($key, $val)
+    {
+        return $this->_instance->$key = $val;
+    }
+}
+
+
 final class PDOS
 {
     public static function Instance() // singletons are bad but no one would test it
     { // https://stackoverflow.com/a/203359/6732111
-        static $inst = null;
-        if ($inst === null) {
-            $inst = PDOS::_construct();
+        static $inst = NULL;
+        if ($inst === NULL) {
+            try {
+                $r = PDOS::_construct();
+                $inst = new CmdPDO($r[0], $r[1]);
+                if ($inst->cmd("@init()") === 0) {
+                    report_error("db", "@init() = 0");
+                }
+            } catch (PDOException $e) {
+                report_error("db", $e->getMessage());
+                $inst = false;
+            }
         }
         return $inst;
     }
@@ -22,90 +73,34 @@ final class PDOS
         $login = $ini["login"];
         $haslo = $ini["password"];
 
-        try {
-            $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $login, $haslo, array(
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_PERSISTENT => false
-            ));
-            $arr = array(
-                "CREATE TABLE IF NOT EXISTS `ng_article` (
-                    `article_id` int(10) UNSIGNED NOT NULL,
-                    `season_id` int(10) UNSIGNED DEFAULT NULL,
-                    `title` tinytext COLLATE utf8mb4_polish_ci NOT NULL,
-                    `author_id` int(10) UNSIGNED NOT NULL,
-                    `publish_on_news_page` tinyint(1) NOT NULL,
-                    `is_subpage` tinyint(1) NOT NULL,
-                    `content` mediumtext COLLATE utf8mb4_polish_ci NOT NULL,
-                    `created_at` date NULL
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;",
-                "CREATE TABLE IF NOT EXISTS `ng_game` (
-                    `game_id` int(10) UNSIGNED NOT NULL,
-                    `season_id` int(10) UNSIGNED NOT NULL,
-                    `type` enum('first','second','half1','half2','final','third') COLLATE utf8mb4_polish_ci NOT NULL,
-                    `date` date NOT NULL,
-                    `A_team_id` int(10) NULL,
-                    `A_score` int(11) DEFAULT NULL,
-                    `B_score` int(11) DEFAULT NULL,
-                    `B_team_id` int(10) NULL
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;",
-                "CREATE TABLE IF NOT EXISTS `ng_photo` (
-                    `photo_id` int(11) UNSIGNED NOT NULL,
-                    `season_id` int(10) UNSIGNED NOT NULL,
-                    `game_id` int(10) UNSIGNED DEFAULT NULL,
-                    `date` date NOT NULL,
-                    `type` enum('filename','url') COLLATE utf8mb4_polish_ci NOT NULL,
-                    `content` text COLLATE utf8mb4_polish_ci NOT NULL,
-                    `photographer_id` int(10) UNSIGNED NOT NULL,
-                    `credit_photographer` tinyint(1) NOT NULL DEFAULT 0,
-                    `comment` text COLLATE utf8mb4_polish_ci DEFAULT NULL
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;",
-                "CREATE TABLE IF NOT EXISTS `ng_season` (
-                    `season_id` int(10) UNSIGNED NOT NULL,
-                    `created_at` date NOT NULL,
-                    `name` tinytext COLLATE utf8mb4_polish_ci NOT NULL,
-                    `html_name` tinytext COLLATE utf8mb4_polish_ci NOT NULL,
-                    `description` text COLLATE utf8mb4_polish_ci,
-                    `grouping_type` enum('no_grouping','two_rounds','two_groups') COLLATE utf8mb4_polish_ci NOT NULL,
-                    `comment` text COLLATE utf8mb4_polish_ci
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;",
-                "CREATE TABLE IF NOT EXISTS `ng_team` (
-                    `season_id` int(10) UNSIGNED NOT NULL,
-                    `team_id` int(10) NOT NULL,
-                    `name` varchar(42) COLLATE utf8mb4_polish_ci NOT NULL,
-                    `photo_id` int(10) UNSIGNED NULL
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;",
-                "CREATE TABLE IF NOT EXISTS `ng_user` (
-                    `active` tinyint(1) NOT NULL,
-                    `user_id` int(10) UNSIGNED NOT NULL,
-                    `login` tinytext COLLATE utf8mb4_polish_ci NOT NULL,
-                    `password` varchar(255) COLLATE utf8mb4_polish_ci NOT NULL COMMENT 'plain if `change_password_at_next_login` else hash',
-                    `change_password_at_next_login` tinyint(1) NOT NULL,
-                    `pretty_name` varchar(255) COLLATE utf8mb4_polish_ci NOT NULL,
-                    `last_logged_at` date NOT NULL,
-                    `registered_at` date NOT NULL,
-                    `comment` text COLLATE utf8mb4_polish_ci,
-                    `admin` tinyint(1) NOT NULL,
-                    `photographer` tinyint(1) NOT NULL,
-                    `referee` tinyint(1) NOT NULL
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;"
-            );
-            foreach ($arr as $sql) {
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute();
-            }
-            return $pdo;
-        } catch (PDOException $e) {
-            report_error("db", $e->getMessage());
+        $sql = file_get_contents(ROOT_PATH . "/utils/commands.sql");
+        if ($sql === false) {
+            report_error("db", "No valid commands found.");
+            return false;
         }
-        return false;
+        preg_match_all('/^-- ([^#\n]*)(?: #.*)?\n([^;]*;)/m', $sql, $raw_cmds, PREG_SET_ORDER);
+        $cmds = array();
+        foreach ($raw_cmds as $match) {
+            if (!array_key_exists($match[1], $cmds)) {
+                $cmds[$match[1]] = array($match[2]);
+            } else {
+                if ($match[1][0] !== "@") {
+                    report_error("db", "multiline in `{$match[1]}`");
+                }
+                array_push($cmds[$match[1]], $match[2]);
+            }
+        }
+        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $login, $haslo, array(
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_PERSISTENT => false
+        ));
+        return array($pdo, $cmds);
     }
 }
 
 function obecny_sezon()
 {
-    $arr = PDOS::Instance()->query( // get_latest_season()
-        "SELECT `season_id` FROM `ng_season` ORDER BY `created_at` DESC LIMIT 1"
-    )->fetchAll(PDO::FETCH_COLUMN);
+    $arr = PDOS::Instance()->cmd("get_latest_season()")->fetchAll(PDO::FETCH_COLUMN);
     return $arr ? $arr[0] : NULL;
 }
 

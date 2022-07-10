@@ -3,13 +3,7 @@ register_additional_title("Wybierz");
 
 function page_init()
 {
-    return PDOS::Instance()->query( // gallery_seasons()
-        "SELECT
-            p.`season_id`, s.`name`, s.`html_name`
-        FROM `ng_photo` p
-            LEFT JOIN `ng_season` s ON p.`season_id` = s.`season_id`
-        GROUP BY `season_id` ORDER BY s.`created_at` DESC"
-    )->fetchAll(PDO::FETCH_ASSOC);
+    return PDOS::Instance()->cmd("get_gallery_seasons()")->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function page_render($obj)

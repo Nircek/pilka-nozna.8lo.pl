@@ -3,7 +3,7 @@ register_additional_title("Wybierz sezon");
 
 function page_init()
 {
-    return PDOS::Instance()->query("SELECT `season_id`, `name`, `html_name` FROM `ng_season` ORDER BY `created_at` DESC;")->fetchAll(PDO::FETCH_ASSOC);
+    return PDOS::Instance()->cmd("get_seasons()")->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function page_render($obj)

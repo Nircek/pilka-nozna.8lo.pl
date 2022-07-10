@@ -62,11 +62,10 @@ if (!empty($_FILES['files']['name'][0])) {
             $file_absolute = ROOT_PATH . "/public/zdjecia/" . $name_array[$i];
             if (move_uploaded_file($tmp_name_array[$i], $file_absolute)) {
                 make_thumb($file_absolute, ROOT_PATH . "/public/zdjecia/thumb." . $name_array[$i], 200);
-                PDOS::Instance()->prepare( // add_photo(season, filename, photographer)
-                    "INSERT INTO `ng_photo`
-                        (`season_id`, `game_id`, `date`, `type`, `content`, `photographer_id`, `credit_photographer`, `comment`)
-                        VALUES (?, NULL, CURDATE(), 'filename', ?, ?, 0, NULL);"
-                )->execute([$sezon, $name_array[$i], $autor]);
+                PDOS::Instance()->cmd(
+                    "add_photo(season, filename, photographer)",
+                    [$sezon, $name_array[$i], $autor]
+                );
             } else {
                 report_error("Wystąpił problem z przesłaniem pliku na serwer!", NULL);
                 exit();
