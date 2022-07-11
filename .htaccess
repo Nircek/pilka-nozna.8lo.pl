@@ -38,6 +38,7 @@ AddDefaultCharset utf-8
 AddCharset UTF-8 .html .css .js
 # ErrorDocument 404 main.php -- not working (relative directory) -> see (♡)
 
+php_value session.gc_maxlifetime 1800
 php_value memory_limit 300M
 php_value post_max_size 1000M
 php_value upload_max_filesize 300M

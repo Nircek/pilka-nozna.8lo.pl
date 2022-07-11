@@ -22,6 +22,20 @@ if (!($config_ini = load_config_file(ROOT_PATH . "/config.ini"))) {
     }
 }
 
+session_start();
+# inspired by https://stackoverflow.com/a/1270960/6732111
+if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > $config_ini['SESSION_TIMEOUT'])) {
+    session_unset();
+    session_destroy();
+}
+$_SESSION['LAST_ACTIVITY'] = time();
+if (!isset($_SESSION['CREATED'])) {
+    $_SESSION['CREATED'] = time();
+} else if (time() - $_SESSION['CREATED'] > 1800) {
+    session_regenerate_id(true);
+    $_SESSION['CREATED'] = time();
+}
+
 define("ERROR_REPORTING", !file_exists(ROOT_PATH . "/config.ini") or false);
 
 array_emplace('BORDER_TIME', $config_ini);
