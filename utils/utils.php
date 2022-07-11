@@ -2,10 +2,10 @@
 
 function cast_int($x)
 {
-    if (!is_numeric($x)) {
+    if (!is_numeric($x) or $x === '') {
         return null;
     }
-    return $x + 0;
+    return (int)$x;
 }
 
 function coalesce()

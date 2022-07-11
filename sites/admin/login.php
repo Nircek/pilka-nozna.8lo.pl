@@ -2,24 +2,23 @@
 register_style("admin_log");
 
 global $config_ini;
-$ADMIN_PASS = $config_ini['panel_pass'];
-$ADMIN_LOGIN = $config_ini['panel_user'];
 
-// Sprawdzenie czy formularz został wysłany (czu użytkownik kliknął 'zaloguj')
 if (is_logged(false)) {
-    goto xkcd292;
+    header("Location: " . PANEL_URL);
+    exit();
 }
 
-if (isset($_POST['login'])) {
-    $login = $_POST['login'];
-    $password = $_POST['password'];
+function page_perform() {
+    global $config_ini;
+
+    $login = filter_input(INPUT_POST, 'login');
+    $password = filter_input(INPUT_POST, 'password');
 
     if (empty($login) or empty($password)) {
         report_error("Wpisz oba pola!", null);
     } else {
-        if ($password == $ADMIN_PASS and $login == $ADMIN_LOGIN) {
+        if ($password === $config_ini['panel_pass'] and $login === $config_ini['panel_user']) {
             $_SESSION['zalogowany'] = true;
-            xkcd292:
             header("Location: " . PANEL_URL);
             exit();
         } else {

@@ -1,6 +1,9 @@
 <?php
 
 define("PREFIX", (ROOT_PATH === $_SERVER["DOCUMENT_ROOT"] ? "" : "/") . relative_path(ROOT_PATH, $_SERVER["DOCUMENT_ROOT"]));
+if (!isset($_SERVER["REDIRECT_URL"])) { // I think it is always present in Apache2 setups
+    SERVER_ERROR(501, "REDIRECT_URL not in _SERVER");
+}
 $route = $_SERVER["REDIRECT_URL"];
 if (substr($route, 0, strlen(PREFIX) + 1) === PREFIX . "/") {
     $route = substr($route, strlen(PREFIX) + 1);

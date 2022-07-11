@@ -2,9 +2,52 @@
 register_style("admin_wyniki");
 is_logged();
 
+global $sezon;
+$sezon = cast_int(HIT_UNPACK());
+if (empty($sezon)) {
+    $sezon = obecny_sezon();
+    // report_error("sezon violation", null); exit();
+}
+
+function page_perform()
+{
+    global $sezon;
+    $games = PDOS::Instance()->cmd(
+        "get_game_types(season)",
+        [$sezon]
+    )->fetchAll(PDO::FETCH_ASSOC);
+    try {
+        PDOS::Instance()->beginTransaction();
+        $update_final = false;
+        foreach ($games as $game) {
+            $w1 = cast_int($_POST[$game['game_id'] . '_1']);
+            $w2 = cast_int($_POST[$game['game_id'] . '_2']);
+            $half = (substr($game['type'], 0, 4) == 'half');
+            if ($half and $w1 !== null and $w1 === $w2) {
+                report_error("W półfinale nie może być remisu!", null);
+                continue;
+            }
+            if ($half) {
+                $update_final = true;
+            }
+            PDOS::Instance()->cmd(
+                "set_game_score(A, B, season, game_id)",
+                [$w1, $w2, $sezon, $game['game_id']]
+            );
+        }
+        if ($update_final) {
+            PDOS::Instance()->cmd("update_final_participants(season)", [$sezon]);
+        }
+        PDOS::Instance()->commit();
+    } catch (Exception $e) {
+        PDOS::Instance()->rollback();
+        throw $e;
+    }
+}
+
 function page_init()
 {
-    $sezon = obecny_sezon();
+    global $sezon;
     $grupowe = array();
     $grupowe[] = PDOS::Instance()->cmd(
         "get_games(season, finals?, group)",
@@ -31,7 +74,7 @@ function page_render($obj)
     <div id="content">
         <h1> WPISZ WYNIKI (jesli się nie odbył to zostaw puste) </h1>
 
-        <form method='post' action='<?= PREFIX ?>/skrypty/wyniki'>
+        <form method='post'>
             <?php if (!is_null($obj['finalowe'])) : ?>
                 <?php foreach ($obj['finalowe'] as $mecz) : ?>
                     <?= $mecz['title'] ?> | <?= coalesce($mecz['date'], 'nie ustalono') ?> <br /><?= coalesce($mecz['A_team'], '???') ?>
