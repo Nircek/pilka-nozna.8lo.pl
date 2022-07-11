@@ -1,5 +1,6 @@
 <?php
 
+global $REGISTERED_STYLES;
 $REGISTERED_STYLES = array();
 
 function register_style($name)
