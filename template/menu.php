@@ -20,13 +20,13 @@ foreach ($error_queue as $error) :
     </div>
 <?php endif; ?>
 <div id="menu">
-    <div id="logo" class="left-drawer-top">
+    <div id="logo" class="left-drawer">
         <a href="<?= PREFIX ?>/"><img src="<?= PREFIX ?>/img/logo.png"></a>
     </div>
-    <div id="title" class="center-drawer-top">
+    <div id="title" class="center-drawer">
         <div class="center-vert"> VIII LO "PIK" PIŁKA NOŻNA </div>
     </div>
-    <div id="options" class="right-drawer-top link">
+    <div id="options" class="right-drawer link">
         <div id="facebook">
             <a target="_blank" href="#">
                 <i class="icon-facebook"></i>

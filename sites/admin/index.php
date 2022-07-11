@@ -1,6 +1,6 @@
 <?php
+register_style("admin.css");
 is_logged();
-register_style("admin");
 
 function page_init()
 {
@@ -9,66 +9,87 @@ function page_init()
 
 function page_render($obj)
 {
-    ?>
+?>
+    <script type="text/javascript">
+        function display() {
+            let s = document.getElementById('wybor_sezonu');
+            let ss = s[s.selectedIndex].text;
+            document.getElementById('wyswietl_sezon').innerText = `Sezon: ${ss}`;
+        }
+    </script>
     <div id="content">
         <h1> PANEL ADMINISTRATORA </h1>
-        <div id="panel">
-            <!------------------ DODAWANIE INFO ------------------>
-            <div id="informacje">
-                <h2> DODAJ INFORMACJĘ </h2>
-                <form method="post" action="<?= PREFIX ?>/skrypty/dodaj-post" id="informacje-form">
-                    <p class="big"> TYTUŁ </p>
-                    <textarea cols="24" rows="2" id="info_tytul" maxlength="50" name="info_tytul"></textarea><br />
-                    <p class="big"> TREŚĆ </p>
-                    <textarea cols="27" rows="10" id="info_tresc" name="info_tresc"></textarea><br />
-                    <input type="submit" value="PUBLIKUJ">
-                </form>
-            </div>
-
-            <!------------------ WPISYWANIE WYNIKÓW ------------------>
-            <div id="aktualizacja-sezonu">
-                <h2> AKTUALIZUJ SEZON </h2>
-                <p class="big"> WPISZ WYNIKI </p>
-                <div id="dalej-button" class="link">
-                    <a href="<?= PREFIX ?>/admin/wyniki">+</a>
+        <form action="">
+            <label for="wybor_sezonu">Wybierz sezon: </label>
+            <select name="sezon" id="wybor_sezonu" onchange="display();">
+                <?php foreach ($obj as $sezon) : ?>
+                    <option value='<?= $sezon['season_id'] ?>'>
+                        <?= $sezon['html_name'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select></form>
+        <br>
+        <div id="desc">
+            <p id="wyswietl_sezon">Sezon: 2021/2022</p>
+            <form action="#" method="POST">
+                <div>
+                    <label for="htmlnazwa">Nazwa w html: </label><br>
+                    <textarea id="htmlnazwa" name="htmlnazwa" rows="2" cols="30" style="text-align: left;">html nazwa: <&span style="color:grey;">2019/2020
+            </textarea>
                 </div>
-                <p class="big"> AKTUALIZUJ HARMONOGRAM </p>
-                <div id="dalej-button" class="link">
-                    <a href="<?= PREFIX ?>/admin/harmonogram">+</a>
-                </div>
-            </div>
-            <div style="clear: both;"></div>
 
-            <!------------------ DODAWANIE ZDJĘĆ ------------------>
-            <div id="zdjecia">
-                <h2> DODAJ ZDJĘCIA </h2>
-                <form method="post" enctype="multipart/form-data" action="<?= PREFIX ?>/skrypty/dodaj-zdjecie">
-                    <p class="big"> WYBIERZ SEZON: </p>
-                    <select id="zdjecia_sezon" name="zdjecie_sezon">
-                        <?php foreach ($obj as $sezon) : ?>
-                            <option value="<?= $sezon['season_id'] ?>"><?= $sezon['name'] ?></option>
-                        <?php endforeach; ?>
+                <div style="float:left;">
+                    <label for="Opis">Opis: </label><br>
+                    <textarea id="Opis" name="Opis" rows="5" cols="30" style="text-align: left;">Ten sezon nie istnieje.
+            </textarea>
+                </div>
+                <div style="margin-left: 60%;">
+                    <input type="submit" value="Aktualizuj" style="width: 60%; height: 100px;">
+                </div>
+                <div style="clear:both"></div>
+                <div>
+                    <label for="format">Format rozgrywek: </label>
+                    <select name="Format_rozgrywek" id="format">
+                        <option value="groups">Dwie grupy</option>
+                        <option value="doublerobin">Double-robin</option>
+                        <option value="null">null</option>
                     </select>
-                    <p class="big"> WYBIERZ ZDJĘCIA (.jpg) </p>
-                    <input type="file" name="files[]" id="zdjecia_wybor" accept=".jpg,.jpeg,.png" multiple><br />
-                    <input type="submit" value="DODAJ">
-                </form>
-            </div>
-
-            <!------------------ TWORZENIE SEZONU ------------------>
-            <div id="tworzenie-sezonu">
-                <h2> STWÓRZ SEZON </h2>
-                <div id="dalej-button" class="link">
-                    <a href="<?= PREFIX ?>/admin/sezon">+</a>
                 </div>
-                <br />
-                <h2> STWÓRZ RUNDĘ FINAŁOWĄ </h2>
-                <div id="dalej-button" class="link">
-                    <a href="<?= PREFIX ?>/skrypty/admin_final">+</a>
-                </div>
-            </div>
-
-            <div style="clear: both;"></div>
+        </div>
+        </form>
+        <div class="update"><a class="tile" href="/admin/harmonogram">Zmień harmonogram</a></div> <!-- TODO: /sezonId -->
+        <div class="update"><a class="tile" href="/admin/wyniki">Zmień wyniki</a></div> <!-- TODO: /sezonId -->
+        <div class="update">Dodaj zdjęcia</div>
+        <div class="update">Dodaj nowy artykuł</div>
+        <div class="group">
+            <h2>GRUPA 1</h2>
+            1d <br>
+            2d <br>
+            3d <br>
+            4d <br>
+            <br>
+            <br>
+            <form method="post" action="#">
+                <input type="text" name="drużyna">
+                <br>
+                <input type="submit" value="DODAJ DUŻYNĘ!">
+            </form>
+            <br>
+        </div>
+        <div class="group">
+            <h2>GRUPA 2</h2>
+            1dd <br>
+            2dd <br>
+            3dd <br>
+            4dd <br>
+            <br>
+            <br>
+            <form method="post" action="#">
+                <input type="text" name="drużyna">
+                <br>
+                <input type="submit" value="DODAJ DUŻYNĘ!">
+            </form>
+            <br>
         </div>
     </div>
 <?php

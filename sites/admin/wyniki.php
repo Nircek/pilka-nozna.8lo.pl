@@ -44,15 +44,21 @@ function page_render($obj)
             <?php for ($grupa = 0; $grupa <= 1; ++$grupa) : ?>
                 <div class='grupy'>
                     <h2>Grupa <?= coalesce($grupa + 1) ?></h2>
-                    <?php foreach ($obj['grupowe'][$grupa] as $mecz) : ?>
-                        <?= coalesce($mecz['date'], 'nie ustalono') ?><br />
-                        <div class="wynik_meczu">
-                            <?= coalesce($mecz['A_team'], '???') ?>
-                            <input class='wynik' type='number' name='<?= $mecz['game_id'] ?>_1' value='<?= $mecz['A_score'] ?>'> :
-                            <input class='wynik' type='number' name='<?= $mecz['game_id'] ?>_2' value='<?= $mecz['B_score'] ?>'>
-                            <?= coalesce($mecz['B_team'], '???') ?>
-                        </div>
-                    <?php endforeach; ?>
+                    <table style="text-align: center;">
+                        <?php foreach ($obj['grupowe'][$grupa] as $mecz) : ?>
+                            <tr>
+                                <td></td><td><?= coalesce($mecz['date'], 'nie ustalono') ?><br /></td>
+                            </tr>
+                            <tr style="margin-bottom: 10px;">
+                                <td style="text-align: right;vertical-align: middle;"><?= coalesce($mecz['A_team'], '???') ?>
+                                </td>
+                                <td style="vertical-align: bottom;"><input class='wynik' type='number' name='<?= $mecz['game_id'] ?>_1' value='<?= $mecz['A_score'] ?>'> :
+                                    <input class='wynik' type='number' name='<?= $mecz['game_id'] ?>_2' value='<?= $mecz['B_score'] ?>'>
+                                </td>
+                                <td style="text-align: left; vertical-align: middle;"> <?= coalesce($mecz['B_team'], '???') ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </table>
                 </div>
             <?php endfor; ?>
             <input type='hidden' value='<?= $obj['sezon'] ?>' name='sezon'>

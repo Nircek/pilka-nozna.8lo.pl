@@ -114,25 +114,18 @@ input[type=file] {
 }
 
 .left-drawer {
-    width: 30%;
-}
-.center-drawer {
-    width: 40%;
-    background-color: hsl(225, 9%, 9%);
-}
-.right-drawer {
-    width: 30%;
-}
-.left-drawer-top {
     width: 25%;
 }
-.center-drawer-top {
+
+.center-drawer {
     width: 35%;
     background-color: hsl(225, 9%, 9%);
 }
-.right-drawer-top {
+
+.right-drawer {
     width: 40%;
 }
+
 #logo {
     background-color: rgba(255, 255, 255, 20%);
 }

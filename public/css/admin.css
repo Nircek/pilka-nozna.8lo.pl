@@ -162,6 +162,7 @@ td {
 
 .wynik {
     border-width: 1.5px;
+    margin-bottom: 0;
     width: 100px;
 }
 
@@ -195,11 +196,11 @@ td {
 
 .group {
     padding: 3%;
-    line-height: 3vh;
+    line-height: 200%;
     display: inline-block;
     text-align: center;
     background-color: #242424;
-    margin: 2% 7% 5% 7%;
+    margin: 2% 5% 5% 5%;
 }
 
 /* ------------------ WYBÓR_SEZONU_DO_EDYCJI ------------------ */
