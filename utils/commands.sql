@@ -1,5 +1,5 @@
 -- @init()
-CREATE TABLE IF NOT EXISTS `ng_article` (
+CREATE TABLE IF NOT EXISTS `prefix_article` (
     `article_id` int(10) UNSIGNED NOT NULL,
     `season_id` int(10) UNSIGNED DEFAULT NULL,
     `title` tinytext COLLATE utf8mb4_polish_ci NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `ng_article` (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_polish_ci;
 
 -- @init()
-CREATE TABLE IF NOT EXISTS `ng_game` (
+CREATE TABLE IF NOT EXISTS `prefix_game` (
     `game_id` int(10) UNSIGNED NOT NULL,
     `season_id` int(10) UNSIGNED NOT NULL,
     `type` enum(
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `ng_game` (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_polish_ci;
 
 -- @init()
-CREATE TABLE IF NOT EXISTS `ng_photo` (
+CREATE TABLE IF NOT EXISTS `prefix_photo` (
     `photo_id` int(11) UNSIGNED NOT NULL,
     `season_id` int(10) UNSIGNED NOT NULL,
     `game_id` int(10) UNSIGNED DEFAULT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `ng_photo` (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_polish_ci;
 
 -- @init()
-CREATE TABLE IF NOT EXISTS `ng_season` (
+CREATE TABLE IF NOT EXISTS `prefix_season` (
     `season_id` int(10) UNSIGNED NOT NULL,
     `created_at` date NOT NULL,
     `name` tinytext COLLATE utf8mb4_polish_ci NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `ng_season` (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_polish_ci;
 
 -- @init()
-CREATE TABLE IF NOT EXISTS `ng_team` (
+CREATE TABLE IF NOT EXISTS `prefix_team` (
     `season_id` int(10) UNSIGNED NOT NULL,
     `team_id` int(10) NOT NULL,
     `name` varchar(42) COLLATE utf8mb4_polish_ci NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `ng_team` (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_polish_ci;
 
 -- @init()
-CREATE TABLE IF NOT EXISTS `ng_user` (
+CREATE TABLE IF NOT EXISTS `prefix_user` (
     `active` tinyint(1) NOT NULL,
     `user_id` int(10) UNSIGNED NOT NULL,
     `login` tinytext COLLATE utf8mb4_polish_ci NOT NULL,
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `ng_user` (
 SELECT
     `season_id`
 FROM
-    `ng_season`
+    `prefix_season`
 ORDER BY
     `created_at` DESC
 LIMIT
@@ -93,7 +93,7 @@ SELECT
     `name`,
     `html_name`
 FROM
-    `ng_season`
+    `prefix_season`
 ORDER BY
     `created_at` DESC;
 
@@ -103,8 +103,8 @@ SELECT
     s.`name`,
     s.`html_name`
 FROM
-    `ng_photo` p
-    LEFT JOIN `ng_season` s ON p.`season_id` = s.`season_id`
+    `prefix_photo` p
+    LEFT JOIN `prefix_season` s ON p.`season_id` = s.`season_id`
 GROUP BY
     `season_id`
 ORDER BY
@@ -115,7 +115,7 @@ SELECT
     `description`,
     `grouping_type`
 FROM
-    `ng_season`
+    `prefix_season`
 WHERE
     `season_id` = ?;
 
@@ -146,10 +146,10 @@ SELECT
         )
     ) AS `title`
 FROM
-    `ng_game` g
-    LEFT JOIN `ng_team` a ON g.`season_id` = a.`season_id`
+    `prefix_game` g
+    LEFT JOIN `prefix_team` a ON g.`season_id` = a.`season_id`
     AND g.`A_team_id` = a.`team_id`
-    LEFT JOIN `ng_team` b ON g.`season_id` = b.`season_id`
+    LEFT JOIN `prefix_team` b ON g.`season_id` = b.`season_id`
     AND g.`B_team_id` = b.`team_id`
 WHERE
     g.`season_id` = ?
@@ -169,7 +169,7 @@ ORDER BY
 SELECT
     COUNT(*)
 FROM
-    `ng_photo`
+    `prefix_photo`
 WHERE
     `season_id` = ?;
 
@@ -177,7 +177,7 @@ WHERE
 SELECT
     `name`
 FROM
-    `ng_season`
+    `prefix_season`
 WHERE
     `season_id` = ?;
 
@@ -207,7 +207,7 @@ SELECT
     `credit_photographer`,
     `comment`
 FROM
-    `ng_photo` p,
+    `prefix_photo` p,
     (
         SELECT
             ? AS PREFIX
@@ -230,7 +230,7 @@ SELECT
         `content`
     ) AS `thumb_url`
 FROM
-    `ng_photo`
+    `prefix_photo`
 ORDER BY
     RAND()
 LIMIT
@@ -266,7 +266,7 @@ FROM
                     `A_score` AS our,
                     `B_score` AS their
                 FROM
-                    `ng_game`
+                    `prefix_game`
                 UNION
                 ALL
                 SELECT
@@ -276,7 +276,7 @@ FROM
                     `B_score` AS our,
                     `A_score` AS their
                 FROM
-                    `ng_game`
+                    `prefix_game`
             ) t
         WHERE
             `season_id` = ?
@@ -288,7 +288,7 @@ FROM
         GROUP BY
             `us`
     ) tt
-    LEFT JOIN `ng_team` T ON T.`season_id` = tt.`season_id`
+    LEFT JOIN `prefix_team` T ON T.`season_id` = tt.`season_id`
     AND T.`team_id` = tt.team
 ORDER BY
     points DESC,
@@ -302,7 +302,7 @@ SELECT
     `content`,
     `created_at`
 FROM
-    `ng_article`
+    `prefix_article`
 WHERE
     `publish_on_news_page` = 1
 ORDER BY
@@ -315,7 +315,7 @@ SELECT
     `content`,
     `created_at`
 FROM
-    `ng_article`
+    `prefix_article`
 WHERE
     `publish_on_news_page` = 1
 ORDER BY
@@ -325,7 +325,7 @@ LIMIT
 
 -- add_info(title, author, content) # 1
 INSERT INTO
-    `ng_article` (
+    `prefix_article` (
         `season_id`,
         `title`,
         `author_id`,
@@ -343,7 +343,7 @@ SELECT
     ?,
     CURDATE()
 FROM
-    `ng_season`
+    `prefix_season`
 ORDER BY
     `created_at` DESC
 LIMIT
@@ -351,7 +351,7 @@ LIMIT
 
 -- add_photo(season, filename, photographer) # 1
 INSERT INTO
-    `ng_photo` (
+    `prefix_photo` (
         `season_id`,
         `game_id`,
         `date`,
@@ -368,7 +368,7 @@ VALUES
 SELECT
     `game_id`
 FROM
-    `ng_game`
+    `prefix_game`
 WHERE
     `season_id` = ?;
 
@@ -377,13 +377,13 @@ SELECT
     `game_id`,
     `type`
 FROM
-    `ng_game`
+    `prefix_game`
 WHERE
     `season_id` = ?;
 
 -- set_game_date(date, season, game_id) # 1
 UPDATE
-    `ng_game`
+    `prefix_game`
 SET
     `date` = ?
 WHERE
@@ -392,7 +392,7 @@ WHERE
 
 -- set_game_score(A, B, season, game_id) # 1
 UPDATE
-    `ng_game`
+    `prefix_game`
 SET
     `A_score` = ?,
     `B_score` = ?
@@ -402,7 +402,7 @@ WHERE
 
 -- update_final_participants(season) # 1
 UPDATE
-    `ng_game` u,
+    `prefix_game` u,
     (
         SELECT
             IF(`wins`, 'final', 'third') AS type,
@@ -432,7 +432,7 @@ UPDATE
                         NULL
                     ) AS `team`
                 FROM
-                    `ng_game`,
+                    `prefix_game`,
                     (
                         SELECT
                             0 AS f
@@ -455,14 +455,14 @@ WHERE
 
 -- delete_finals(season) # 1
 DELETE FROM
-    `ng_game`
+    `prefix_game`
 WHERE
     `season_id` = ?
     AND `type` NOT IN ('first', 'second');
 
 -- add_finals(season, f1, s1, f2, s2) # 1
 INSERT INTO
-    `ng_game` (
+    `prefix_game` (
         `game_id`,
         `season_id`,
         `type`,
@@ -481,7 +481,7 @@ FROM
             max(`game_id`) AS maxi,
             id
         FROM
-            `ng_game` g,
+            `prefix_game` g,
             (
                 SELECT
                     ? AS id
@@ -520,7 +520,7 @@ SELECT
     `title`,
     `content`
 FROM
-    `ng_article`
+    `prefix_article`
 WHERE
     `season_id` IS NULL
     AND `is_subpage` = 1
@@ -533,7 +533,7 @@ SELECT
     LOWER(REPLACE(`title`, ' ', '-')) AS `name`,
     UPPER(`title`) AS `title`
 FROM
-    `ng_article`
+    `prefix_article`
 WHERE
     `season_id` IS NULL
     AND `is_subpage` = 1

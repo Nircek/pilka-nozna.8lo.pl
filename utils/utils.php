@@ -32,7 +32,7 @@ function relative_path($path, $root = null)
     }
     $path = realpath($path);
     $root = realpath($root);
-    if (!$path or $root) {
+    if (!$path or !$root) {
         return false;
     }
     $helper = function ($prev, $next) {

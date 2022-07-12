@@ -7,8 +7,10 @@ class CmdPDO
 
     public function cmd($cmd, $arg = array())
     {
+        global $config_ini;
         $i = 0;
         foreach ($this->cmds[$cmd] as $sql) {
+            $sql = str_replace("prefix_", $config_ini['dbprefix'], $sql);
             $stmt = $this->_instance->prepare($sql);
             $stmt->execute($arg);
             ++$i;

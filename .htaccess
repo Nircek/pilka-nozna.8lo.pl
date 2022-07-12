@@ -13,13 +13,14 @@ Deny from all
     ExpiresByType image/gif "access plus 2592000 seconds"
     ExpiresByType image/jpeg "access plus 2592000 seconds"
     ExpiresByType image/png "access plus 2592000 seconds"
-    ExpiresByType text/css "access plus 1 seconds"
+    ExpiresByType text/css "access plus 120 seconds"
     ExpiresByType text/javascript "access plus 86400 seconds"
     ExpiresByType application/x-javascript "access plus 86400 seconds"
 </IfModule>
 
 <IfModule mod_rewrite.c>
     RewriteEngine on
+    # RewriteRule ^(.*)$ motd.txt [END]
     RewriteRule ^archiwum(.*) https://web.archive.org/web/20211023121934/http://pilka-nozna.8lo.pl/archiwum$1 [R=303,END]
     # make some dirs public
     RewriteRule "^(upload|css|img|zdjecia|fontello|js)/.*$" "public/$0" [S=1]
