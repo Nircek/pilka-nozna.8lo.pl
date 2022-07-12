@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT_PATH . "/utils/register.php");
+
 register_title("Strona nie została znaleziona");
 
 function page_render()

@@ -31,7 +31,7 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 
 $_SESSION['LAST_ACTIVITY'] = time();
 if (!isset($_SESSION['CREATED'])) {
     $_SESSION['CREATED'] = time();
-} else if (time() - $_SESSION['CREATED'] > 1800) {
+} elseif (time() - $_SESSION['CREATED'] > 1800) {
     session_regenerate_id(true);
     $_SESSION['CREATED'] = time();
 }

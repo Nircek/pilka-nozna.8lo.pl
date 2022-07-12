@@ -515,4 +515,29 @@ FROM
             NULL AS B
     ) t;
 
+-- get_static_site(title)
+SELECT
+    `title`,
+    `content`
+FROM
+    `ng_article`
+WHERE
+    `season_id` IS NULL
+    AND `is_subpage` = 1
+    AND `title` REGEXP REPLACE(?, '-', '[- ]')
+LIMIT
+    1;
+
+-- get_static_sites()
+SELECT
+    LOWER(REPLACE(`title`, ' ', '-')) AS `name`,
+    UPPER(`title`) AS `title`
+FROM
+    `ng_article`
+WHERE
+    `season_id` IS NULL
+    AND `is_subpage` = 1
+ORDER BY
+    `article_id`;
+
 -- {END}

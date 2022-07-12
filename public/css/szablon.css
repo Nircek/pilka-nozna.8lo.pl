@@ -196,6 +196,10 @@ input[type=file] {
     height: 120px;
 }
 
+#footer .left-drawer {
+    overflow-y: auto;
+}
+
 #half-links a {
     height: 30px;
 }

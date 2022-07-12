@@ -6,9 +6,9 @@ $rok = date('Y');
     <div class="left-drawer">
         <ol id="half-links" class="stylenone link">
             <li><a href="<?= PREFIX ?>/informacje"><div class="center-vert"> INFORMACJE </div></a></li>
-            <li><a href="<?= PREFIX ?>/o-nas"><div class="center-vert"> O NAS </div></a></li>
-            <li><a href="<?= PREFIX ?>/kontakt"><div class="center-vert"> KONTAKT </div></a></li>
-            <li><a href="<?= PREFIX ?>/regulamin"><div class="center-vert"> REGULAMIN </div></a></li>
+            <?php foreach (PDOS::Instance()->cmd("get_static_sites()")->fetchAll(PDO::FETCH_ASSOC) as $page): ?>
+                <li><a href="<?= PREFIX ?>/static/<?= $page['name'] ?>"><div class="center-vert"> <?= $page['title'] ?> </div></a></li>
+            <?php endforeach ?>
         </ol>
     </div>
     <div class="center-drawer">

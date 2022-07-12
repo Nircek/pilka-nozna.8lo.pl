@@ -8,7 +8,8 @@ if (is_logged(false)) {
     exit();
 }
 
-function page_perform() {
+function page_perform()
+{
     global $config_ini;
 
     $login = filter_input(INPUT_POST, 'login');
