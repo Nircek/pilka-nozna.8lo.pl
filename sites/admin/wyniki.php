@@ -1,5 +1,5 @@
 <?php
-register_style("admin_wyniki");
+
 is_logged();
 
 global $sezon;
@@ -85,19 +85,26 @@ function page_render($obj)
                 <?php endforeach; ?>
             <?php endif; ?>
             <?php for ($grupa = 0; $grupa <= 1; ++$grupa) : ?>
-                <div id='grupy'>
-                    <?php foreach ($obj['grupowe'][$grupa] as $mecz) : ?>
-                        <?= coalesce($mecz['date'], 'nie ustalono') ?><br />
-                        <?= coalesce($mecz['A_team'], '???') ?>
-                        <input class='wynik' type='number' name='<?= $mecz['game_id'] ?>_1' value='<?= $mecz['A_score'] ?>'> :
-                        <input class='wynik' type='number' name='<?= $mecz['game_id'] ?>_2' value='<?= $mecz['B_score'] ?>'>
-                        <?= coalesce($mecz['B_team'], '???') ?>
-                        <br />
-                    <?php endforeach; ?>
+                <div class='grupy'>
+                    <h2>Grupa <?= coalesce($grupa + 1) ?></h2>
+                    <table style="text-align: center;">
+                        <?php foreach ($obj['grupowe'][$grupa] as $mecz) : ?>
+                            <tr>
+                                <td></td><td><?= coalesce($mecz['date'], 'nie ustalono') ?><br /></td>
+                            </tr>
+                            <tr style="margin-bottom: 10px;">
+                                <td style="text-align: right;vertical-align: middle;"><?= coalesce($mecz['A_team'], '???') ?>
+                                </td>
+                                <td style="vertical-align: bottom;"><input class='wynik' type='number' name='<?= $mecz['game_id'] ?>_1' value='<?= $mecz['A_score'] ?>'> :
+                                    <input class='wynik' type='number' name='<?= $mecz['game_id'] ?>_2' value='<?= $mecz['B_score'] ?>'>
+                                </td>
+                                <td style="text-align: left; vertical-align: middle;"> <?= coalesce($mecz['B_team'], '???') ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </table>
                 </div>
             <?php endfor; ?>
             <div style="clear: both;"></div>
-            <input type='hidden' value='<?= $obj['sezon'] ?>' name='sezon'>
             <input type='submit' value='AKTUALIZUJ!'>
         </form>
     </div>

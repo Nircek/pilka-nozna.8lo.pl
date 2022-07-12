@@ -1,5 +1,4 @@
 <?php
-register_style("admin_log");
 
 global $config_ini;
 
