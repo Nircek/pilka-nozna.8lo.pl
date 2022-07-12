@@ -13,7 +13,6 @@
 
 /* ------------------ KONTENT ------------------ */
 #content {
-    background-color: transparent;
     padding: 0px;
     width: 1000px;
     overflow: hidden;
@@ -27,7 +26,6 @@
 
 #head,
 #runda-finalowa {
-    background-color: rgba(0, 0, 0, 0.5);
     padding: 5px 15px;
     padding-top: 15px;
 
@@ -41,7 +39,6 @@
     margin-bottom: -20000px;
     padding-top: 10px;
     width: 500px;
-    background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* ------------------ TABELA HARMONOGRAM I WYNIKI ------------------*/
@@ -76,9 +73,4 @@ td.wynik {
     background-color: rgba(255, 255, 255, 0.8);
     color: black;
     letter-spacing: 2px;
-}
-
-.description {
-    text-align: center;
-    padding: 3em 0;
 }

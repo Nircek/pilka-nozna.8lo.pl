@@ -53,6 +53,40 @@ function page_init()
         'finalowe' => (isset($finalowe) and count($finalowe) > 0) ? $finalowe : null,
     );
 }
+function table($name, $table)
+{
+    ?>
+    <h2> <?= $name ?> </h2>
+    <!------------------ TEBELA ------------------>
+    <p class="big spacious"> TABELA </p>
+    <table class="tabela" cellspacing="0">
+        <tr>
+            <th> LP </th>
+            <th> ZESPÓŁ </th>
+            <th> PKT </th>
+            <th> Z </th>
+            <th> R </th>
+            <th> P </th>
+            <th> Strzel. </th>
+            <th> Strac. </th>
+            <th> +/- </th>
+        </tr>
+        <?php foreach ($table as $i => $t) : ?>
+            <tr>
+                <td> <?= $i + 1 ?> </td>
+                <td> <?= $t['team'] ?> </td>
+                <td> <?= $t['points'] ?> </td>
+                <td> <?= $t['win'] ?> </td>
+                <td> <?= $t['tie'] ?> </td>
+                <td> <?= $t['los'] ?> </td>
+                <td> <?= $t['gain'] ?> </td>
+                <td> <?= $t['lost'] ?> </td>
+                <td> <?= $t['delta'] ?> </td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+<?php
+}
 
 function page_render($obj)
 {
@@ -89,6 +123,10 @@ function page_render($obj)
                 <?php endif; ?>
             </div>
         <?php endif; ?>
+        <?php
+        if (!is_null($obj["cala_tabela"])) {
+            table("PODSUMOWANIE", $obj["cala_tabela"]);
+        } ?>
         <?php if (!is_null($obj["tabele"])) for ($grupa = 1; $grupa <= 2; ++$grupa) : ?>
             <div id="grupa-<?= $grupa == 1 ? "pierwsza" : "druga" ?>">
                 <?php
@@ -106,37 +144,7 @@ function page_render($obj)
                         <tr>
                     </table>
                 <?php endif; ?>
-
-                <h2> <?= $obj["podzial"][$grupa - 1] ?> </h2>
-                <!------------------ TEBELA ------------------>
-                <p class="big spacious"> TABELA </p>
-                <table class="tabela" cellspacing="0">
-                    <tr>
-                        <th> LP </th>
-                        <th> ZESPÓŁ </th>
-                        <th> PKT </th>
-                        <th> Z </th>
-                        <th> R </th>
-                        <th> P </th>
-                        <th> Strzel. </th>
-                        <th> Strac. </th>
-                        <th> +/- </th>
-                    </tr>
-                    <?php foreach ($obj["tabele"][$grupa - 1] as $i => $t) : ?>
-                        <tr>
-                            <td> <?= $i + 1 ?> </td>
-                            <td> <?= $t['team'] ?> </td>
-                            <td> <?= $t['points'] ?> </td>
-                            <td> <?= $t['win'] ?> </td>
-                            <td> <?= $t['tie'] ?> </td>
-                            <td> <?= $t['los'] ?> </td>
-                            <td> <?= $t['gain'] ?> </td>
-                            <td> <?= $t['lost'] ?> </td>
-                            <td> <?= $t['delta'] ?> </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </table>
-
+                <?php table($obj["podzial"][$grupa - 1], $obj["tabele"][$grupa - 1]); ?>
                 <p class="big spacious"> HARMONOGRAM </p>
                 <?php
                 foreach ($obj["harmonogram"][$grupa - 1] as $mecz) :

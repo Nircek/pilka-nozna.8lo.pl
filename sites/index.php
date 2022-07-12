@@ -16,11 +16,21 @@ function page_init()
             [$sezon]
         )->fetchAll(PDO::FETCH_ASSOC)[0];
         $tabele = array();
-        for ($i = 1; $i <= 2; ++$i) {
-            $tabele[] = PDOS::Instance()->cmd(
-                "get_group_table(season, all?, group)",
-                [$sezon, false, $i == 1 ? 'first' : 'second']
-            )->fetchAll(PDO::FETCH_ASSOC);
+        switch ($details['grouping_type']) {
+            case "two_groups":
+            for ($i = 1; $i <= 2; ++$i) {
+                $tabele[] = PDOS::Instance()->cmd(
+                    "get_group_table(season, all?, group)",
+                    [$sezon, false, $i == 1 ? 'first' : 'second']
+                )->fetchAll(PDO::FETCH_ASSOC);
+            }
+            break;
+            case "two_rounds":
+                $tabele[] = PDOS::Instance()->cmd(
+                    "get_group_table(season, all?, group)",
+                    [$sezon, true, '']
+                )->fetchAll(PDO::FETCH_ASSOC);
+            break;
         }
     }
     return array(
@@ -30,10 +40,11 @@ function page_init()
         )->fetchAll(PDO::FETCH_COLUMN),
         'sezon' => $sezon,
         'sezon_name' => isset($name) ? $name : null,
+        'opis' => $details['description'],
         'tabele' => isset($tabele) ? $tabele : null,
         'podzial' => isset($details) ?
             ($details['grouping_type'] == "two_rounds" ?
-                array("RUNDA ZASADNICZA", "RUNDA REWANŻOWA") :
+                array("PODSUMOWANIE") :
                 array("GRUPA PIERWSZA", "GRUPA DRUGA"))
             : null,
         'informacje' => PDOS::Instance()->cmd("get_recent_news()")->fetchAll(PDO::FETCH_ASSOC),
@@ -77,7 +88,7 @@ function page_render($obj)
                 <div class="error"> Nie ma rozgrywek... </div>
             <?php else : ?>
                 <h2> TABELA <?= $obj["sezon_name"] ?> </h2>
-                <?php if (!is_null($obj["tabele"])) for ($grupa = 0; $grupa < 2; ++$grupa) : ?>
+                <?php if (!is_null($obj["tabele"])) for ($grupa = 0; $grupa < count($obj["tabele"]); ++$grupa) : ?>
                     <h2> <?= $obj["podzial"][$grupa] ?> </h2>
                     <div class="tabela-container">
                     <table class="tabela" cellspacing="0">
@@ -102,6 +113,9 @@ function page_render($obj)
                     </table>
                     </div>
                 <?php endfor; ?>
+                <?php if (!empty($obj['opis'])) : ?>
+                    <p class="description"> <?= $obj['opis'] ?> </p>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
         <div style="height: 0; clear: both;"></div>

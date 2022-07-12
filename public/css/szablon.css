@@ -318,3 +318,9 @@ div.alpha > div:before {
     padding: 5px 2px;
     border: solid 0.5px rgba(0, 0, 0, 0.9);
 }
+
+.description {
+    text-align: center;
+    padding: 3em 1em;
+}
+
