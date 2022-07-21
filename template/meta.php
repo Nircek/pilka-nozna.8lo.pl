@@ -5,6 +5,7 @@
 <link rel="icon" type="image/png" href="<?= PREFIX ?>/img/logo.png">
 <meta name="keywords" content="piłka, nożna, pik, viii, lo, liga, szkolna, strona, football">
 <meta name="description" content='Oficjalna strona Szkolnej Ligi Piłkarskiej w VIII LO "PIK"'>
+<link rel="stylesheet" type="text/css" href="<?= PREFIX ?>/css/normalize.css">
 <link rel="stylesheet" type="text/css" href="<?= PREFIX ?>/css/szablon.css">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <?php if (preg_match('/admin/', $_SERVER['SCRIPT_NAME'])) : ?>

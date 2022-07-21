@@ -4,107 +4,122 @@ register_title("Strona główna");
 
 function page_init()
 {
-    $obecny_sezon = PDOS::Instance()->query("SELECT sezon FROM sezony ORDER BY sezon DESC LIMIT 1")->fetchAll(PDO::FETCH_COLUMN);
-    $tabele = array();
-    if (!empty($obecny_sezon)) {
-        $obecny_sezon = $obecny_sezon[0];
-        $sezon_tabela = "${obecny_sezon}_tabela";
-        $tabela_stmt = PDOS::Instance()->prepare(
-            "SELECT CONCAT(@rownum := @rownum + 1, '.') AS i, t.*
-            FROM $sezon_tabela t, (SELECT @rownum := 0) r
-            WHERE grupa = ? ORDER BY pkt DESC, (zdobyte - stracone) DESC, nazwa ASC"
-        );
-        for ($i = 1; $i <= 2; ++$i) {
-            $tabela_stmt->execute([$i]);
-            $tabele[] = $tabela_stmt->fetchAll(PDO::FETCH_ASSOC);
+    $sezon = obecny_sezon();
+    if (!is_null($sezon)) {
+        $name = PDOS::Instance()->cmd(
+            "get_season_name(season)",
+            [$sezon]
+        )->fetchAll(PDO::FETCH_COLUMN);
+        $name = count($name) > 0 ? $name[0] : null;
+        $details = PDOS::Instance()->cmd(
+            "get_season_details(season)",
+            [$sezon]
+        )->fetchAll(PDO::FETCH_ASSOC)[0];
+        $tabele = array();
+        switch ($details['grouping_type']) {
+            case "two_groups":
+            for ($i = 1; $i <= 2; ++$i) {
+                $tabele[] = PDOS::Instance()->cmd(
+                    "get_group_table(season, all?, group)",
+                    [$sezon, false, $i == 1 ? 'first' : 'second']
+                )->fetchAll(PDO::FETCH_ASSOC);
+            }
+            break;
+            case "two_rounds":
+                $tabele[] = PDOS::Instance()->cmd(
+                    "get_group_table(season, all?, group)",
+                    [$sezon, true, '']
+                )->fetchAll(PDO::FETCH_ASSOC);
+            break;
         }
-    } else $obecny_sezon = NULL;
+    }
     return array(
-        'zdjecia' => PDOS::Instance()->query("SELECT sciezka FROM zdjecia ORDER BY RAND() LIMIT 4")->fetchAll(PDO::FETCH_COLUMN),
-        'sezon' => $obecny_sezon,
-        'informacje' => PDOS::Instance()->query("SELECT * FROM informacje ORDER BY id DESC LIMIT 6")->fetchAll(PDO::FETCH_ASSOC),
-        'tabele' => $tabele
+        'zdjecia' => PDOS::Instance()->cmd(
+            "get_4_random_photos(PREFIX)",
+            [PREFIX]
+        )->fetchAll(PDO::FETCH_COLUMN),
+        'sezon' => $sezon,
+        'sezon_name' => isset($name) ? $name : null,
+        'opis' => $details['description'],
+        'tabele' => isset($tabele) ? $tabele : null,
+        'podzial' => isset($details) ?
+            ($details['grouping_type'] == "two_rounds" ?
+                array("PODSUMOWANIE") :
+                array("GRUPA PIERWSZA", "GRUPA DRUGA"))
+            : null,
+        'informacje' => PDOS::Instance()->cmd("get_recent_news()")->fetchAll(PDO::FETCH_ASSOC),
+        'tabele' => isset($tabele) ? $tabele : null
     );
-}
-
-function generate_table($tabela)
-{
-?>
-    <table id="tabela" cellspacing="0">
-        <tr>
-            <th> LP </th>
-            <th> ZESPÓŁ </th>
-            <th> PKT </th>
-            <th> Z </th>
-            <th> R </th>
-            <th> P </th>
-        </tr>
-        <?php foreach ($tabela as $t) :
-        ?>
-            <tr>
-                <td> <?= $t['i'] ?> </td>
-                <td> <?= $t['nazwa'] ?> </td>
-                <td> <?= $t['pkt'] ?> </td>
-                <td> <?= $t['zwyciestwa'] ?> </td>
-                <td> <?= $t['remisy'] ?> </td>
-                <td> <?= $t['przegrane'] ?> </td>
-            </tr>
-
-        <?php endforeach; ?>
-    </table>
-<?php
 }
 
 function page_render($obj)
 {
-?>
-    <div id="content">
-        <div id="columns">
-            <div id="left-content">
-                <h1> GALERIA </h1>
-                <?php foreach ($obj["zdjecia"] as $zdjecie) : ?>
-                    <div class='image'>
-                        <img src='<?= PREFIX ?>/<?= $zdjecie ?>' width='192' />
-                        <!--wysokość auto. Nadwyżka zostanie ucięta-->
+    ?>
+    <div id="content" class="fullish">
+        <div class="left-drawer">
+            <h1> GALERIA </h1>
+            <?php foreach ($obj["zdjecia"] as $zdjecie) : ?>
+                <div class='image'>
+                    <img src='<?= $zdjecie ?>' />
+                    <!--wysokość auto. Nadwyżka zostanie ucięta-->
+                </div>
+            <?php endforeach; ?>
+            <div class="image link button">
+                <a href="<?= PREFIX ?>/galeria"><div class="center-vert"> &middot;&middot;&middot; </div></a>
+            </div>
+        </div>
+        <div class="center-drawer">
+            <h1> INFORMACJE </h1>
+            <div id="informacje-content">
+                <?php foreach ($obj["informacje"] as $info) : ?>
+                    <div class='info'>
+                        <div class="informacja-tytul"> <?= $info['title'] ?> </div>
+                        <div class="informacja-tresc"> <?= $info['content'] ?> </div>
+                        <div class="informacja-data"> <?= $info['created_at'] ?> </div>
                     </div>
                 <?php endforeach; ?>
-                <div id="image-button">
-                    <a href="<?= PREFIX ?>/galeria"><br /> ... </a>
-                </div>
             </div>
-            <div id="center-content">
-                <h1> INFORMACJE </h1>
-                <div id="informacje-content">
-                    <?php foreach ($obj["informacje"] as $info) : ?>
-                        <div class='info'>
-                            <h3> <?= $info['tytul'] ?> </h3>
-                            <span id='tresc'>
-                                <?= $info['tresc'] ?>
-                            </span>
-                            <br />
-                            <div id='data'>
-                                <?= $info['data'] ?>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-                <div id="info-button">
-                    <a href="<?= PREFIX ?>/informacje"><br />...</a>
-                </div>
+            <div class="link button">
+                <a href="<?= PREFIX ?>/informacje"><div class="center-vert"> &middot;&middot;&middot; </div></a>
             </div>
-            <div id="right-content">
-                <?php if (is_null($obj["sezon"])) :   ?>
-                    <div class="error"> Nie ma żadnego sezonu... </div>
-                <?php else : ?>
-                    <h2> TABELA <?= $obj["sezon"] ?>/<?= $obj["sezon"] + 1 ?> </h2>
-                    <h3> GRUPA PIERWSZA </h3>
-                    <?php generate_table($obj["tabele"][0]) ?>
-                    <h3> GRUPA DRUGA </h3>
-                    <?php generate_table($obj["tabele"][1]) ?>
-                <?php endif; ?>
-            </div>
-            <div style="clear: both;"></div>
         </div>
+        <div class="right-drawer">
+            <?php if (is_null($obj["sezon"])) :   ?>
+                <div class="error"> Nie ma rozgrywek... </div>
+            <?php else : ?>
+                <h2> TABELA <?= $obj["sezon_name"] ?> </h2>
+                <?php if (!is_null($obj["tabele"])) for ($grupa = 0; $grupa < count($obj["tabele"]); ++$grupa) : ?>
+                    <h2> <?= $obj["podzial"][$grupa] ?> </h2>
+                    <div class="tabela-container">
+                    <table class="tabela" cellspacing="0">
+                        <tr>
+                            <th> LP </th>
+                            <th> ZESPÓŁ </th>
+                            <th> PKT </th>
+                            <th> Z </th>
+                            <th> R </th>
+                            <th> P </th>
+                        </tr>
+                        <?php foreach ($obj["tabele"][$grupa] as $i => $t) : ?>
+                            <tr>
+                                <td> <?= $i + 1 ?> </td>
+                                <td> <?= $t['team'] ?> </td>
+                                <td> <?= $t['points'] ?> </td>
+                                <td> <?= $t['win'] ?> </td>
+                                <td> <?= $t['tie'] ?> </td>
+                                <td> <?= $t['los'] ?> </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </table>
+                    </div>
+                <?php endfor; ?>
+                <?php if (!empty($obj['opis'])) : ?>
+                    <p class="description"> <?= $obj['opis'] ?> </p>
+                <?php endif; ?>
+            <?php endif; ?>
+        </div>
+        <div style="height: 0; clear: both;"></div>
     </div>
 
-<?php }
+<?php
+}

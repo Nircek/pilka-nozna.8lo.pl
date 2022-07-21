@@ -1,49 +1,75 @@
 <?php
-register_style("admin_harmonogram");
+
 is_logged();
+
+global $sezon;
+$sezon = cast_int(HIT_UNPACK());
+if (empty($sezon)) {
+    $sezon = obecny_sezon();
+    // report_error("sezon violation", null); exit();
+}
+
+function page_perform()
+{
+    global $sezon;
+    $ids = PDOS::Instance()->cmd("get_game_ids(season)", [$sezon])->fetchAll(PDO::FETCH_COLUMN);
+    foreach ($ids as $id) {
+        $termin = $_POST[$id];
+        PDOS::Instance()->cmd(
+            "set_game_date(date, season, game_id)",
+            [$termin, $sezon, $id]
+        );
+    }
+}
 
 function page_init()
 {
-    $sezon = obecny_sezon();
-    $sezon_final = "${sezon}_final";
-    $sezon_terminarz = "${sezon}_terminarz";
+    global $sezon;
+    $grupowe[] = PDOS::Instance()->cmd(
+        "get_games(season, finals?, group)",
+        [$sezon, false, 'first']
+    )->fetchAll(PDO::FETCH_ASSOC);
+    $grupowe[] = PDOS::Instance()->cmd(
+        "get_games(season, finals?, group)",
+        [$sezon, false, 'second']
+    )->fetchAll(PDO::FETCH_ASSOC);
+    $finalowe = PDOS::Instance()->cmd(
+        "get_games(season, finals?, group)",
+        [$sezon, true, '']
+    )->fetchAll(PDO::FETCH_ASSOC);
     return array(
         'sezon' => $sezon,
-        'harmonogram' => PDOS::Instance()->query(
-            "SELECT *,
-                IFNULL(`1_wynik`, '') AS w1,
-                IFNULL(`2_wynik`, '') AS w2,
-                CASE WHEN termin IS NULL OR YEAR(termin) = 0 THEN 'nie ustalono' ELSE termin END AS data
-            FROM `$sezon_terminarz` ORDER BY grupa, termin DESC"
-        )->fetchAll(PDO::FETCH_ASSOC),
-        'finalowe' => sprawdzanie_tabela($sezon_final) ? PDOS::Instance()->query(
-            "SELECT *,
-                SUBSTRING_INDEX(SUBSTRING_INDEX('FINAŁ,PÓŁFINAŁ,3 MIEJSCE',',', poziom),',',-1) AS tytul,
-                CASE WHEN YEAR(termin) = 0 THEN '' ELSE termin END AS data,
-                IFNULL(wynik_1, '') AS w1, IFNULL(wynik_2, '') AS w2,
-                IFNULL(druzyna_1, '???') AS d1, IFNULL(druzyna_2, '???') AS d2
-            FROM `$sezon_final` ORDER BY id DESC"
-        )->fetchAll(PDO::FETCH_ASSOC) : NULL,
+        'grupowe' => $grupowe,
+        'finalowe' => count($finalowe) > 0 ? $finalowe : null
     );
 }
 function page_render($obj)
 {
-?>
+    ?>
     <div id="content">
         <h1> WPISYWANIE HARMONOGRAMU </h1>
-        <form method='post' action='<?= PREFIX ?>/skrypty/harmonogram'>
+        <form method='post'>
             <?php if (!is_null($obj['finalowe'])) : ?>
                 <h2> FAZA FINAŁOWA </h2>
-                <?php foreach ($obj['finalowe'] as $final) : ?>
-                    <input class='termin' type='date' name='f<?= $final['id'] ?>' value='<?= $final['data'] ?>'> <?= $final['druzyna_1'] ?> vs <?= $final['druzyna_2'] ?> (<?= $final['tytul'] ?>) <br />
+                <?php foreach ($obj['finalowe'] as $mecz) : ?>
+                    <div class="termin_meczu">
+                        <input class='termin' type='date' name='<?= $mecz['game_id'] ?>' value='<?= coalesce($mecz['date'], '') ?>'> <?= coalesce($mecz['A_team'], '???') ?> vs <?= coalesce($mecz['B_team'], '???') ?> (<?= $mecz['title'] ?>) <br />
+                    </div>
                 <?php endforeach; ?>
             <?php endif; ?>
             <h2> FAZA GRUPOWA </h2>
-            <?php foreach ($obj['harmonogram'] as $grupa) : ?>
-                <input class='termin' type='date' name='<?= $grupa['id'] ?>' value='<?= $grupa['data'] ?>'> <?= $grupa['1_text'] ?> vs <?= $grupa['2_text'] ?><br />
-            <?php endforeach; ?>
-            <input type='hidden' value='<?= $obj['sezon'] ?>' name='sezon'>
-            <input type='submit' value='AKTUALIZUJ!'>
+            <?php for ($grupa = 0; $grupa <= 1; ++$grupa) : ?>
+                <div class="grupy">
+                    <h2>Grupa <?= coalesce($grupa + 1) ?></h2>
+                    <?php foreach ($obj['grupowe'][$grupa] as $mecz) : ?>
+                        <div class="termin_meczu">
+                            <input class="termin" type='date' name='<?= $mecz['game_id'] ?>' value='<?= coalesce($mecz['date'], '') ?>'> <?= coalesce($mecz['A_team'], '???') ?> vs <?= coalesce($mecz['B_team'], '???') ?><br />
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endfor; ?>
+            <input type='submit' value='AKTUALIZUJ!' style="margin-top:2vh;">
         </form>
     </div>
-<?php }
+<?php
+}

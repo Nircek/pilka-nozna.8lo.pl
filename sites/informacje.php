@@ -1,31 +1,23 @@
 <?php
-register_style("informacje");
 register_title("Informacje");
 
 function page_init()
 {
-    return PDOS::Instance()->query("SELECT * FROM informacje ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+    return PDOS::Instance()->cmd("get_news()")->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function page_render($obj)
 {
-?>
+    ?>
     <div id="content">
         <h1> INFORMACJE </h1>
         <?php foreach ($obj as $info) : ?>
-            <div class='info'>
-                <span id='tytul'>
-                    <?= $info['tytul'] ?>
-                </span>
-                <br />
-                <span id='tresc'>
-                    <?= $info['tresc'] ?>
-                </span>
-                <br />
-                <span id='data'>
-                    <?= $info['data'] ?>
-                </span>
+            <div class="informacje">
+                <div class="informacja-tytul"> <?= $info['title'] ?> </div>
+                <div class="informacja-tresc"> <?= $info['content'] ?> </div>
+                <div class="informacja-data"> <?= $info['created_at'] ?> </div>
             </div>
         <?php endforeach; ?>
     </div>
-<?php }
+<?php
+}

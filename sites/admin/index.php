@@ -2,9 +2,14 @@
 is_logged();
 register_style("admin");
 
-function page_render()
+function page_init()
 {
-?>
+    return PDOS::Instance()->cmd("get_seasons()")->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function page_render($obj)
+{
+    ?>
     <div id="content">
         <h1> PANEL ADMINISTRATORA </h1>
         <div id="panel">
@@ -12,10 +17,10 @@ function page_render()
             <div id="informacje">
                 <h2> DODAJ INFORMACJĘ </h2>
                 <form method="post" action="<?= PREFIX ?>/skrypty/dodaj-post" id="informacje-form">
-                    <h3> TYTUŁ </h3>
-                    <textarea cols="30" rows="2" id="info_tytul" maxlength="50" name="info_tytul"></textarea><br />
-                    <h3> TREŚĆ </h3>
-                    <textarea cols="32" rows="10" id="info_tresc" name="info_tresc"></textarea><br />
+                    <p class="big"> TYTUŁ </p>
+                    <textarea cols="24" rows="2" id="info_tytul" maxlength="50" name="info_tytul"></textarea><br />
+                    <p class="big"> TREŚĆ </p>
+                    <textarea cols="27" rows="10" id="info_tresc" name="info_tresc"></textarea><br />
                     <input type="submit" value="PUBLIKUJ">
                 </form>
             </div>
@@ -23,12 +28,12 @@ function page_render()
             <!------------------ WPISYWANIE WYNIKÓW ------------------>
             <div id="aktualizacja-sezonu">
                 <h2> AKTUALIZUJ SEZON </h2>
-                <h3> WPISZ WYNIKI </h3>
-                <div id="dalej-button">
+                <p class="big"> WPISZ WYNIKI </p>
+                <div id="dalej-button" class="link">
                     <a href="<?= PREFIX ?>/admin/wyniki">+</a>
                 </div>
-                <h3> AKTUALIZUJ HARMONOGRAM </h3>
-                <div id="dalej-button">
+                <p class="big"> AKTUALIZUJ HARMONOGRAM </p>
+                <div id="dalej-button" class="link">
                     <a href="<?= PREFIX ?>/admin/harmonogram">+</a>
                 </div>
             </div>
@@ -38,10 +43,13 @@ function page_render()
             <div id="zdjecia">
                 <h2> DODAJ ZDJĘCIA </h2>
                 <form method="post" enctype="multipart/form-data" action="<?= PREFIX ?>/skrypty/dodaj-zdjecie">
-                    <h3> WYBIERZ SEZON: </h3>
-                    <?php $sezon = explode("/", obecny_sezon())[0]; ?>
-                    <input type="number" min='2000' id="zdjecia_sezon" name="zdjecie_sezon" max='<?= $sezon ?>' value='<?= $sezon ?>'>
-                    <h3> WYBIERZ ZDJĘCIA (.jpg) </h3>
+                    <p class="big"> WYBIERZ SEZON: </p>
+                    <select id="zdjecia_sezon" name="zdjecie_sezon">
+                        <?php foreach ($obj as $sezon) : ?>
+                            <option value="<?= $sezon['season_id'] ?>"><?= $sezon['name'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <p class="big"> WYBIERZ ZDJĘCIA (.jpg) </p>
                     <input type="file" name="files[]" id="zdjecia_wybor" accept=".jpg,.jpeg,.png" multiple><br />
                     <input type="submit" value="DODAJ">
                 </form>
@@ -50,12 +58,12 @@ function page_render()
             <!------------------ TWORZENIE SEZONU ------------------>
             <div id="tworzenie-sezonu">
                 <h2> STWÓRZ SEZON </h2>
-                <div id="dalej-button">
+                <div id="dalej-button" class="link">
                     <a href="<?= PREFIX ?>/admin/sezon">+</a>
                 </div>
                 <br />
                 <h2> STWÓRZ RUNDĘ FINAŁOWĄ </h2>
-                <div id="dalej-button">
+                <div id="dalej-button" class="link">
                     <a href="<?= PREFIX ?>/skrypty/admin_final">+</a>
                 </div>
             </div>
@@ -63,4 +71,5 @@ function page_render()
             <div style="clear: both;"></div>
         </div>
     </div>
-<?php }
+<?php
+}

@@ -1,10 +1,12 @@
 <?php
+
 is_logged();
+$autor = 0;
 header('Location: ' . PANEL_URL);
 
 $sezon = cast_int($_POST['zdjecie_sezon']);
 if (is_null($sezon)) {
-    report_error("sezon violation", NULL);
+    report_error("sezon violation", null);
     exit();
 }
 
@@ -60,20 +62,22 @@ if (!empty($_FILES['files']['name'][0])) {
 
             $file_absolute = ROOT_PATH . "/public/zdjecia/" . $name_array[$i];
             if (move_uploaded_file($tmp_name_array[$i], $file_absolute)) {
-                $file_destination = "zdjecia/" . $name_array[$i];
                 make_thumb($file_absolute, ROOT_PATH . "/public/zdjecia/thumb." . $name_array[$i], 200);
-                PDOS::Instance()->prepare("INSERT INTO `zdjecia` (`sezon`, `sciezka`, `data`) VALUES (?, ?, CURDATE())")->execute([$sezon, $file_destination]);
+                PDOS::Instance()->cmd(
+                    "add_photo(season, filename, photographer)",
+                    [$sezon, $name_array[$i], $autor]
+                );
             } else {
-                report_error("Wystąpił problem z przesłaniem pliku na serwer!", NULL);
+                report_error("Wystąpił problem z przesłaniem pliku na serwer!", null);
                 exit();
             }
         } else {
-            report_error($name_array[$i] . " - Rozszerzenie nie jest obsługiwane!", NULL);
+            report_error($name_array[$i] . " - Rozszerzenie nie jest obsługiwane!", null);
             exit();
         }
     }
 } else {
-    report_error("Wybierz pliki!", NULL);
+    report_error("Wybierz pliki!", null);
     exit();
 }
 

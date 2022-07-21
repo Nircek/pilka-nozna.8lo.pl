@@ -1,56 +1,44 @@
 <?php
+
 is_logged();
 
-// Pobieranie obecnego sezonu
 $sezon = obecny_sezon();
-$sezon_tabela = "${sezon}_tabela";
-$sezon_final = "${sezon}_final";
 
-// Sprawdzanie czy już przypadkiem nie istnieje...
-if (sprawdzanie_tabela($sezon_final)) {
-    header('Location: ' . PANEL_URL);
-    report_error("Finał obecnego sezonu już istnieje!", NULL);
+$grouping = PDOS::Instance()->cmd(
+    "get_season_details(season)",
+    [$sezon]
+)->fetch(PDO::FETCH_ASSOC)['grouping_type'];
+if ($grouping !== "two_groups") {
+    header("Location: " . PANEL_URL);
+    report_error("Tylko grupowanie `two_groups` pozwala na utworzenie rundy finałowej.", null);
     exit();
 }
-$stmt = PDOS::Instance()->prepare(
-    "CREATE TABLE `$sezon_final` (
-        `id` int NOT NULL AUTO_INCREMENT,
-        `druzyna_1` text,
-        `druzyna_2` text,
-        `wynik_1` int,
-        `wynik_2` int,
-        `termin` date null,
-        `poziom` int null,
-        PRIMARY KEY(id)
-    )"
-)->execute();
 
-// =================== POBIERANIE DRUŻYN ===================
+PDOS::Instance()->cmd("delete_finals(season)", [$sezon]);
 
-$grupa_1 = PDOS::Instance()->query(
-    "SELECT nazwa FROM $sezon_tabela WHERE grupa=1 ORDER BY pkt DESC, (zdobyte - stracone) DESC, nazwa ASC LIMIT 2"
+$grupa_1 = PDOS::Instance()->cmd(
+    "get_group_table(season, all?, group)",
+    [$sezon, false, 'first']
 )->fetchAll(PDO::FETCH_COLUMN);
-$grupa_2 = PDOS::Instance()->query(
-    "SELECT nazwa FROM $sezon_tabela WHERE grupa=2 ORDER BY pkt DESC, (zdobyte - stracone) DESC, nazwa ASC LIMIT 2 "
+$grupa_2 = PDOS::Instance()->cmd(
+    "get_group_table(season, all?, group)",
+    [$sezon, false, 'second']
 )->fetchAll(PDO::FETCH_COLUMN);
+
+array_splice($grupa_1, 2);
+array_splice($grupa_2, 2);
+
 
 if (count($grupa_1) + count($grupa_2) < 4) {
     header('Location: ' . PANEL_URL);
-    report_error("Za mało drużyn by stworzyć rundę finałową", NULL);
+    report_error("Za mało drużyn by stworzyć rundę finałową", null);
     exit();
 }
 
-// =================== USTALANIE MECZY ===================
-
-
-
-// =================== WSTAWIANIE DO BAZY ===================
-
-$insert_stmt = PDOS::Instance()->prepare(
-    "INSERT INTO `$sezon_final` (`druzyna_1`, `druzyna_2`, `poziom`) VALUES (?, ?, 2), (?, ?, 2), (NULL, NULL, 3), (NULL, NULL, 1)"
+$insert_stmt = PDOS::Instance()->cmd(
+    "add_finals(season, f1, s1, f2, s2)",
+    [$sezon, $grupa_1[0], $grupa_2[1], $grupa_2[0], $grupa_1[1]]
 );
-
-$insert_stmt->execute([$grupa_1[0], $grupa_2[1], $grupa_2[0], $grupa_1[1]]);
 
 header('Location: ' . PANEL_URL);
 exit();

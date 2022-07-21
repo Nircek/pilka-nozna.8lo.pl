@@ -5,6 +5,7 @@ services:
     ports:
       - 80:80
     volumes:
+      # chmod 777 public/zdjecia
       - .:/var/www/html/
     links:
       - db:db

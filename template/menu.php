@@ -20,47 +20,44 @@ foreach ($error_queue as $error) :
     </div>
 <?php endif; ?>
 <div id="menu">
-    <div id="logo">
-        <a href="<?= PREFIX ?>/"><img src="<?= PREFIX ?>/img/logo.png" height="170" style="margin-top: 5px;"></a>
+    <div id="logo" class="left-drawer">
+        <a href="<?= PREFIX ?>/"><img src="<?= PREFIX ?>/img/logo.png"></a>
     </div>
-    <div id="title">
-        <div id="title-content">
-            VIII LO "PIK"
-            PIŁKA NOŻNA
-        </div>
+    <div id="title" class="center-drawer">
+        <div class="center-vert"> VIII LO "PIK" PIŁKA NOŻNA </div>
     </div>
-    <div id="options">
-        <div id="top-options">
-            <div id="facebook">
-                <a target="_blank" href="#">
-                    <i class="icon-facebook"></i>
-                </a>
-            </div>
-            <div id="pik">
-                <a target="_blank" href="http://8lo.pl/">
-                    <i class="icon-graduation-cap"></i>
-                </a>
-            </div>
-            <div id="galeria">
-                <a href="<?= PREFIX ?>/galeria">
-                    <i class="icon-camera"></i>
-                </a>
-            </div>
-            <div style="clear: both"></div>
+    <div id="options" class="right-drawer link">
+        <div id="facebook">
+            <a target="_blank" href="#">
+                <i class="icon-facebook"></i>
+            </a>
         </div>
-        <div id="bottom-options">
-            <div id="obecny-sezon">
-                <a href="<?= PREFIX ?>/sezony/obecny">
-                    OBECNY SEZON
-                </a>
-            </div>
-            <div id="wszystkie-sezony">
-                <a href="<?= PREFIX ?>/sezony">
-                    WSZYSTKIE SEZONY
-                </a>
-            </div>
-            <div style="clear: both;"></div>
+        <div id="pik">
+            <a target="_blank" href="http://8lo.pl/">
+                <i class="icon-graduation-cap"></i>
+            </a>
         </div>
+        <div id="galeria">
+            <a href="<?= PREFIX ?>/galeria">
+                <i class="icon-camera"></i>
+            </a>
+        </div>
+        <div style="clear: both"></div>
+        <div id="obecny-sezon">
+            <a href="<?= PREFIX ?>/sezony/obecny">
+                <div class="center-vert">
+                    OBECNY<br>SEZON
+                </div>
+            </a>
+        </div>
+        <div id="wszystkie-sezony">
+            <a href="<?= PREFIX ?>/sezony">
+                <div class="center-vert">
+                    WSZYSTKIE<br>SEZONY
+                </div>
+            </a>
+        </div>
+        <div style="clear: both;"></div>
     </div>
     <div style="clear: both;"></div>
 </div>

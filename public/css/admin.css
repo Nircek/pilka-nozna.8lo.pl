@@ -4,12 +4,17 @@
     overflow: hidden;
 }
 
+#content {
+    text-align: center;
+}
+
 /* WSPÓLNE WŁAŚCIWOŚCI WSZYSTKICH 4 SEKCJI PANELU */
 #informacje,
 #zdjecia,
 #aktualizacja-sezonu,
 #tworzenie-sezonu {
     float: left;
+    text-align: center;
     width: 50%;
     padding: 15px 0;
     padding-bottom: 20000px;
@@ -18,26 +23,25 @@
 
 /* ------------------ SEKCJA - DODAWANIE INFORMACJI ------------------ */
 #informacje {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: #00f2;
 }
 
 /* ------------------ SEKCJA - DODAWANIE ZDJĘĆ ------------------*/
 #zdjecia {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: #0f02;
 }
 
 /* ------------------ SEKCJA - AKTUALIZOWANIE SEZONU ------------------*/
 #aktualizacja-sezonu {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: #f002;
 }
 
-/* ------------------ SEKCJA - TWORZENIE SEZONU ------------------*/
 #tworzenie-sezonu {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: #f0f2;
 }
 
 #dalej-button {
-    background-color: black;
+    background-color: #000;
     font-size: 85px;
     width: 250px;
     height: 100px;
@@ -46,17 +50,167 @@
     margin-bottom: 30px;
 }
 
-#dalej-button a {
-    text-decoration: none;
-    color: #ffffff;
-    display: block;
-    width: 250px;
-    height: 100px;
-    -webkit-transition: background-color 0.15s linear 0s;
-    transition: background-color 0.15s linear 0s;
+/* ------------------ harmonogram ------------------*/
+
+.termin {
+    margin-top: -10px;
+    border-width: 1.5px;
+    font-size: 18px;
 }
 
-#dalej-button a:hover {
-    color: black;
-    background-color: #ffffff;
+.termin_meczu {
+    float: left;
+    margin-left:18%;
+}
+
+/* ------------------ login ------------------*/
+
+#formularz {
+    margin: auto;
+    width: 40%;
+    text-align: center;
+}
+
+#formularz input {
+    width: 90%;
+}
+
+#formularz input[type=submit] {
+    width: 60%;
+}
+
+/* ------------------ nowy_sezon ------------------*/
+
+#grupa-pierwsza,
+#grupa-druga {
+    width: 50%;
+    float: left;
+    padding-bottom: 20000px;
+    margin-bottom: -20000px;
+}
+
+table {
+    margin: auto;
+    border: solid 2px rgba(0, 0, 0, 0.9);
+}
+
+td,
+th {
+    border: solid 2px rgba(0, 0, 0, 0.9);
+    margin-bottom: 0;
+    font-size: 15px;
+    padding: 0 5px;
+}
+
+th {
+    padding: 5px 0;
+}
+
+#termin {
+    margin-bottom: 0px;
+}
+
+#akceptuje-sezon {
+    margin-top: 30px;
+    padding: 10px 30px;
+}
+
+/* ------------------ terminarz ------------------*/
+
+#grupa-pierwsza,
+#grupa-druga {
+    margin-top: 10px;
+}
+
+#grupa-pierwsza {
+    float: left;
+    width: 50%;
+}
+
+#grupa-druga {
+    float: left;
+    width: 50%;
+    background-color: red;
+    height: 300px;
+}
+
+table {
+    margin: auto;
+    border-spacing: 0;
+    border-collapse: collapse;
+    width: 400px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 40%);
+}
+
+th {
+    background-color: #fff;
+    color: #000;
+    font-weight: bold;
+}
+
+th,
+td {
+    border: black solid 2px;
+}
+
+#termin {
+    width: 150px;
+}
+
+/* ------------------ wyniki ------------------*/
+
+.wynik {
+    border-width: 1.5px;
+    margin-bottom: 0;
+    width: 100px;
+}
+
+.grupy {
+    float: left;
+    width: 50%;
+}
+
+/* TODO: Do sth like flex/grid */
+.wynik_meczu {
+    text-align: center;
+}
+
+/* ------------------ edytor sezonu ------------------*/
+
+#desc {
+    text-align: left;
+    line-height: 3vh;
+}
+
+.update {
+    display: inline-block;
+    margin: 3% 2% 3% 2%;
+    background-color: #242424;
+    padding: 2%;
+}
+
+.update:hover {
+    background-color: #707070;
+}
+
+.group {
+    padding: 3%;
+    line-height: 200%;
+    display: inline-block;
+    text-align: center;
+    background-color: #242424;
+    margin: 2% 5% 5% 5%;
+}
+
+/* ------------------ WYBÓR_SEZONU_DO_EDYCJI ------------------ */
+
+a.tile {
+    color: white;
+    text-decoration: none;
+}
+
+a.tile:visited {
+    color: white;
+    text-decoration: none;
 }

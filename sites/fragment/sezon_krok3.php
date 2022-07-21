@@ -62,7 +62,7 @@ $_SESSION['krok'] = 3;
 ?>
 <!------------------ TWORZENIE SEZONU KROK 3 ------------------>
 <h2> Sezon: <?= $sezon ?>/<?= $sezon + 1 ?> </h2>
-<h3> WYZNACZ TERMINY (Jeśli nieokreślony to nie zaznaczaj nic) </h3>
+<p class="big"> WYZNACZ TERMINY (Jeśli nieokreślony to nie zaznaczaj nic) </p>
 <?php
 // Sprawdzenie wkładanie terminu do bazy waliło jakieś błędy
 if (isset($_SESSION['e_terminarz_baza']) == true) {

@@ -1,12 +1,17 @@
 <?php
+
 is_logged();
+$autor = 0;
 header('Location: ' . PANEL_URL);
 
 $tytul = $_POST['info_tytul'];
 $tresc = $_POST['info_tresc'];
 if (empty($tytul) or empty($tresc)) {
-    report_error("Oba pola muszą być wypełnione!", NULL);
+    report_error("Oba pola muszą być wypełnione!", null);
     exit();
 }
-PDOS::Instance()->prepare("INSERT INTO `informacje` (`tytul`, `tresc`, `data`) VALUES (?, ?, CURDATE())")->execute([$tytul, $tresc]);
+PDOS::Instance()->cmd(
+    "add_info(title, author, content)",
+    [$tytul, $autor, $tresc]
+);
 exit();
