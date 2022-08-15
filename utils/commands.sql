@@ -540,4 +540,26 @@ WHERE
 ORDER BY
     `article_id`;
 
+-- add_season(id, name, html_name, grouping)
+INSERT INTO
+    `ng_season` (
+        `season_id`,
+        `created_at`,
+        `name`,
+        `html_name`,
+        `description`,
+        `grouping_type`,
+        `comment`
+    )
+VALUES
+    (
+        ?,
+        CURRENT_DATE(),
+        ?,
+        ?,
+        NULL,
+        ?,
+        NULL
+    );
+
 -- {END}
