@@ -5,7 +5,7 @@ is_logged();
 $sezon = obecny_sezon();
 
 $grouping = PDOS::Instance()->cmd(
-    "get_season_details(season)",
+    "get_season(season)",
     [$sezon]
 )->fetch(PDO::FETCH_ASSOC)['grouping_type'];
 if ($grouping !== "two_groups") {

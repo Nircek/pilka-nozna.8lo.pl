@@ -5,8 +5,8 @@ is_logged();
 global $sezon;
 $sezon = cast_int(HIT_UNPACK());
 if (empty($sezon)) {
-    $sezon = obecny_sezon();
-    // report_error("sezon violation", null); exit();
+    header("Location: ". PANEL_URL . "/harmonogram/" . obecny_sezon());
+    exit();
 }
 
 function page_perform()

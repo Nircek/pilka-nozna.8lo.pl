@@ -19,7 +19,7 @@ function page_init()
     $sezon = HIT_UNPACK();
     $name = PDOS::Instance()->cmd("get_season_name(season)", [$sezon])->fetchAll(PDO::FETCH_COLUMN);
     $name = count($name) > 0 ? $name[0] : null;
-    $details = PDOS::Instance()->cmd("get_season_details(season)", [$sezon])->fetch(PDO::FETCH_ASSOC);
+    $details = PDOS::Instance()->cmd("get_season(season)", [$sezon])->fetch(PDO::FETCH_ASSOC);
     if ($details['grouping_type'] != 'no_grouping') {
         $tabele = array();
         $harmonogram = array();

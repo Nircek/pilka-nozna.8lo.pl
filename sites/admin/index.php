@@ -57,7 +57,7 @@ function page_render($obj)
 
             <!------------------ TWORZENIE SEZONU ------------------>
             <div id="tworzenie-sezonu">
-                <h2> STWÓRZ SEZON </h2>
+                <h2> EDYTUJ SEZONY </h2>
                 <div id="dalej-button" class="link">
                     <a href="<?= PREFIX ?>/admin/sezon">+</a>
                 </div>

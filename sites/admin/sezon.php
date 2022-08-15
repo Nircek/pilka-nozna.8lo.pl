@@ -1,67 +1,80 @@
 <?php
 is_logged();
 
+global $sezon;
+$sezon = HIT_UNPACK();
+$sezon =  cast_int($sezon);
+if ($sezon === null) {
+    header("Location: " . PANEL_URL . "/sezon/" . obecny_sezon());
+    exit();
+}
+
+function page_perform()
+{
+    global $sezon;
+    PDOS::Instance()->cmd(
+        "update_season(name, html_name, description, id)",
+        [$_POST['name'], $_POST['html_name'], $_POST['description'], $sezon]
+    );
+}
+
 function page_init()
 {
-    return PDOS::Instance()->cmd("get_seasons()")->fetchAll(PDO::FETCH_ASSOC);
+    global $sezon;
+    return array(
+        'sezon' =>  PDOS::Instance()->cmd("get_season(season)", [$sezon])->fetchAll(PDO::FETCH_ASSOC)[0],
+        'sezony' => PDOS::Instance()->cmd("get_seasons()")->fetchAll(PDO::FETCH_ASSOC)
+    );
 }
 
 function page_render($obj)
-{
-    ?>
+{ ?>
     <script type="text/javascript">
-        function display() {
-            let s = document.getElementById('wybor_sezonu');
-            let ss = s[s.selectedIndex].text;
-            document.getElementById('wyswietl_sezon').innerText = `Sezon: ${ss}`;
+        window.onload = () => {
+            document.getElementById('go_season').onclick = () => window.location.href = document.getElementById('season').value;
         }
     </script>
     <div id="content">
-        <h1> TWORZENIE SEZONU </h1>
-        <div class="error">Funkcja nie została zaimplementowana.</div>
-        <?php SERVER_ERROR(501); ?>
-        <form action="">
-            <label for="wybor_sezonu">Wybierz sezon: </label>
-            <select name="sezon" id="wybor_sezonu" onchange="display();">
-                <?php foreach ($obj as $sezon) : ?>
-                    <option value='<?= $sezon['season_id'] ?>'>
-                        <?= $sezon['html_name'] ?>
-                    </option>
-                <?php endforeach; ?>
-            </select></form>
+        <h1> EDYCJA SEZONU </h1>
+        <label for="season">Wybierz sezon: </label>
+        <select name="season" id="season">
+            <option value='../nowy_sezon'>Dodaj nowy...</option>
+            <?php foreach ($obj['sezony'] as $sezon) : ?>
+                <option value='<?= $sezon['season_id'] ?>' <?= $sezon['season_id'] == $obj['sezon']['season_id'] ? ' selected' : '' ?>>
+                    <?= htmlentities($sezon['name']) ?>
+                </option>
+            <?php endforeach; ?>
+            <option value='../nowy_sezon'>Dodaj nowy...</option>
+        </select>
+        <button id="go_season">Idź</button>
         <br>
         <div id="desc">
-            <p id="wyswietl_sezon">Sezon: 2021/2022</p>
-            <form action="#" method="POST">
-                <div>
-                    <label for="htmlnazwa">Nazwa w html: </label><br>
-                    <textarea id="htmlnazwa" name="htmlnazwa" rows="2" cols="30" style="text-align: left;">html nazwa: <&span style="color:grey;">2019/2020
-            </textarea>
+            <form method="POST" style="display:flex;">
+                <div style="flex:4;">
+                    <p>id: <?= $obj['sezon']['season_id'] ?></p>
+                    <label for="name">Nazwa: </label><br>
+                    <input type="text" name="name" id="name" value="<?= htmlentities($obj['sezon']['name']) ?>" /><br>
+                    <label for="html_name">Nazwa w html: </label><br>
+                    <textarea id="html_name" name="html_name" rows="2" cols="30" style="text-align: left;"><?= htmlentities($obj['sezon']['html_name']) ?></textarea><br>
+                    <label for="description">description: </label><br>
+                    <textarea id="description" name="description" rows="5" cols="30" style="text-align: left;"><?= htmlentities($obj['sezon']['description']) ?></textarea><br>
+                    <p>Schemat grupowania: <?= htmlentities($obj['sezon']['grouping_type']) ?> <?php if ($obj['sezon']['grouping_type'] === "no_grouping") : ?>
+                            <a href="../zmien/<?= $obj['sezon']['season_id'] ?>">zmień</a>
+                        <?php endif; ?>
+                    </p>
                 </div>
-
-                <div style="float:left;">
-                    <label for="Opis">Opis: </label><br>
-                    <textarea id="Opis" name="Opis" rows="5" cols="30" style="text-align: left;">Ten sezon nie istnieje.
-            </textarea>
+                <div style="flex:3;">
+                    <div style="height:40%;"></div>
+                    <input type="hidden" name="type" value="edit" />
+                    <input type="submit" value="Aktualizuj" style="height:20%; width:70%;">
                 </div>
-                <div style="margin-left: 60%;">
-                    <input type="submit" value="Aktualizuj" style="width: 60%; height: 100px;">
-                </div>
-                <div style="clear:both"></div>
-                <div>
-                    <label for="format">Format rozgrywek: </label>
-                    <select name="Format_rozgrywek" id="format">
-                        <option value="groups">Dwie grupy</option>
-                        <option value="doublerobin">Double-robin</option>
-                        <option value="null">null</option>
-                    </select>
-                </div>
+                <div style="clear:both;"></div>
         </div>
         </form>
-        <div class="update"><a class="tile" href="/admin/harmonogram">Zmień harmonogram</a></div> <!-- TODO: /sezonId -->
-        <div class="update"><a class="tile" href="/admin/wyniki">Zmień wyniki</a></div> <!-- TODO: /sezonId -->
-        <div class="update">Dodaj zdjęcia</div>
-        <div class="update">Dodaj nowy artykuł</div>
+        <div class="update"><a class="tile" href="/admin/harmonogram/<?= $obj['sezon']['season_id'] ?>">Zmień harmonogram</a></div>
+        <div class="update"><a class="tile" href="/admin/wyniki/<?= $obj['sezon']['season_id'] ?>">Zmień wyniki</a></div>
+        <div class="update"><a class="tile" href="/admin/zdjecia/<?= $obj['sezon']['season_id'] ?>"><s>Zarządzaj zdjęciami</s></a></div>
+        <div class="update"><a class="tile" href="/admin/artykuly/<?= $obj['sezon']['season_id'] ?>"><s>Zarządzaj artykułami</s></a></div>
         <div class="group">
             <h2>GRUPA 1</h2>
             1d <br>

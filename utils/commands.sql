@@ -82,6 +82,8 @@ SELECT
     `season_id`
 FROM
     `prefix_season`
+WHERE
+    `grouping_type` <> 'no_grouping'
 ORDER BY
     `created_at` DESC
 LIMIT
@@ -110,10 +112,9 @@ GROUP BY
 ORDER BY
     s.`created_at` DESC;
 
--- get_season_details(season) # 3
+-- get_season(season) # 3
 SELECT
-    `description`,
-    `grouping_type`
+    *
 FROM
     `prefix_season`
 WHERE
@@ -542,7 +543,7 @@ ORDER BY
 
 -- add_season(id, name, html_name, grouping)
 INSERT INTO
-    `ng_season` (
+    `prefix_season` (
         `season_id`,
         `created_at`,
         `name`,
@@ -561,5 +562,15 @@ VALUES
         ?,
         NULL
     );
+
+-- update_season(name, html_name, description, id)
+UPDATE
+    `prefix_season`
+SET
+    `name` = ?,
+    `html_name` = ?,
+    `description` = ?
+WHERE
+    `season_id` = ?;
 
 -- {END}

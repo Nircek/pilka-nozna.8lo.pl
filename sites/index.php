@@ -12,7 +12,7 @@ function page_init()
         )->fetchAll(PDO::FETCH_COLUMN);
         $name = count($name) > 0 ? $name[0] : null;
         $details = PDOS::Instance()->cmd(
-            "get_season_details(season)",
+            "get_season(season)",
             [$sezon]
         )->fetchAll(PDO::FETCH_ASSOC)[0];
         $tabele = array();
