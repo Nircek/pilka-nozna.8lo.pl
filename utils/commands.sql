@@ -573,4 +573,278 @@ SET
 WHERE
     `season_id` = ?;
 
+-- add_new_team(season_id, name)
+INSERT INTO
+    `ng_team` (`season_id`, `team_id`, `name`, `photo_id`) WITH `params` AS (
+        SELECT
+            ? AS `season_id`
+    ),
+    `next_team` AS (
+        SELECT
+            MAX(`team_id`) + 1 AS `id`
+        FROM
+            `ng_team`
+        WHERE
+            `season_id` = (
+                SELECT
+                    `season_id`
+                FROM
+                    `params`
+            )
+    )
+SELECT
+    (
+        SELECT
+            `season_id`
+        FROM
+            `params`
+    ),
+    (
+        SELECT
+            `id`
+        FROM
+            `next_team`
+    ),
+    ?,
+    NULL RETURNING `team_id`;
+
+-- add_new_team_in_group(season, group, name)
+INSERT INTO
+    `ng_team` (`season_id`, `team_id`, `name`, `photo_id`) WITH `params` AS (
+        SELECT
+            ? AS `season_id`,
+            ? AS `group`
+    ),
+    `next_team` AS (
+        SELECT
+            MAX(
+                (
+                    CASE
+                        (
+                            SELECT
+                                `group`
+                            FROM
+                                `params`
+                        )
+                        WHEN 'first' THEN 1
+                        ELSE -1
+                    END
+                ) * `team_id`
+            ) + 1 AS `id`
+        FROM
+            `ng_team`
+        WHERE
+            `season_id` = (
+                SELECT
+                    `season_id`
+                FROM
+                    `params`
+            )
+    )
+SELECT
+    (
+        SELECT
+            `season_id`
+        FROM
+            `params`
+    ),
+    (
+        SELECT
+            `id`
+        FROM
+            `next_team`
+    ) *(
+        CASE
+            (
+                SELECT
+                    `group`
+                FROM
+                    `params`
+            )
+            WHEN 'first' THEN 1
+            ELSE -1
+        END
+    ),
+    ?,
+    NULL RETURNING `team_id`;
+
+-- add_new_team_games(season_id, new_team_id)
+INSERT INTO
+    `ng_game` (
+        `game_id`,
+        `season_id`,
+        `type`,
+        `date`,
+        `A_team_id`,
+        `A_score`,
+        `B_score`,
+        `B_team_id`
+    ) WITH `params` AS (
+        SELECT
+            ? AS `season_id`,
+            ? AS `my_team`
+    ),
+    `last_game` AS (
+        SELECT
+            COALESCE(MAX(`game_id`), 0) AS `id`
+        FROM
+            `ng_game`
+        WHERE
+            `season_id` = (
+                SELECT
+                    `season_id`
+                FROM
+                    `params`
+            )
+    ),
+    `other_teams` AS (
+        SELECT
+            `season_id`,
+            `team_id`
+        FROM
+            `ng_team`
+        WHERE
+            `season_id` = (
+                SELECT
+                    `season_id`
+                FROM
+                    `params`
+            )
+            AND `team_id` < (
+                SELECT
+                    `my_team`
+                FROM
+                    `params`
+            )
+    ),
+    `games` AS (
+        SELECT
+            *,
+            'first' AS type
+        FROM
+            `other_teams`
+        UNION
+        SELECT
+            *,
+            'second' AS type
+        FROM
+            `other_teams`
+    )
+SELECT
+    (
+        SELECT
+            `id`
+        FROM
+            `last_game`
+    ) + ROWNUM(),
+    `season_id`,
+    `type`,
+    '0000-00-00',
+    `team_id`,
+    NULL,
+    NULL,
+    (
+        SELECT
+            `my_team`
+        FROM
+            `params`
+    )
+FROM
+    `games`;
+
+-- add_new_team_in_group_games(season_id, new_team_id)
+INSERT INTO
+    `ng_game` (
+        `game_id`,
+        `season_id`,
+        `type`,
+        `date`,
+        `A_team_id`,
+        `A_score`,
+        `B_score`,
+        `B_team_id`
+    ) WITH `params` AS (
+        SELECT
+            ? AS `season_id`,
+            ? AS `my_team`
+    ),
+    `last_game` AS (
+        SELECT
+            COALESCE(MAX(`game_id`), 0) AS `id`
+        FROM
+            `ng_game`
+        WHERE
+            `season_id` = (
+                SELECT
+                    `season_id`
+                FROM
+                    `params`
+            )
+    ),
+    `games` AS (
+        SELECT
+            `season_id`,
+            `team_id`,
+            CASE
+                SIGN(
+                    (
+                        SELECT
+                            `my_team`
+                        FROM
+                            `params`
+                    )
+                )
+                WHEN 1 THEN 'first'
+                ELSE 'second'
+            END AS `type`
+        FROM
+            `ng_team`
+        WHERE
+            `season_id` = (
+                SELECT
+                    `season_id`
+                FROM
+                    `params`
+            )
+            AND SIGN(`team_id`) = SIGN(
+                (
+                    SELECT
+                        `my_team`
+                    FROM
+                        `params`
+                )
+            )
+            AND ABS(`team_id`) < ABS(
+                (
+                    SELECT
+                        `my_team`
+                    FROM
+                        `params`
+                )
+            )
+        ORDER BY
+            ABS(`team_id`)
+    )
+SELECT
+    (
+        SELECT
+            `id`
+        FROM
+            `last_game`
+    ) + ROWNUM(),
+    `season_id`,
+    `type`,
+    '0000-00-00',
+    `team_id`,
+    NULL,
+    NULL,
+    (
+        SELECT
+            `my_team`
+        FROM
+            `params`
+    )
+FROM
+    `games`;
+
 -- {END}
