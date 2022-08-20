@@ -573,6 +573,26 @@ SET
 WHERE
     `season_id` = ?;
 
+-- list_teams(season_id, ignore_group?, group)
+SELECT
+    `team_id`,
+    `name`,
+    `photo_id`
+FROM
+    `ng_team`
+WHERE
+    `season_id` = ?
+    AND (
+        ?
+        OR SIGN(`team_id`) = CASE
+            ?
+            WHEN 'first' THEN 1
+            ELSE -1
+        END
+    )
+ORDER BY
+    ABS(`team_id`);
+
 -- add_new_team(season_id, name)
 INSERT INTO
     `ng_team` (`season_id`, `team_id`, `name`, `photo_id`) WITH `params` AS (
@@ -581,7 +601,7 @@ INSERT INTO
     ),
     `next_team` AS (
         SELECT
-            MAX(`team_id`) + 1 AS `id`
+            COALESCE(MAX(`team_id`), 0) + 1 AS `id`
         FROM
             `ng_team`
         WHERE
@@ -617,19 +637,22 @@ INSERT INTO
     ),
     `next_team` AS (
         SELECT
-            MAX(
-                (
-                    CASE
-                        (
-                            SELECT
-                                `group`
-                            FROM
-                                `params`
-                        )
-                        WHEN 'first' THEN 1
-                        ELSE -1
-                    END
-                ) * `team_id`
+            COALESCE(
+                MAX(
+                    (
+                        CASE
+                            (
+                                SELECT
+                                    `group`
+                                FROM
+                                    `params`
+                            )
+                            WHEN 'first' THEN 1
+                            ELSE -1
+                        END
+                    ) * `team_id`
+                ),
+                0
             ) + 1 AS `id`
         FROM
             `ng_team`

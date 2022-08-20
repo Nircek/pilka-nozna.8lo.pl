@@ -12,18 +12,59 @@ if ($sezon === null) {
 function page_perform()
 {
     global $sezon;
-    PDOS::Instance()->cmd(
-        "update_season(name, html_name, description, id)",
-        [$_POST['name'], $_POST['html_name'], $_POST['description'], $sezon]
-    );
+    if ($_POST['type'] === "edit") {
+        PDOS::Instance()->cmd(
+            "update_season(name, html_name, description, id)",
+            [$_POST['name'], $_POST['html_name'], $_POST['description'], $sezon]
+        );
+    } elseif ($_POST['type'] === "add_team") {
+
+        $details = PDOS::Instance()->cmd("get_season(season)", [$sezon])->fetch(PDO::FETCH_ASSOC);
+
+        try {
+            PDOS::Instance()->beginTransaction();
+            if ($details['grouping_type'] == "two_rounds") {
+                $id = PDOS::Instance()->cmd("add_new_team(season_id, name)", [$sezon, $_POST['team']])->fetch(PDO::FETCH_COLUMN)[0];
+                PDOS::Instance()->cmd("add_new_team_games(season_id, new_team_id)", [$sezon, $id]);
+            } elseif ($details['grouping_type'] == "two_groups") {
+                $id = PDOS::Instance()->cmd(
+                    "add_new_team_in_group(season, group, name)",
+                    [$sezon, $_POST['group'], $_POST['team']]
+                )->fetch(PDO::FETCH_COLUMN)[0];
+                PDOS::Instance()->cmd("add_new_team_in_group_games(season_id, new_team_id)", [$sezon, cast_int($id)]);
+            }
+            PDOS::Instance()->commit();
+        } catch (Exception $e) {
+            PDOS::Instance()->rollback();
+            throw $e;
+        }
+    }
 }
 
 function page_init()
 {
     global $sezon;
+
+    $details = PDOS::Instance()->cmd("get_season(season)", [$sezon])->fetch(PDO::FETCH_ASSOC);
+    $druzyny = array();
+    if ($details['grouping_type'] == "two_rounds") {
+        $druzyny[] = PDOS::Instance()->cmd(
+            "list_teams(season_id, ignore_group?, group)",
+            [$sezon, true, '']
+        )->fetchAll(PDO::FETCH_ASSOC);
+    } elseif ($details['grouping_type'] == "two_groups") {
+        for ($i = 1; $i <= 2; ++$i) {
+            $druzyny[] = PDOS::Instance()->cmd(
+                "list_teams(season_id, ignore_group?, group)",
+                [$sezon, false, $i == 1 ? 'first' : 'second']
+            )->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
+
     return array(
-        'sezon' =>  PDOS::Instance()->cmd("get_season(season)", [$sezon])->fetchAll(PDO::FETCH_ASSOC)[0],
-        'sezony' => PDOS::Instance()->cmd("get_seasons()")->fetchAll(PDO::FETCH_ASSOC)
+        'sezon' =>  $details,
+        'sezony' => PDOS::Instance()->cmd("get_seasons()")->fetchAll(PDO::FETCH_ASSOC),
+        'druzyny' => $druzyny
     );
 }
 
@@ -75,36 +116,28 @@ function page_render($obj)
         <div class="update"><a class="tile" href="/admin/wyniki/<?= $obj['sezon']['season_id'] ?>">Zmień wyniki</a></div>
         <div class="update"><a class="tile" href="/admin/zdjecia/<?= $obj['sezon']['season_id'] ?>"><s>Zarządzaj zdjęciami</s></a></div>
         <div class="update"><a class="tile" href="/admin/artykuly/<?= $obj['sezon']['season_id'] ?>"><s>Zarządzaj artykułami</s></a></div>
-        <div class="group">
-            <h2>GRUPA 1</h2>
-            1d <br>
-            2d <br>
-            3d <br>
-            4d <br>
-            <br>
-            <br>
-            <form method="post" action="#">
-                <input type="text" name="drużyna">
+        <?php foreach ($obj['druzyny'] as $ig => $grupa) : ?>
+            <div class="group">
+                <?php if (count($obj['druzyny']) > 1) : ?>
+                    <h2> GRUPA <?= $ig + 1 ?> </h2>
+                <?php else : ?>
+                    <h2> DRUŻYNY </h2>
+                <?php endif; ?>
+                <?php foreach ($grupa as $i => $team) : ?>
+                    <?= $i + 1 ?>. <?= $team['name'] ?>
+                    <!-- <?= $team['team_id'] ?> --> <br>
+                <?php endforeach; ?>
                 <br>
-                <input type="submit" value="DODAJ DUŻYNĘ!">
-            </form>
-            <br>
-        </div>
-        <div class="group">
-            <h2>GRUPA 2</h2>
-            1dd <br>
-            2dd <br>
-            3dd <br>
-            4dd <br>
-            <br>
-            <br>
-            <form method="post" action="#">
-                <input type="text" name="drużyna">
+                <form method="post" action="#">
+                    <input type="text" name="team">
+                    <br>
+                    <input type="hidden" name="group" value="<?= $ig == 0 ? 'first' : 'second' ?>" />
+                    <input type="hidden" name="type" value="add_team" />
+                    <input type="submit" value="DODAJ DUŻYNĘ!">
+                </form>
                 <br>
-                <input type="submit" value="DODAJ DUŻYNĘ!">
-            </form>
-            <br>
-        </div>
+            </div>
+        <?php endforeach; ?>
     </div>
 <?php
 }
