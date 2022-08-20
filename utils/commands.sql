@@ -579,7 +579,7 @@ SELECT
     `name`,
     `photo_id`
 FROM
-    `ng_team`
+    `prefix_team`
 WHERE
     `season_id` = ?
     AND (
@@ -595,7 +595,7 @@ ORDER BY
 
 -- add_new_team(season_id, name)
 INSERT INTO
-    `ng_team` (`season_id`, `team_id`, `name`, `photo_id`) WITH `params` AS (
+    `prefix_team` (`season_id`, `team_id`, `name`, `photo_id`) WITH `params` AS (
         SELECT
             ? AS `season_id`
     ),
@@ -603,7 +603,7 @@ INSERT INTO
         SELECT
             COALESCE(MAX(`team_id`), 0) + 1 AS `id`
         FROM
-            `ng_team`
+            `prefix_team`
         WHERE
             `season_id` = (
                 SELECT
@@ -630,7 +630,7 @@ SELECT
 
 -- add_new_team_in_group(season, group, name)
 INSERT INTO
-    `ng_team` (`season_id`, `team_id`, `name`, `photo_id`) WITH `params` AS (
+    `prefix_team` (`season_id`, `team_id`, `name`, `photo_id`) WITH `params` AS (
         SELECT
             ? AS `season_id`,
             ? AS `group`
@@ -655,7 +655,7 @@ INSERT INTO
                 0
             ) + 1 AS `id`
         FROM
-            `ng_team`
+            `prefix_team`
         WHERE
             `season_id` = (
                 SELECT
@@ -693,7 +693,7 @@ SELECT
 
 -- add_new_team_games(season_id, new_team_id)
 INSERT INTO
-    `ng_game` (
+    `prefix_game` (
         `game_id`,
         `season_id`,
         `type`,
@@ -711,7 +711,7 @@ INSERT INTO
         SELECT
             COALESCE(MAX(`game_id`), 0) AS `id`
         FROM
-            `ng_game`
+            `prefix_game`
         WHERE
             `season_id` = (
                 SELECT
@@ -725,7 +725,7 @@ INSERT INTO
             `season_id`,
             `team_id`
         FROM
-            `ng_team`
+            `prefix_team`
         WHERE
             `season_id` = (
                 SELECT
@@ -777,7 +777,7 @@ FROM
 
 -- add_new_team_in_group_games(season_id, new_team_id)
 INSERT INTO
-    `ng_game` (
+    `prefix_game` (
         `game_id`,
         `season_id`,
         `type`,
@@ -795,7 +795,7 @@ INSERT INTO
         SELECT
             COALESCE(MAX(`game_id`), 0) AS `id`
         FROM
-            `ng_game`
+            `prefix_game`
         WHERE
             `season_id` = (
                 SELECT
@@ -821,7 +821,7 @@ INSERT INTO
                 ELSE 'second'
             END AS `type`
         FROM
-            `ng_team`
+            `prefix_team`
         WHERE
             `season_id` = (
                 SELECT
@@ -869,5 +869,14 @@ SELECT
     )
 FROM
     `games`;
+
+-- update_grouping_type(new, season_id)
+UPDATE
+    `prefix_season`
+SET
+    `grouping_type` = ?
+WHERE
+    `season_id` = ?
+    AND `grouping_type` = 'no_grouping';
 
 -- {END}
