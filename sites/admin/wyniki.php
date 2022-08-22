@@ -5,7 +5,7 @@ is_logged();
 global $sezon;
 $sezon = cast_int(HIT_UNPACK());
 if ($sezon === null) {
-    header("Location: ". PANEL_URL . "/wyniki/" . obecny_sezon());
+    header("Location: " . PANEL_URL . "/wyniki/" . obecny_sezon());
     exit();
 }
 
@@ -69,11 +69,14 @@ function page_init()
 }
 
 function page_render($obj)
-{ ?>
+{
+    global $sezon; ?>
 
     <div id="content">
         <h1> WPISZ WYNIKI (jesli się nie odbył to zostaw puste) </h1>
-
+        <p>
+            <a href="<?= PREFIX ?>/skrypty/admin_final/<?= $sezon ?>?return_url=<?= PANEL_URL ?>/wyniki/<?= $sezon ?>">wybierz drużyny do półfinałów</a>
+        </p>
         <form method='post'>
             <?php if (!is_null($obj['finalowe'])) : ?>
                 <?php foreach ($obj['finalowe'] as $mecz) : ?>
@@ -90,7 +93,8 @@ function page_render($obj)
                     <table style="text-align: center;">
                         <?php foreach ($obj['grupowe'][$grupa] as $mecz) : ?>
                             <tr>
-                                <td></td><td><?= coalesce($mecz['date'], 'nie ustalono') ?><br /></td>
+                                <td></td>
+                                <td><?= coalesce($mecz['date'], 'nie ustalono') ?><br /></td>
                             </tr>
                             <tr style="margin-bottom: 10px;">
                                 <td style="text-align: right;vertical-align: middle;"><?= coalesce($mecz['A_team'], '???') ?>
@@ -110,4 +114,5 @@ function page_render($obj)
     </div>
     <div style='clear: both;'></div>
 
-<?php }
+<?php
+}

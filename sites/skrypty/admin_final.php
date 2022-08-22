@@ -2,14 +2,18 @@
 
 is_logged();
 
-$sezon = obecny_sezon();
+$sezon = HIT_UNPACK();
+$sezon =  cast_int($sezon);
+$sezon = $sezon === null ? obecny_sezon() : $sezon;
+
+$return_url = preg_match('/[a-zA-Z0-9]+/', $_GET['return_url']) ? $_GET['return_url'] : PANEL_URL;
 
 $grouping = PDOS::Instance()->cmd(
     "get_season(season)",
     [$sezon]
 )->fetch(PDO::FETCH_ASSOC)['grouping_type'];
 if ($grouping !== "two_groups") {
-    header("Location: " . PANEL_URL);
+    header("Location: " . $return_url);
     report_error("Tylko grupowanie `two_groups` pozwala na utworzenie rundy finałowej.", null);
     exit();
 }
@@ -30,7 +34,7 @@ array_splice($grupa_2, 2);
 
 
 if (count($grupa_1) + count($grupa_2) < 4) {
-    header('Location: ' . PANEL_URL);
+    header('Location: ' . $return_url);
     report_error("Za mało drużyn by stworzyć rundę finałową", null);
     exit();
 }
@@ -40,5 +44,5 @@ $insert_stmt = PDOS::Instance()->cmd(
     [$sezon, $grupa_1[0], $grupa_2[1], $grupa_2[0], $grupa_1[1]]
 );
 
-header('Location: ' . PANEL_URL);
+header('Location: ' . $return_url);
 exit();

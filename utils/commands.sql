@@ -468,14 +468,16 @@ INSERT INTO
         `season_id`,
         `type`,
         `A_team_id`,
-        `B_team_id`
+        `B_team_id`,
+        `date`
     )
 SELECT
     maxi + i,
     id,
     `type`,
     A,
-    B
+    B,
+    '0000-00-00'
 FROM
     (
         SELECT

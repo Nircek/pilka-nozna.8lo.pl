@@ -5,7 +5,7 @@ is_logged();
 global $sezon;
 $sezon = cast_int(HIT_UNPACK());
 if (empty($sezon)) {
-    header("Location: ". PANEL_URL . "/harmonogram/" . obecny_sezon());
+    header("Location: " . PANEL_URL . "/harmonogram/" . obecny_sezon());
     exit();
 }
 
@@ -45,9 +45,10 @@ function page_init()
 }
 function page_render($obj)
 {
-    ?>
+    global $sezon; ?>
     <div id="content">
         <h1> WPISYWANIE HARMONOGRAMU </h1>
+        <a href="<?= PREFIX ?>/skrypty/admin_final/<?= $sezon ?>?return_url=<?= PANEL_URL ?>/harmonogram/<?= $sezon ?>">wybierz drużyny do półfinałów</a>
         <form method='post'>
             <?php if (!is_null($obj['finalowe'])) : ?>
                 <h2> FAZA FINAŁOWA </h2>
@@ -57,6 +58,7 @@ function page_render($obj)
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>
+            <div style="clear:both;"></div>
             <h2> FAZA GRUPOWA </h2>
             <?php for ($grupa = 0; $grupa <= 1; ++$grupa) : ?>
                 <div class="grupy">
