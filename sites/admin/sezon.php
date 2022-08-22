@@ -30,7 +30,7 @@ function page_perform()
                 $id = PDOS::Instance()->cmd(
                     "add_new_team_in_group(season, group, name)",
                     [$sezon, $_POST['group'], $_POST['team']]
-                )->fetch(PDO::FETCH_COLUMN)[0];
+                )->fetch(PDO::FETCH_COLUMN);
                 PDOS::Instance()->cmd("add_new_team_in_group_games(season_id, new_team_id)", [$sezon, cast_int($id)]);
             }
             PDOS::Instance()->commit();

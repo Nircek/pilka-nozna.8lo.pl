@@ -638,20 +638,7 @@ INSERT INTO
     `next_team` AS (
         SELECT
             COALESCE(
-                MAX(
-                    (
-                        CASE
-                            (
-                                SELECT
-                                    `group`
-                                FROM
-                                    `params`
-                            )
-                            WHEN 'first' THEN 1
-                            ELSE -1
-                        END
-                    ) * `team_id`
-                ),
+                MAX(ABS(`team_id`)),
                 0
             ) + 1 AS `id`
         FROM
@@ -663,6 +650,16 @@ INSERT INTO
                 FROM
                     `params`
             )
+            AND SIGN(`team_id`) = CASE
+                (
+                    SELECT
+                        `group`
+                    FROM
+                        `params`
+                )
+                WHEN 'first' THEN 1
+                ELSE -1
+            END
     )
 SELECT
     (
